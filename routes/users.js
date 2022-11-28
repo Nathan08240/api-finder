@@ -4,10 +4,10 @@ const {createUser, getUsers, getUserByID, deleteUserByID, UpdateUserByID} = requ
 const {isAuth, isAdmin} = require("../middlewares/auth");
 
 /* GET users listing. */
-router.use(isAuth);
+// router.use(isAuth);
 router.route('/')
     .get(getUsers)
-    .post(isAdmin, createUser);
+    .post(createUser);
 
 router.route('/:id')
     .get(getUserByID)

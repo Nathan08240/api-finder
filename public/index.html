@@ -10,30 +10,25 @@
     <meta http-equiv="Expires" content="-1">
     <title>Express</title>
 </head>
-    <body>
-        <h1>Express</h1>
-        <p>Welcome to Express</p>
-        <button id="reload">Reload</button>
-        <div class="form-div">
-            <form id="form">
-                <label for="file">File to upload:</label>
-                <input id="file" type="file" name="file" placeholder="Nom du fichier">
-                <input type="submit" value="Envoyer">
-            </form>
-            <form id="form-delete">
-                <label for="fileDelete">File to delete:</label>
-                <input id="fileDelete" type="text" name="file" placeholder="Nom du fichier">
-                <input type="submit" value="Supprimer">
-            </form>
-            <form id="form-rename">
-                <label for="fileRename">File to rename:</label>
-                <input id="fileRename" type="text" name="file" placeholder="Nom du fichier">
-                <label for="fileRenameTo">Rename to:</label>
-                <input id="fileRenameTo" type="text" name="file" placeholder="Nom du fichier">
-                <input type="submit" value="Renommer">
-            </form>
-        </div>
-    </body>
+<body>
+<div class="sign-in-div">
+    <form id="sign-in-form" method="post">
+        <label for="lastname" class="col-sm-2 col-form-label">Nom</label>
+        <input type="text" class="form-control" id="lastname" name="email" placeholder="Nom">
+        <label for="firstname" class="col-sm-2 col-form-label">Prénom</label>
+        <input type="text" class="form-control" id="firstname" name="email" placeholder="Prénom">
+
+        <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
+        <input type="email" class="form-control" id="inputEmail3" name="email" placeholder="Email">
+        <label for="role" class="col-sm-2 col-form-label">Role</label>
+        <select class="form-control" id="role" name="role">
+            <option value="admin">Admin</option>
+            <option value="student">Etudiant</option>
+        </select>
+        <input type="submit" class="btn btn-primary" value="Sign-in" onclick="data()">
+    </form>
+</div>
+</body>
 <script src="/javascripts/main.js"></script>
 </html>
 

@@ -4,12 +4,8 @@ export
 .PHONY: mongodb
 ## start MongoDB
 mongodb: down
-	@docker compose up -d finder-mongodb finder-mongoadmin finder-redis
+	@docker compose up -d finder-mongodb finder-mongoadmin finder-redis redis-commander
 
-.PHONY: redis-commander
-## start Redis Commander
-redis-commander:
-    @redis-commander --redis-port={REDIS_PORT} --redis-host={REDIS_HOST} --redis-password={REDIS_PASSWORD}
 
 .PHONY: all
 all: mongodb

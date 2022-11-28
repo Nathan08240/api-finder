@@ -10,7 +10,6 @@ const activeAccount = async function (req, res) {
         console.log('received token : ' + token);
         let bytes = CryptoJS.AES.decrypt(token, process.env.CRYPTOJS_SECRET);
         let originalText = bytes.toString(CryptoJS.enc.Utf8);
-        console.log('originalText is: ' + originalText);
         await User.findOneAndUpdate({email: originalText}, {is_confirmed: true});
         res.status(301).redirect('http://localhost:3000/');
     } catch (error) {
