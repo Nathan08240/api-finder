@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./stylesheets/style.css">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Expires" content="-1">
+    <title>Express</title>
+</head>
+    <body>
+        <h1>Express</h1>
+        <p>Welcome to Express</p>
+        <button id="reload">Reload</button>
+        <div class="form-div">
+            <form id="form">
+                <label for="file">File to upload:</label>
+                <input id="file" type="file" name="file" placeholder="Nom du fichier">
+                <input type="submit" value="Envoyer">
+            </form>
+            <form id="form-delete">
+                <label for="fileDelete">File to delete:</label>
+                <input id="fileDelete" type="text" name="file" placeholder="Nom du fichier">
+                <input type="submit" value="Supprimer">
+            </form>
+            <form id="form-rename">
+                <label for="fileRename">File to rename:</label>
+                <input id="fileRename" type="text" name="file" placeholder="Nom du fichier">
+                <label for="fileRenameTo">Rename to:</label>
+                <input id="fileRenameTo" type="text" name="file" placeholder="Nom du fichier">
+                <input type="submit" value="Renommer">
+            </form>
+        </div>
+    </body>
+<script src="/javascripts/main.js"></script>
+</html>
+
