@@ -1,22 +1,17 @@
-import {useState, useEffect} from 'react';
-import './App.css';
 import {Login} from './pages/login';
+import {AppBarHead} from "./components/appbar";
+import {ThemeProvider} from "@mui/material";
+import {theme} from "./Themes";
 
 function App() {
 
-  const [data, setData] = useState(null);
-  
-  useEffect(() => {
-    fetch('/api/users')
-      .then(res => res.json())
-      .then(data => setData(data.message));
-  }, [data]);
 
-  return (
-    <div className="App">
-      <Login/>
-    </div>
-  );
+    return (
+        <ThemeProvider theme={theme}>
+            <AppBarHead/>
+            <Login/>
+        </ThemeProvider>
+    );
 }
 
 export default App;

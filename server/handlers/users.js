@@ -23,7 +23,7 @@ const createUser = async function (req, res) {
                 message: `
                     <h1>Welcome to the app</h1>
                     <p>Please click on the link below to activate your account</p>
-                    <a href="http://localhost:3000/api/auth/activate/token?=${token}">Activate</a>
+                    <a href="http://localhost:5000/api/auth/activate/token?=${token}">Activate</a>
                 `,
             });
         } catch (error) {

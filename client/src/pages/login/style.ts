@@ -1,43 +1,23 @@
 import styled from "styled-components";
+import {Card} from "@mui/material";
 
-export const LoginStyle = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  width: 100vw;
-  background-color: #f5f5f5;
-
-  .login-form-button {
+export const LoginWrapper = styled.div`
     width: 100%;
-    height: 40px;
-    border: none;
-    border-radius: 5px;
-    background-color: #1890ff;
-    color: #fff;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-  }
+    height: 100vh;
+    background-color: #f1f1f1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
 
-  .login-form {
+export const LoginBox = styled(Card)`
+    width: 350px;
+    height: 350px;
+    background-color: #fff;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    width: 400px;
-    height: 400px;
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-  }
-
-  .login-form-title {
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 20px;
-    padding: 20px;
-
-  }
+    align-items: center;
 `;
+
