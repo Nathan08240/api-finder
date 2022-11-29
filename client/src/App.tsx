@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react';
 import './App.css';
+import {Login} from './pages/login';
 
 function App() {
 
@@ -13,9 +14,7 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <p>{!data ? 'Loading...' : data}</p>
-      </header>
+      <Login/>
     </div>
   );
 }
