@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 require('dotenv').config();
-const app = require('../app');
+const app = require('../../../Documents/Projects/finder/app');
 const debug = require('debug')('finder:server');
 const http = require('http');
 
