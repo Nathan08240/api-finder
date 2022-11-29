@@ -1,9 +1,9 @@
-require('./db/mongoose');
-require('./utils/redis');
+require('./api/db/mongoose');
+require('./api/utils/redis');
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
-const initRouter = require('./routes/index');
+const initRouter = require('./api/routes/index');
 const app = express();
 
 app.use(logger('dev'));

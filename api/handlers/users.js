@@ -10,9 +10,7 @@ const createUser = async function (req, res) {
         const token = CryptoJS.AES.encrypt(user.email, process.env.CRYPTOJS_SECRET).toString();
         console.log('token is: ' + token);
 
-        await client.set('token', token, {
-            ex: 60 * 60 * 24
-        });
+        await client.set('token', token, 'EX', 60 * 1);
 
         client.on('set', function (key, value) {
             console.log('key: ' + key + ' value: ' + value);
