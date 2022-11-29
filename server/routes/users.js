@@ -14,11 +14,7 @@ const { isAuth, isAdmin } = require("../middlewares/auth");
 router
   .route("/")
   // .get(getUsers)
-  .get((req, res) => {
-    res.json({
-      message: "Hello World",
-    });
-  })
+  .get( getUsers)
   .post(createUser);
 
 router
