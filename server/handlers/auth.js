@@ -1,6 +1,6 @@
-const {createToken} = require("../utils/jwt");
 const Users = require('../models/user');
 const bcrypt = require('bcrypt')
+const {client} = require('../utils/redis')
 
 
 const login = async (req, res) => {
@@ -16,8 +16,9 @@ const login = async (req, res) => {
         const match = await validatePassword(password, user.password)
         if (!match) throw new Error('Password does not match')
 
-        const token = user.createAuthToken()
-        await client.set('authToken', token, 'EX', 60 * 60)
+        const token = await user.createAuthToken()
+        console.log(token)
+        // await client.set('authToken', token, 'EX', 60 * 60)
 
         await Users.findByIdAndUpdate(user._id, {token})
         res.status(200).send({

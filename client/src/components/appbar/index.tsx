@@ -15,7 +15,6 @@ export const AppBarHead = () => {
         setOpen(false);
     }
 
-
     return (
         <>
             <AppBar position="absolute">
@@ -36,6 +35,5 @@ export const AppBarHead = () => {
                 <Outlet/>
             </div>
         </>
-
     );
 }
