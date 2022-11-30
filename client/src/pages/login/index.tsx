@@ -12,7 +12,7 @@ type Inputs = {
 export const Login = () => {
     const {register, handleSubmit, formState: {errors}} = useForm<Inputs>();
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        const res = await axios.post('/api/auth/login', data)
+        const res = await axios.post('http://localhost:5000/api/auth/login', data)
         localStorage.setItem('authToken', res.data.token);
     };
 
@@ -44,6 +44,7 @@ export const Login = () => {
                                         </InputAdornment>
                                     ),
                                 }}
+                                value="branconathan@gmail.com"
                                 {...register("email", {required: true})}
                             />
 
@@ -59,6 +60,7 @@ export const Login = () => {
                                         </InputAdornment>
                                     ),
                                 }}
+                                value="Azerty.51&"
                                 {...register("password", {required: true})}
                             />
                             {errors.email && <span>Ce champ est requis</span>}
