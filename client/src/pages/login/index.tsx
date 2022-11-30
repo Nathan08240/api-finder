@@ -15,7 +15,6 @@ export const Login = () => {
         axios.post('/api/auth/login', parse)
             .then(res => {
                 console.log(res);
-                console.log("Login successful");
                 console.log(res.data);
             })
     }

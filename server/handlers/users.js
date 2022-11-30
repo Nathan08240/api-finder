@@ -2,13 +2,25 @@ const Users = require('../models/user');
 const {sendEmail} = require("../utils/mailer");
 const CryptoJS = require('crypto-js');
 const client = require('../utils/redis');
+const bcrypt = require('bcrypt')
 
 const createUser = async function (req, res) {
+    async function hashPassword(password) {
+        return await bcrypt.hash(password, 10)
+    }
+
     try {
-        const user = new Users(req.body);
+        const { lastname, firstname, email, password, role } = req.body
+        const hashedPassword = await hashPassword(password)
+        const user = new Users({
+            lastname,
+            firstname,
+            email,
+            password: hashedPassword,
+            role: role || 'student',
+        })
         await user.save();
         const token = CryptoJS.AES.encrypt(user.email, process.env.CRYPTOJS_SECRET).toString();
-        console.log('token is: ' + token);
 
         await client.set('token', token, 'EX', 60 * 1);
 
