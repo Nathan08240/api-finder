@@ -1,32 +1,23 @@
-import {FormControl, InputAdornment, Card, TextField, Typography} from '@mui/material';
+import {FormControl, InputAdornment, TextField, Typography} from '@mui/material';
 import {Button} from "@mui/material";
 import {LoginWrapper, LoginBox} from "./style";
 import {Mail, Lock} from "@mui/icons-material";
 import {FormEvent} from "react";
+import axios from "axios";
 
 export const Login = () => {
 
-    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        // eslint-disable-next-line no-console
-        //send data to api
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
-        await fetch('http://localhost:5000/api/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: data.get('email'),
-                password: data.get('password'),
-
-            }),
-        })
-
+        let parse = JSON.parse(JSON.stringify(Object.fromEntries(data.entries())));
+        console.log(parse);
+        axios.post('/api/auth/login', parse)
+            .then(res => {
+                console.log(res);
+                console.log("Login successful");
+                console.log(res.data);
+            })
     }
 
     return (

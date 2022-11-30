@@ -32,6 +32,16 @@ const userSchema = new Schema({
             }
         }
     },
+    password: {
+        type: String,
+        required: true,
+        minlength: 7,
+        validate(value) {
+            if (value.toLowerCase().includes('password')) {
+                throw new Error('Password cannot contain "password"');
+            }
+        }
+    },
     is_confirmed: {
         type: Boolean,
         default: false,

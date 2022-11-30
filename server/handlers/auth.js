@@ -2,6 +2,8 @@ const {createToken} = require("../utils/jwt");
 
 const login = (req, res) => {
     const {email, password} = req.body;
+    console.log("email: ", email);
+    console.log("password: ", password);
     if (email !== 'branconathan@gmail.com' || password !== '1234567890') {
         res.status(401).json({message: 'Invalid credentials'});
     }
