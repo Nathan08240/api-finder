@@ -9,12 +9,12 @@ export const router = createBrowserRouter([
         errorElement: <ErrorPage />,
         children: [
             {
-                path: "team",
+                path: "login",
                 element: <Login />,
             },
         ],
     },
 ], {
-    basename: "/app",
+    basename: "/",
 });
 

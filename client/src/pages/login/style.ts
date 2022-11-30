@@ -11,8 +11,8 @@ export const LoginWrapper = styled.div`
 `;
 
 export const LoginBox = styled(Card)`
-    width: 350px;
-    height: 350px;
+    width: 33%;
+    height: 66%;
     background-color: #fff;
     border-radius: 10px;
     display: flex;

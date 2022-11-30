@@ -10,7 +10,6 @@ type Inputs = {
 }
 
 export const Login = () => {
-
     const {register, handleSubmit, formState: {errors}} = useForm<Inputs>();
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         const res = await axios.post('/api/auth/login', data)
@@ -32,7 +31,6 @@ export const Login = () => {
                             flexDirection: "column",
                             alignItems: "center",
                             justifyContent: "center",
-
                         }}>
                             <TextField
                                 required

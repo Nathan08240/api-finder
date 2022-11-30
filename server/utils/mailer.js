@@ -1,7 +1,4 @@
 const mailer = require('nodemailer');
-
-
-
 const sendEmail = async (options) => {
     try {
         const transporter = mailer.createTransport({
