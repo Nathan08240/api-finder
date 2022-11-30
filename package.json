@@ -8,8 +8,6 @@
   },
   "dependencies": {
     "@mui/icons-material": "^5.10.16",
-    "@types/react": "^18.0.25",
-    "@types/react-dom": "^18.0.9",
     "bcrypt": "^5.1.0",
     "cookie-parser": "~1.4.4",
     "crypto-js": "^4.1.1",
@@ -27,6 +25,10 @@
     "redis": "^4.5.1",
     "slugify": "^1.6.5",
     "validator": "^13.7.0"
+  },
+  "resolutions": {
+    "d2/left-pad": "1.1.1",
+    "c/**/left-pad": "^1.1.2"
   },
   "devDependencies": {
     "awesome-typescript-loader": "^5.2.1",

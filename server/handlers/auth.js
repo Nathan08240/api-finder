@@ -11,15 +11,13 @@ const login = async (req, res) => {
     try {
         const {email, password} = req.body;
 
-        const user = await Users.findOne({email})
-        if (!user) throw new Error('Email does not exist')
-        console.log(user)
+        const user = await Users.findByCredentials(email, password);
 
         const match = await validatePassword(password, user.password)
         if (!match) throw new Error('Password does not match')
 
-        const payload = {userId: user._id}
-        const token = createToken(payload, 60 * 60 * 24)
+        const token = user.createAuthToken()
+        await client.set('authToken', token, 'EX', 60 * 60)
 
         await Users.findByIdAndUpdate(user._id, {token})
         res.status(200).send({

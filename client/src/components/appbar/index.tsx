@@ -2,6 +2,7 @@ import {AppBar, Toolbar, Typography, Button} from "@mui/material";
 import {Menu,MenuOpen} from "@mui/icons-material";
 import {Sidebar} from "../sidebar";
 import {useState} from "react";
+import { Outlet } from "react-router-dom";
 export const AppBarHead = () => {
 
     const [open, setOpen] = useState(false);
@@ -31,6 +32,9 @@ export const AppBarHead = () => {
                 </Toolbar>
                 <Sidebar open={open}/>
             </AppBar>
+            <div id="detail">
+                <Outlet/>
+            </div>
         </>
 
     );

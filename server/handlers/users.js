@@ -5,43 +5,12 @@ const client = require('../utils/redis');
 const bcrypt = require('bcrypt')
 
 const createUser = async function (req, res) {
-    async function hashPassword(password) {
-        return await bcrypt.hash(password, 10)
-    }
-
     try {
-        const { lastname, firstname, email, password, role } = req.body
-        const hashedPassword = await hashPassword(password)
-        const user = new Users({
-            lastname,
-            firstname,
-            email,
-            password: hashedPassword,
-            role: role || 'student',
-        })
+        const user = new Users(req.body)
         await user.save();
-        const token = CryptoJS.AES.encrypt(user.email, process.env.CRYPTOJS_SECRET).toString();
-
-        await client.set('token', token, 'EX', 60 * 1);
-
-        client.on('set', function (key, value) {
-            console.log('key: ' + key + ' value: ' + value);
-        });
-
-        try {
-            await sendEmail({
-                email: user.email,
-                subject: 'Welcome to the app',
-                message: `
-                    <h1>Welcome to the app</h1>
-                    <p>Please click on the link below to activate your account</p>
-                    <a href="http://localhost:5000/api/auth/activate/token?=${token}">Activate</a>
-                `,
-            });
-        } catch (error) {
-            console.log(error);
-        }
-
+        user.createToken();
+        const token = await client.get('registerToken')
+        user.createValidationEmail(token);
         res.status(201).send(user);
     } catch (error) {
         console.log(error);

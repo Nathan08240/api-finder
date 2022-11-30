@@ -5,20 +5,20 @@ import {Mail, Lock} from "@mui/icons-material";
 import {FormEvent} from "react";
 import axios from "axios";
 
+
+const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    let parse = JSON.parse(JSON.stringify(Object.fromEntries(data.entries())));
+    console.log(parse);
+    axios.post('/api/auth/login', parse)
+        .then(res => {
+            console.log(res);
+            console.log(res.data);
+        })
+};
+
 export const Login = () => {
-
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        let parse = JSON.parse(JSON.stringify(Object.fromEntries(data.entries())));
-        console.log(parse);
-        axios.post('/api/auth/login', parse)
-            .then(res => {
-                console.log(res);
-                console.log(res.data);
-            })
-    }
-
     return (
         <LoginWrapper>
             <LoginBox>

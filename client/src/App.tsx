@@ -1,15 +1,11 @@
-import {Login} from './pages/login';
-import {AppBarHead} from "./components/appbar";
-import {ThemeProvider} from "@mui/material";
-import {theme} from "./Themes";
-function App() {
+import {router} from "./utils/router";
+import {RouterProvider} from "react-router-dom";
 
+export default function App() {
     return (
-        <ThemeProvider theme={theme}>
-            <AppBarHead/>
-            <Login/>
-        </ThemeProvider>
+        <>
+            <RouterProvider router={router}/>
+        </>
     );
 }
 
-export default App;
