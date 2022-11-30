@@ -17,7 +17,6 @@ const login = async (req, res) => {
         if (!match) throw new Error('Password does not match')
 
         const token = await user.createAuthToken()
-        console.log(token)
         // await client.set('authToken', token, 'EX', 60 * 60)
 
         await Users.findByIdAndUpdate(user._id, {token})
@@ -25,8 +24,7 @@ const login = async (req, res) => {
             data: {email: user.email, role: user.role},
             token,
         })
-        console.log("Login successful");
-
+        console.log('User logged in')
     } catch (error) {
         res.status(400).send({error: error.message})
     }

@@ -11,10 +11,19 @@ export const LoginWrapper = styled.div`
 `;
 
 export const LoginBox = styled(Card)`
-    width: 33%;
-    height: 66%;
+    width: 25%;
+    height: 50%;
     background-color: #fff;
-    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+`;
+
+export const Form = styled.form`
+    width: 80%;
+    height: 80%;
     display: flex;
     flex-direction: column;
     justify-content: center;

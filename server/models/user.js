@@ -9,7 +9,6 @@ const client = require("../utils/redis");
 const {Schema} = mongoose;
 const {sendEmail} = require("../utils/mailer");
 
-
 const userSchema = new Schema({
     lastname: {
         type: String,

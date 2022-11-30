@@ -10,6 +10,7 @@ const createUser = async function (req, res) {
         await user.save();
         user.createToken();
         const token = await client.get('registerToken')
+        console.log(token)
         user.createValidationEmail(token);
         res.status(201).send(user);
     } catch (error) {
