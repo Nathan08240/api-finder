@@ -37,8 +37,8 @@ const userSchema = new Schema({
         required: true,
         minlength: 7,
         validate(value) {
-            if (value.toLowerCase().includes('password')) {
-                throw new Error('Password cannot contain "password"');
+            if (!validator.isStrongPassword(value)) {
+                throw new Error('Password is invalid');
             }
         }
     },
