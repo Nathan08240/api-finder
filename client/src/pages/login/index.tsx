@@ -16,13 +16,12 @@ export const Login = () => {
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         const res = await axios.post('/api/auth/login', data)
         const token = res.data.token;
-        console.log(user);
         localStorage.setItem('authToken', token);
     };
 
     const token = useContext(AuthContext) as string;
-    const user = jwtDecode(token);
-    console.log(user);
+    // const user = jwtDecode(token);
+    // console.log(user);
 
 
     return (

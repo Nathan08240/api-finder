@@ -5,7 +5,7 @@ import {Home} from "../pages/home";
 
 export const router = createBrowserRouter([
     {
-        path: "/",
+        path: "/login",
         element: <Login/>,
         errorElement: <ErrorPage />,
     },
