@@ -72,7 +72,7 @@ export const Login = () => {
                                     </InputAdornment>
                                 ),
                             }}
-                            value="Password123!"
+                            value="Azerty.51&"
                             {...register("password", {required: true})}
                         />
                     </FormControl>
