@@ -84,11 +84,15 @@ export const AppBarHead = () => {
                         />
                     </Search>
                     <Button
-                        sx={{ position: "absolute", left: open ? 0 : "240px", transition: "left 0.2s ease-in-out" }}
+                        sx={{
+                            position: "absolute",
+                            left: open ? 0 : "240px",
+                            transition: "left 0.2s ease-out",
+                    }}
                         color="inherit"
                         onClick={open ? handleDrawerClose : handleDrawerOpen}
                     >
-                        {!open ? <ArrowBack sx={{ color: "black", zIndex: 999 }} /> : <Menu sx={{ color: "black", zIndex: 999 }}/>}
+                        {!open ? <ArrowBack/> : <Menu/>}
                     </Button>
                     <Button
                         color="inherit"
