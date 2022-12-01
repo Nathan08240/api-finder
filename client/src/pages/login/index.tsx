@@ -3,7 +3,6 @@ import {Form, LoginBox, LoginWrapper} from "./style";
 import {Lock, Mail} from "@mui/icons-material";
 import axios from "axios";
 import {SubmitHandler, useForm} from "react-hook-form";
-import jwtDecode from "jwt-decode";
 import {AuthContext} from "../../App";
 import {useContext} from "react";
 
@@ -13,9 +12,8 @@ type Inputs = {
 }
 export const Login = () => {
     const {register, handleSubmit, formState: {errors}} = useForm<Inputs>();
-    const url = import.meta.env.VITE_API_URL;
-    console.log(url);
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
+        // @ts-ignore
         const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login`, data)
         const token = res.data.token;
         localStorage.setItem('authToken', token);
