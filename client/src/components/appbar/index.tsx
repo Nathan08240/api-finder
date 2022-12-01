@@ -1,6 +1,6 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
-import { Close, Delete, FileDownload, FileUpload, Menu, MoreVert, Update } from "@mui/icons-material";
+import {ArrowBack, Delete, FileDownload, FileUpload, Menu, MoreVert, Update} from "@mui/icons-material";
 import SearchIcon from '@mui/icons-material/Search';
 import { Sidebar } from "../sidebar";
 import { useState } from "react";
@@ -67,7 +67,6 @@ export const AppBarHead = () => {
         setOpen(false);
     }
 
-
     return (
         <>
             <AppBar position="absolute">
@@ -85,11 +84,11 @@ export const AppBarHead = () => {
                         />
                     </Search>
                     <Button
-                        sx={{ position: "absolute", left: 0 }}
+                        sx={{ position: "absolute", left: open ? 0 : "240px", transition: "left 0.2s ease-in-out" }}
                         color="inherit"
                         onClick={open ? handleDrawerClose : handleDrawerOpen}
                     >
-                        {open ? <Close sx={{ color: "black", zIndex: 999 }} /> : <Menu />}
+                        {!open ? <ArrowBack sx={{ color: "black", zIndex: 999 }} /> : <Menu sx={{ color: "black", zIndex: 999 }}/>}
                     </Button>
                     <Button
                         color="inherit"

@@ -11,7 +11,7 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
         <Drawer
             variant="persistent"
             anchor="left"
-            open={open}
+            open={!open}
             sx={{
                 width: 240,
                 flexShrink: 0,
