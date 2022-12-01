@@ -1,56 +1,99 @@
-import { Drawer, List, ListItem, ListItemIcon, ListItemText, Divider, Paper, Typography } from "@mui/material";
-import { CreateNewFolder, DriveFolderUploadRounded, UploadFileRounded, DriveFileMoveOutlined } from "@mui/icons-material";
-import { FC } from "react";
+import {
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Divider,
+  Paper,
+  Typography,
+  Box,
+} from '@mui/material'
+import {
+  CreateNewFolder,
+  DriveFolderUploadRounded,
+  UploadFileRounded,
+  DriveFileMoveOutlined,
+} from '@mui/icons-material'
+import CircularProgress, {
+  CircularProgressProps,
+} from '@mui/material/CircularProgress'
+import { FC } from 'react'
 
 interface SideBarProps {
-    open: boolean,
+  open: boolean
 }
+
+function CircularProgressWithLabel(
+  props: CircularProgressProps & { value: number }
+) {
+  return (
+    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+      <CircularProgress variant='determinate' {...props} />
+      <Box
+        sx={{
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+          position: 'absolute',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Typography
+          variant='caption'
+          component='div'
+          color='text.secondary'
+        >{`${Math.round(props.value)}%`}</Typography>
+      </Box>
+    </Box>
+  )
+}
+
 export const Sidebar: FC<SideBarProps> = ({ open }) => {
+  return (
+    <Drawer
+      variant='persistent'
+      anchor='left'
+      open={!open}
+      sx={{
+        width: 240,
+        flexShrink: 0,
+        '& .MuiDrawer-paper': {
+          width: 240,
+          boxSizing: 'border-box',
+        },
+        zIndex: 2,
+      }}
+    >
+      <Typography variant='h5' sx={{ p: 2, textAlign: 'center' }}>
+        Get Dropped
+      </Typography>
+      <Divider />
+      <Paper
+        sx={{
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <List>
+          <ListItem button key='Stockage'>
+            =<ListItemText>Stockage</ListItemText>
+            <ListItemIcon>
+              <CircularProgressWithLabel value={30} />
+            </ListItemIcon>
+          </ListItem>
 
-    return (
-        <Drawer
-            variant="persistent"
-            anchor="left"
-            open={!open}
-            sx={{
-                width: 240,
-                flexShrink: 0,
-                '& .MuiDrawer-paper': {
-                    width: 240,
-                    boxSizing: 'border-box',
-                },
-                zIndex: 2,
-            }}
-        >
-            <Typography variant="h5" sx={{ p: 2, textAlign:'center' }}>
-                Get Dropped
-            </Typography>
-            <Divider />
-            <Paper sx={{
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-
-            }}>
-
-                <List>
-                    <ListItem button key="Créer un dossier">
-                        <ListItemIcon><CreateNewFolder /></ListItemIcon>
-                        <ListItemText>Créer un dossier</ListItemText>
-                    </ListItem>
-                    <ListItem button key="Importer un dossier">
-                        <ListItemIcon><DriveFolderUploadRounded /></ListItemIcon>
-                        <ListItemText>Importer un dossier</ListItemText>
-                    </ListItem>
-                    <ListItem button key="Importer un fichier">
-                        <ListItemIcon><UploadFileRounded /></ListItemIcon>
-                        <ListItemText>Importer un fichier</ListItemText>
-                    </ListItem>
-                    <ListItem button key="Déplacer">
-                        <ListItemIcon><DriveFileMoveOutlined /></ListItemIcon>
-                        <ListItemText>Déplacer</ListItemText>
-                    </ListItem>
-                    {/* {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+          <ListItem button key='Déplacer'>
+            <ListItemIcon>
+              <DriveFileMoveOutlined />
+            </ListItemIcon>
+            <ListItemText>Déplacer</ListItemText>
+          </ListItem>
+          {/* {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
                         <ListItem button key={text}>
                             <ListItemIcon>
                                 {index % 2 === 0 ? <Inbox /> : <Mail />}
@@ -58,8 +101,8 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
                             <ListItemText primary={text} />
                         </ListItem>
                     ))} */}
-                </List>
-                {/* <Divider />
+        </List>
+        {/* <Divider />
                 <List>
                     {['All mail', 'Trash', 'Spam'].map((text, index) => (
                         <ListItem button key={text}>
@@ -70,7 +113,7 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
                         </ListItem>
                     ))}
                 </List> */}
-            </Paper>
-        </Drawer>
-    );
+      </Paper>
+    </Drawer>
+  )
 }
