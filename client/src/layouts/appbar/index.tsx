@@ -8,6 +8,7 @@ import {
   MoreVert,
   Update,
   CreateNewFolder,
+  DriveFileMoveOutlined
 } from '@mui/icons-material'
 
 import SearchIcon from '@mui/icons-material/Search'
@@ -140,6 +141,15 @@ export const AppBarHead = () => {
             <FileDownload />
           </Button>
           <Button
+              color='inherit'
+              onClick={() => {
+                alert('File download')
+              }}
+          >
+            <DriveFileMoveOutlined />
+          </Button>
+
+          <Button
             color='inherit'
             onClick={() => {
               alert('Rename folder/file')
@@ -155,22 +165,6 @@ export const AppBarHead = () => {
           >
             <Delete />
           </Button>
-          <Button color='inherit' onClick={handleClick}>
-            <MoreVert />
-          </Button>
-          <Menu
-            id='basic-menu'
-            anchorEl={anchorEl}
-            open={menuOpen}
-            onClose={handleClose}
-            MenuListProps={{
-              'aria-labelledby': 'basic-button',
-            }}
-          >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>My account</MenuItem>
-            <MenuItem onClick={handleClose}>Logout</MenuItem>
-          </Menu>
         </Toolbar>
         <Sidebar open={open} />
       </AppBar>

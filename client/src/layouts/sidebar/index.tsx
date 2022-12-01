@@ -1,24 +1,6 @@
-import {
-  Drawer,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Divider,
-  Paper,
-  Typography,
-  Box,
-} from '@mui/material'
-import {
-  CreateNewFolder,
-  DriveFolderUploadRounded,
-  UploadFileRounded,
-  DriveFileMoveOutlined,
-} from '@mui/icons-material'
-import CircularProgress, {
-  CircularProgressProps,
-} from '@mui/material/CircularProgress'
-import { FC } from 'react'
+import {Box, Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, Paper, Typography,} from '@mui/material'
+import CircularProgress, {CircularProgressProps,} from '@mui/material/CircularProgress'
+import {FC} from 'react'
 
 interface SideBarProps {
   open: boolean
@@ -80,39 +62,13 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
         }}
       >
         <List>
-          <ListItem button key='Stockage'>
-            =<ListItemText>Stockage</ListItemText>
+          <ListItem key='Stockage'>
+            <ListItemText>Stockage</ListItemText>
             <ListItemIcon>
-              <CircularProgressWithLabel value={30} />
+              <CircularProgressWithLabel value={72} />
             </ListItemIcon>
           </ListItem>
-
-          <ListItem button key='Déplacer'>
-            <ListItemIcon>
-              <DriveFileMoveOutlined />
-            </ListItemIcon>
-            <ListItemText>Déplacer</ListItemText>
-          </ListItem>
-          {/* {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <Inbox /> : <Mail />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                    ))} */}
         </List>
-        {/* <Divider />
-                <List>
-                    {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <Inbox /> : <Mail />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                    ))}
-                </List> */}
       </Paper>
     </Drawer>
   )
