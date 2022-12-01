@@ -81,10 +81,10 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
         }}
       >
         <List>
-          <ListItem button key='Stockage'>
+          <ListItem key='Stockage'>
             <ListItemText>Stockage</ListItemText>
             <ListItemIcon>
-              <CircularProgressWithLabel value={30} />
+              <CircularProgressWithLabel value={72} />
             </ListItemIcon>
           </ListItem>
           <Divider />
@@ -116,17 +116,6 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
                         </ListItem>
                     ))} */}
         </List>
-        {/* <Divider />
-                <List>
-                    {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <Inbox /> : <Mail />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                    ))}
-                </List> */}
       </Paper>
     </Drawer>
   )
