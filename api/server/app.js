@@ -12,6 +12,8 @@ const allowedOrigins = [
     "http://localhost:5173",
     ];
 
+
+
 app.use(cors({
     origin: allowedOrigins
 }));
@@ -28,8 +30,8 @@ console.log(`
 
 ███████ ██ ███    ██ ██████  ███████ ██████  
 ██      ██ ████   ██ ██   ██ ██      ██   ██ 
-█████   ██ ██ ██  ██ ██   ██ █████   ██████  
-██      ██ ██  ██ ██ ██   ██ ██      ██   ██ 
+█████   ██ ██ ██  ██ ██. .██ █████   ██████  
+██      ██ ██  ██ ██ ██ _ ██ ██      ██   ██ 
 ██      ██ ██   ████ ██████  ███████ ██   ██                                            
                                             
 App running on http://localhost:${process.env.PORT}

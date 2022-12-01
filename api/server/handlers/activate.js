@@ -11,7 +11,7 @@ const activeAccount = async function (req, res) {
         let bytes = CryptoJS.AES.decrypt(token, process.env.CRYPTOJS_SECRET);
         let originalText = bytes.toString(CryptoJS.enc.Utf8);
         await User.findOneAndUpdate({email: originalText}, {is_confirmed: true});
-        res.status(301).redirect('http://localhost:3000/');
+        res.status(301).redirect('http://localhost:5173/home');
     } catch (error) {
         return res.status(401).json({message: 'invalid token'});
     }
