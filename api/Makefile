@@ -9,7 +9,7 @@ mongodb: down
 
 .PHONY: all
 all: mongodb
-	@npm run dev
+	@yarn dev
 
 .PHONY: down
 ## stop and remove containers, networks, images, and volumes
