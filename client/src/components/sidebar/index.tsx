@@ -1,4 +1,4 @@
-import { Toolbar, Drawer, List, ListItem, ListItemIcon, ListItemText, Divider, Paper } from "@mui/material";
+import {Toolbar, Drawer, List, ListItem, ListItemIcon, ListItemText, Divider, Paper, Typography} from "@mui/material";
 import { Inbox, Mail, Home, CreateNewFolder, DriveFolderUploadRounded, UploadFileRounded, DriveFileMoveOutlined } from "@mui/icons-material";
 import { FC } from "react";
 
@@ -22,13 +22,17 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
                 zIndex: 2,
             }}
         >
-            <Toolbar />
+            <Typography variant="h5" sx={{ p: 2, textAlign:'center' }}>
+                Get Dropped
+            </Typography>
+            <Divider />
             <Paper sx={{
                 height: "100%",
                 display: "flex",
                 flexDirection: "column",
 
             }}>
+
                 <List>
                     <ListItem button key="Bibliothèque">
                         <ListItemIcon><Home /></ListItemIcon>
