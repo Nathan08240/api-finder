@@ -1,5 +1,5 @@
+docker-compose.yml
 node_modules
 .env
 .idea
 Makefile
-docker-compose.yml
