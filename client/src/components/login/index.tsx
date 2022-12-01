@@ -5,6 +5,7 @@ import axios from "axios";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {AuthContext} from "../../App";
 import {useContext} from "react";
+import jwtDecode from "jwt-decode";
 
 type Inputs = {
     email: string,
@@ -20,8 +21,8 @@ export const Login = () => {
     };
 
     const token = useContext(AuthContext) as string;
-    // const user = jwtDecode(token);
-    // console.log(user);
+    const user = jwtDecode(token);
+    console.log(user);
 
 
     return (
@@ -70,7 +71,6 @@ export const Login = () => {
                                         </InputAdornment>
                                     ),
                                 }}
-                                value="Azerty.51&"
                                 {...register("password", {required: true})}
                             />
                         </FormControl>
