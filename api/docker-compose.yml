@@ -48,5 +48,4 @@ services:
 
 volumes:
   mongo-finder-volume:
-    external: true
   redis-finder-volume:

@@ -1,17 +1,10 @@
-import {
-  Button,
-  FormControl,
-  InputAdornment,
-  Modal,
-  TextField,
-  Typography,
-} from '@mui/material'
-import { Form, LoginBox, LoginWrapper, ButtonSubmit } from './style'
-import { AccountCircle, Lock, Mail } from '@mui/icons-material'
+import {FormControl, InputAdornment, Modal, TextField,} from '@mui/material'
+import {ButtonSubmit, Form, LoginBox, LoginWrapper} from './style'
+import {AccountCircle, Lock, Mail} from '@mui/icons-material'
 import axios from 'axios'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { AuthContext } from '../../App'
-import { useContext } from 'react'
+import {SubmitHandler, useForm} from 'react-hook-form'
+import {AuthContext} from '../../App'
+import {useContext} from 'react'
 import jwtDecode from "jwt-decode";
 
 type Inputs = {
@@ -22,7 +15,6 @@ export const Login = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
   } = useForm<Inputs>()
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const res = await axios.post(
@@ -35,7 +27,8 @@ export const Login = () => {
   }
 
   const token = useContext(AuthContext) as string
-  const user = jwtDecode(token);
+
+  const user = token ? jwtDecode(token) : null;
   console.log(user);
 
   return (

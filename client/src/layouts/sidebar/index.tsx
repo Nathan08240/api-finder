@@ -1,25 +1,7 @@
-import {
-  Drawer,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Divider,
-  Paper,
-  Typography,
-  Box,
-} from '@mui/material'
-import {
-  CreateNewFolder,
-  DriveFolderUploadRounded,
-  UploadFileRounded,
-  DriveFileMoveOutlined,
-  Logout
-} from '@mui/icons-material'
-import CircularProgress, {
-  CircularProgressProps,
-} from '@mui/material/CircularProgress'
-import { FC } from 'react'
+import {Box, Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, Paper, Typography,} from '@mui/material'
+import {DriveFileMoveOutlined, Logout} from '@mui/icons-material'
+import CircularProgress, {CircularProgressProps,} from '@mui/material/CircularProgress'
+import {FC} from 'react'
 
 interface SideBarProps {
   open: boolean
