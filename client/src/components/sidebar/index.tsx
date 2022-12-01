@@ -1,5 +1,5 @@
-import {Toolbar, Drawer, List, ListItem, ListItemIcon, ListItemText, Divider, Paper, Typography} from "@mui/material";
-import { Inbox, Mail, Home, CreateNewFolder, DriveFolderUploadRounded, UploadFileRounded, DriveFileMoveOutlined } from "@mui/icons-material";
+import { Drawer, List, ListItem, ListItemIcon, ListItemText, Divider, Paper, Typography } from "@mui/material";
+import { CreateNewFolder, DriveFolderUploadRounded, UploadFileRounded, DriveFileMoveOutlined } from "@mui/icons-material";
 import { FC } from "react";
 
 interface SideBarProps {
@@ -34,10 +34,6 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
             }}>
 
                 <List>
-                    <ListItem button key="Bibliothèque">
-                        <ListItemIcon><Home /></ListItemIcon>
-                        <ListItemText>Bibliothèque</ListItemText>
-                    </ListItem>
                     <ListItem button key="Créer un dossier">
                         <ListItemIcon><CreateNewFolder /></ListItemIcon>
                         <ListItemText>Créer un dossier</ListItemText>

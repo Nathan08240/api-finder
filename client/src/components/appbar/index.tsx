@@ -1,12 +1,15 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
-import {ArrowBack, Delete, FileDownload, FileUpload, Menu, MoreVert, Update} from "@mui/icons-material";
+import { ArrowBack, Delete, FileDownload, FileUpload, MoreVert, Update } from "@mui/icons-material";
 import SearchIcon from '@mui/icons-material/Search';
+import MenuIcon from '@mui/icons-material/Menu';
 import { Sidebar } from "../sidebar";
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -55,6 +58,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 // }
 
 
+
 export const AppBarHead = () => {
 
     const [open, setOpen] = useState(false);
@@ -66,6 +70,15 @@ export const AppBarHead = () => {
     const handleDrawerClose = () => {
         setOpen(false);
     }
+
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const menuOpen = Boolean(anchorEl);
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     return (
         <>
@@ -88,11 +101,11 @@ export const AppBarHead = () => {
                             position: "absolute",
                             left: open ? 0 : "240px",
                             transition: "left 0.2s ease-out",
-                    }}
+                        }}
                         color="inherit"
                         onClick={open ? handleDrawerClose : handleDrawerOpen}
                     >
-                        {!open ? <ArrowBack/> : <Menu/>}
+                        {!open ? <ArrowBack /> : <MenuIcon />}
                     </Button>
                     <Button
                         color="inherit"
@@ -128,12 +141,23 @@ export const AppBarHead = () => {
                     </Button>
                     <Button
                         color="inherit"
-                        onClick={() => {
-                            alert("More options")
-                        }}
+                        onClick={handleClick}
                     >
                         <MoreVert />
                     </Button>
+                    <Menu
+                        id="basic-menu"
+                        anchorEl={anchorEl}
+                        open={menuOpen}
+                        onClose={handleClose}
+                        MenuListProps={{
+                            'aria-labelledby': 'basic-button',
+                        }}
+                    >
+                        <MenuItem onClick={handleClose}>Profile</MenuItem>
+                        <MenuItem onClick={handleClose}>My account</MenuItem>
+                        <MenuItem onClick={handleClose}>Logout</MenuItem>
+                    </Menu>
                 </Toolbar>
                 <Sidebar open={open} />
             </AppBar>
