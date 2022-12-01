@@ -14,6 +14,7 @@ import {
   DriveFolderUploadRounded,
   UploadFileRounded,
   DriveFileMoveOutlined,
+  Logout
 } from '@mui/icons-material'
 import CircularProgress, {
   CircularProgressProps,
@@ -81,12 +82,25 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
       >
         <List>
           <ListItem button key='Stockage'>
-            =<ListItemText>Stockage</ListItemText>
+            <ListItemText>Stockage</ListItemText>
             <ListItemIcon>
               <CircularProgressWithLabel value={30} />
             </ListItemIcon>
           </ListItem>
-
+          <Divider />
+          <ListItem key='Utilisateur'>
+            <ListItemText>Connecté :</ListItemText>
+          </ListItem>
+          <ListItemText sx={{paddingLeft: 2}}>John Doe</ListItemText>
+          <ListItemText sx={{paddingLeft: 2}}>john.doe@viacesi.fr</ListItemText>
+          <ListItemText sx={{paddingLeft: 2}}>Etudiant</ListItemText>
+          <ListItem button key='Déconnexion'>
+            <ListItemText>Déconnexion</ListItemText>
+            <ListItemIcon>
+              <Logout />
+            </ListItemIcon>
+          </ListItem>
+          <Divider />
           <ListItem button key='Déplacer'>
             <ListItemIcon>
               <DriveFileMoveOutlined />
