@@ -5,15 +5,11 @@ import {ThemeProvider} from "@mui/material";
 import {type Context, createContext, useEffect, useState} from "react";
 import {Login} from "./components/login";
 import jwtDecode from "jwt-decode";
-
-
 export let AuthContext: Context<any>;
-
 
 export default function App() {
     const [token, setToken] = useState<null | string>(localStorage.getItem('authToken') ?? null);
     const [user, setUser] = useState<null | any>(token && localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null);
-
 
     AuthContext = createContext({
         token,

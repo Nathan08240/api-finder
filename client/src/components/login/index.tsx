@@ -12,8 +12,8 @@ type Inputs = {
     password: string
 }
 export const Login = () => {
-    const {setUser, setToken} = useContext(AuthContext) as any
 
+    const {setUser, setToken} = useContext(AuthContext) as any
     const {
         register,
         handleSubmit,
@@ -24,19 +24,15 @@ export const Login = () => {
             `${import.meta.env.VITE_API_URL}/api/auth/login`,
             data
         )
-
         const token = res.data.token
         const user = jwtDecode(token)
-
-
         setUser(user)
         setToken(token)
     }
 
-
     return (
         <AuthContext.Consumer key="lol">
-            {({user, token, setToken, setUser}) => (
+            {({}) => (
                     <Modal open={true}>
                         <LoginWrapper>
                             <LoginBox>
@@ -67,6 +63,7 @@ export const Login = () => {
                                                     </InputAdornment>
                                                 ),
                                             }}
+                                            value='branconathan@gmail.com'
                                             {...register('email', {required: true})}
                                         />
 
@@ -82,6 +79,7 @@ export const Login = () => {
                                                     </InputAdornment>
                                                 ),
                                             }}
+                                            value='Azerty.51&'
                                             {...register('password', {required: true})}
                                         />
                                     </FormControl>
