@@ -104,18 +104,9 @@ export const Sidebar: FC<SideBarProps> = ({open}) => {
                                 </Typography>
                                 <Logout/>
                             </Button>
-                            <Divider/>
-                            <ListItem button key='Déplacer'>
-                                <ListItemIcon>
-                                    <DriveFileMoveOutlined/>
-                                </ListItemIcon>
-                                <ListItemText>Déplacer</ListItemText>
-                            </ListItem>
                         </List>
                     )
-
                 }
-
             </Paper>
         </Drawer>
     )
