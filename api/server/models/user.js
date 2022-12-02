@@ -57,13 +57,15 @@ const userSchema = new Schema({
 }, {timestamps: true});
 
 userSchema.methods.createAuthToken = async function() {
+    const fullname = this.lastname.charAt(0).toUpperCase() + this.lastname.slice(1) + ' ' + this.firstname.charAt(0).toUpperCase() + this.firstname.slice(1);
     const payload = {
         id: this.id,
         role: this.role,
         email: this.email,
-        fullname: this.firstname + ' ' + this.lastname,
+        fullname: fullname,
+        is_confirmed: this.is_confirmed,
     };
-    return createToken(payload, 60 * 60 * 24);
+    return createToken(payload, 60 * 1);
 }
 
 userSchema.methods.createToken = async function() {

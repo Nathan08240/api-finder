@@ -47,6 +47,7 @@ export const Login = () => {
                                     <FormControl
                                         sx={{
                                             mt: 2,
+                                            mb:4,
                                             gap: 6,
                                             width: '100%',
                                         }}
@@ -63,7 +64,6 @@ export const Login = () => {
                                                     </InputAdornment>
                                                 ),
                                             }}
-                                            value='branconathan@gmail.com'
                                             {...register('email', {required: true})}
                                         />
 

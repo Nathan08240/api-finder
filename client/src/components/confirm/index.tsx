@@ -1,14 +1,23 @@
 import {useContext, useState} from 'react';
-import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, useMediaQuery} from '@mui/material';
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    useMediaQuery
+} from '@mui/material';
 import {useTheme} from '@mui/material/styles';
 import {AuthContext} from "../../App";
 import {Logout} from '@mui/icons-material'
+import {ConfirmContainer} from "./style";
 
 export default function ConfirmLogout() {
     const [open, setOpen] = useState(false);
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-const {setUser, setToken} = useContext(AuthContext) as any
+    const {setUser, setToken} = useContext(AuthContext) as any
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -16,12 +25,17 @@ const {setUser, setToken} = useContext(AuthContext) as any
 
     const handleClose = () => {
         setOpen(false);
-        setUser(null)
-        setToken(null)
+
     };
 
+    const logout = () => {
+        setOpen(false);
+        setUser(null)
+        setToken(null)
+    }
+
     return (
-        <div>
+        <ConfirmContainer>
             <Button variant="outlined" onClick={handleClickOpen}>
                 Se déconnecter
                 <Logout/>
@@ -44,11 +58,11 @@ const {setUser, setToken} = useContext(AuthContext) as any
                     <Button autoFocus onClick={handleClose}>
                         Annuler
                     </Button>
-                    <Button onClick={handleClose} autoFocus>
+                    <Button onClick={logout} autoFocus>
                         Confirmer
                     </Button>
                 </DialogActions>
             </Dialog>
-        </div>
+        </ConfirmContainer>
     );
 }
