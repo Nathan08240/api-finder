@@ -8,7 +8,8 @@ import {
   MoreVert,
   Update,
   CreateNewFolder,
-  DriveFileMoveOutlined
+  DriveFileMoveOutlined,
+  MoreVertRounded,
 } from '@mui/icons-material'
 
 import SearchIcon from '@mui/icons-material/Search'
@@ -119,34 +120,29 @@ export const AppBarHead = () => {
           <Button
             color='inherit'
             onClick={() => {
-              alert('create folder')
-            }}
-          >
-            <CreateNewFolder />
-          </Button>
-          <Button
-            color='inherit'
-            onClick={() => {
-              alert('File upload')
-            }}
-          >
-            <FileUpload />
-          </Button>
-          <Button
-            color='inherit'
-            onClick={() => {
               alert('File download')
             }}
+            disabled={true}
           >
             <FileDownload />
           </Button>
           <Button
-              color='inherit'
-              onClick={() => {
-                alert('Rename folder/file')
-              }}
+            color='inherit'
+            onClick={() => {
+              alert('Move folder/file')
+            }}
+            disabled={true}
           >
             <DriveFileMoveOutlined />
+          </Button>
+          <Button
+            color='inherit'
+            onClick={() => {
+              alert('Delete')
+            }}
+            disabled={true}
+          >
+            <Delete />
           </Button>
           <Button
             color='inherit'
@@ -159,10 +155,10 @@ export const AppBarHead = () => {
           <Button
             color='inherit'
             onClick={() => {
-              alert('Delete')
+              alert('Options')
             }}
           >
-            <Delete />
+            <MoreVertRounded />
           </Button>
         </Toolbar>
         <Sidebar open={open} />
