@@ -144,7 +144,7 @@ export const AppBarHead = () => {
           >
             <Delete />
           </Button>
-          <Button
+          <Button // à voir ce qu'on fait de ce bouton, si on le garde, etc
             color='inherit'
             onClick={() => {
               alert('Rename folder/file')
