@@ -2,7 +2,7 @@ import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, Paper, Typ
 import { CircularProgressWithLabel } from '../../components/CircularWithProgression'
 import { FC, useContext } from 'react'
 import { AuthContext } from "../../App";
-import ConfirmLogout from "../../components/confirm";
+import ConfirmLogout from "../../components/Confirm";
 import HomeIcon from '@mui/icons-material/Home';
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import DriveFolderUploadRoundedIcon from '@mui/icons-material/DriveFolderUploadRounded';
@@ -72,25 +72,25 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
                             <List sx={{
                                 height: '90%',
                             }}>
-                                <ListItem key="bibliotheque" onClick={() => alert("bibliothèque")}>
+                                <ListItem key="bibliotheque" onClick={() => alert("Bibliothèque")}>
                                     <ListItemIcon>
                                         <HomeIcon />
                                     </ListItemIcon>
                                     <ListItemText>Bibliothèque</ListItemText>
                                 </ListItem>
-                                <ListItem key="creerDossier" onClick={() => alert("créer un dossier")}>
+                                <ListItem key="creerDossier" onClick={() => alert("Créer un dossier")}>
                                     <ListItemIcon>
                                         <CreateNewFolderIcon />
                                     </ListItemIcon>
                                     <ListItemText>Créer un dossier</ListItemText>
                                 </ListItem>
-                                <ListItem key="importerDossier" onClick={() => alert("importer dossier")}>
+                                <ListItem key="importerDossier" onClick={() => alert("Importer un dossier")}>
                                     <ListItemIcon>
                                         <DriveFolderUploadRoundedIcon />
                                     </ListItemIcon>
                                     <ListItemText>Importer un dossier</ListItemText>
                                 </ListItem>
-                                <ListItem key="importerFichier">
+                                <ListItem key="importerFichier" onClick={() => alert("Importer un fichier")}>
                                     <ListItemIcon>
                                         <UploadFileRoundedIcon />
                                     </ListItemIcon>

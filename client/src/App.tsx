@@ -3,7 +3,7 @@ import { RouterProvider } from "react-router-dom";
 import { theme } from "./Themes";
 import { ThemeProvider } from "@mui/material";
 import { type Context, createContext, useEffect, useState } from "react";
-import { Login } from "./components/login";
+import { Login } from "./components/Login";
 export let AuthContext: Context<any>;
 import FileTree from "./components/TreeView";
 import { Home } from "./pages/home";

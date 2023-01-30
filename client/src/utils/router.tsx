@@ -1,4 +1,4 @@
-import {Login} from '../components/login';
+import {Login} from '../components/Login';
 import {createBrowserRouter} from "react-router-dom";
 import ErrorPage from "../pages/error/error-page";
 import {Home} from "../pages/home";
