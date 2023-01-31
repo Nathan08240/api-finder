@@ -1,10 +1,10 @@
-import {router} from "./utils/router";
-import {RouterProvider} from "react-router-dom";
-import {theme} from "./Themes";
-import {ThemeProvider} from "@mui/material";
-import {type Context, createContext, useEffect, useState} from "react";
-import {Login} from "./components/login";
-import {Home} from "./pages/home";
+import { router } from "./utils/router";
+import { RouterProvider } from "react-router-dom";
+import { theme } from "./Themes";
+import { ThemeProvider } from "@mui/material";
+import { type Context, createContext, useEffect, useState } from "react";
+import { Login } from "./components/Login";
+import {Home} from "./pages/home"
 
 export let AuthContext: Context<any>;
 
