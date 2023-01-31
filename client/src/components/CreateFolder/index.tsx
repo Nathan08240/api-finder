@@ -39,9 +39,6 @@ const CreateFolder: React.FC = () => {
         body: JSON.stringify({ location: location, name: folderName }),
       })
 
-      if (!response.ok) throw new Error(response.statusText)
-      return await response.json()
-
       setOpen(false)
       setFolderName('')
       // refresh the file tree here
