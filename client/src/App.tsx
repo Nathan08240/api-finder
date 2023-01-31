@@ -4,6 +4,8 @@ import { theme } from "./Themes";
 import { ThemeProvider } from "@mui/material";
 import { type Context, createContext, useEffect, useState } from "react";
 import { Login } from "./components/Login";
+import {Home} from "./pages/home"
+
 export let AuthContext: Context<any>;
 
 
