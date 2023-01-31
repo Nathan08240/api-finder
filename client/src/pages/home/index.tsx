@@ -1,12 +1,10 @@
 import { Container } from "./style"
-import FileTree from "../../components/TreeView";
-
+import FilesDisplay from "../../components/Cards";
 
 export const Home = () => {
     return (
         <Container>
-            <h1>Home</h1>
-            <FileTree/>
+            <FilesDisplay/>
         </Container>
     )
     

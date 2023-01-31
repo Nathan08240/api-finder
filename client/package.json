@@ -14,6 +14,7 @@
     "@mui/icons-material": "^5.10.16",
     "@mui/lab": "^5.0.0-alpha.117",
     "@mui/material": "^5.10.16",
+    "@mui/styles": "^5.11.2",
     "@reduxjs/toolkit": "^1.9.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -33,6 +34,7 @@
     "redux": "^4.2.0",
     "sort-by": "^1.2.0",
     "styled-components": "^5.3.6",
+    "use-file-picker": "^1.5.2",
     "web-vitals": "^2.1.4"
   },
   "proxy": "http://localhost:5000",
