@@ -1,8 +1,10 @@
+import React from 'react';
 import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, Paper, Typography, } from '@mui/material'
 import { CircularProgressWithLabel } from '../../components/CircularWithProgression'
 import { FC, useContext } from 'react'
 import { AuthContext } from "../../App";
 import ConfirmLogout from "../../components/confirm";
+import UploadModal from '../../components/uploadModal';
 import HomeIcon from '@mui/icons-material/Home';
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import DriveFolderUploadRoundedIcon from '@mui/icons-material/DriveFolderUploadRounded';
@@ -36,6 +38,10 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
                 return "Utilisateur"
         }
     }
+
+    const [openUploadModal, setOpenUploadModal] = React.useState(false);
+    const handleOpenUploadModal = () => setOpenUploadModal(true);
+    const handleCloseUploadModal = () => setOpenUploadModal(false);
 
 
     return (
@@ -90,12 +96,13 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
                                     </ListItemIcon>
                                     <ListItemText>Importer un dossier</ListItemText>
                                 </ListItem>
-                                <ListItem key="importerFichier">
+                                <ListItem key="importerFichier" onClick={handleOpenUploadModal}>
                                     <ListItemIcon>
                                         <UploadFileRoundedIcon />
                                     </ListItemIcon>
                                     <ListItemText>Importer un fichier</ListItemText>
                                 </ListItem>
+                                <UploadModal open={openUploadModal} handleClose={handleCloseUploadModal} />
                                 <Divider />
                                 <ListItem key='Stockage'>
                                     <ListItemText>Stockage</ListItemText>
