@@ -56,16 +56,16 @@ const DirectoryCard: React.FC<{ directory: Directory, onClick: (directory: Direc
   )
 }
 
-const DirectoriesDisplay: React.FC = () => {
+const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
     const [directories, setDirectories] = useState<Directory[]>([])
-    const {user, location,setLocation} = useContext(AuthContext) as any
-    const [path, setPath] = useState<string>(location)
+    const {user,setLocation} = useContext(AuthContext) as any
+    const [path, setPath] = useState<string>(location.location)
     const [showSidebar, setShowSidebar] = useState<boolean>(false)
     const [selectedDirectory, setSelectedDirectory] = useState<Directory | undefined>(undefined)
     const classes = useStyles()
 
-    const fetchDirectories = async (path: string = location) => {
-        while (!localStorage.getItem("authToken") && !location) {
+    const fetchDirectories = async (path: string = location.location) => {
+        while (!localStorage.getItem("authToken") && !location.location) {
             await new Promise(resolve => setTimeout(resolve, 50));
         }
 
@@ -144,10 +144,10 @@ const DirectoriesDisplay: React.FC = () => {
                         <InfoOutlinedIcon fontSize='large' />
                     </button>
                     <div style={{ fontSize: '2rem', textAlign: 'center' }}>
-                        {selectedDirectory.name}
+                        {selectedDirectory?.name}
                     </div>
                     <div className={classes.sidebarDetails}>
-                        Emplacement: {selectedDirectory.path}
+                        Emplacement: {selectedDirectory?.path}
                     </div>
                 </div>
             )}
