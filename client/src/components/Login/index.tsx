@@ -13,7 +13,7 @@ type Inputs = {
 }
 export const Login = () => {
 
-    const {setUser, setToken} = useContext(AuthContext) as any
+    const {setUser, setToken, setLocation} = useContext(AuthContext) as any
     const {
         register,
         handleSubmit,
@@ -28,6 +28,9 @@ export const Login = () => {
         const user = jwtDecode(token)
         setUser(user)
         setToken(token)
+        // @ts-ignore
+        setLocation(`/${user.lastname}_${user.firstname}`)
+
     }
 
     return (
@@ -79,7 +82,7 @@ export const Login = () => {
                                                     </InputAdornment>
                                                 ),
                                             }}
-                                            value='Azerty.51@'
+                                            value='Password123!'
                                             {...register('password', {required: true})}
                                         />
                                     </FormControl>
