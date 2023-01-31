@@ -97,5 +97,3 @@ const FilesDisplay: React.FC = () => {
 }
 
 export default FilesDisplay
-
-export default FilesDisplay
