@@ -65,7 +65,7 @@ userSchema.methods.createAuthToken = async function() {
         fullname: fullname,
         is_confirmed: this.is_confirmed,
     };
-    return createToken(payload, 60 * 1);
+    return createToken(payload, 60 * 60);
 }
 
 userSchema.methods.createToken = async function() {

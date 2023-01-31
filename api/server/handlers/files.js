@@ -3,23 +3,20 @@ const {getMulterStorage} = require("../utils/upload");
 const multer = require("multer");
 
 const getFiles = (req, res) => {
-    const {path} = req.body
+    console.log(req)
+    const {path} = req.query;
     const files = []
     try {
         fs.readdirSync("." + path, {withFileTypes: true}).forEach(file => {
-            if (file.isFile()) {
-                files.push(`${file.name}`)
-            }
+
+            files.push({ name: file.name, type: file.isFile() ? "file": "directory" })
         });
-        res.send({
-            "files": files
-        })
     } catch (err) {
         res.status(500).send({
-            "message": "Something wrong happened"
+            "message": "Something wrong happened" + err
         })
     }
-    res.send(files);
+    res.send({files});
 }
 
 const uploadFile = (req, res) => {

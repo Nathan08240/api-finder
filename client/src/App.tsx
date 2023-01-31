@@ -5,8 +5,6 @@ import { ThemeProvider } from "@mui/material";
 import { type Context, createContext, useEffect, useState } from "react";
 import { Login } from "./components/Login";
 export let AuthContext: Context<any>;
-import FileTree from "./components/TreeView";
-import { Home } from "./pages/home";
 
 
 export default function App() {
@@ -29,8 +27,7 @@ export default function App() {
         <AuthContext.Provider value={{ user, token, setToken, setUser }}>
             <ThemeProvider theme={theme}>
                 <RouterProvider router={router} />
-                {!user?.is_confirmed && <Login />}
-                <Home/>
+                {!user?.is_confirmed ? <Login /> : <Home />}
             </ThemeProvider>
         </AuthContext.Provider>
     );
