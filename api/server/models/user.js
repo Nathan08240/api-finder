@@ -63,6 +63,8 @@ userSchema.methods.createAuthToken = async function() {
         role: this.role,
         email: this.email,
         fullname: fullname,
+        lastname : this.lastname,
+        firstname: this.firstname,
         is_confirmed: this.is_confirmed,
     };
     return createToken(payload, 60 * 60);

@@ -3,6 +3,7 @@ const {sendEmail} = require("../utils/mailer");
 const CryptoJS = require('crypto-js');
 const client = require('../utils/redis');
 const bcrypt = require('bcrypt')
+const fs = require("fs");
 
 const createUser = async function (req, res) {
     try {
@@ -11,7 +12,8 @@ const createUser = async function (req, res) {
         user.createToken();
         const token = await client.get('registerToken')
         console.log(token)
-        user.createValidationEmail(token);
+
+
         res.status(201).send(user);
     } catch (error) {
         console.log(error);

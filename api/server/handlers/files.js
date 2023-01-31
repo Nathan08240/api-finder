@@ -7,10 +7,9 @@ const getFiles = (req, res) => {
     const {path} = req.query;
     const files = []
     try {
-        fs.readdirSync("." + path, {withFileTypes: true}).forEach(file => {
-
-            files.push({ name: file.name, type: file.isFile() ? "file": "directory" })
-        });
+        fs.readdirSync("." + path, {withFileTypes: true}).forEach(function (file, index) {
+                files.push({name: file.name, type: file.isFile() ? "file": "directory", id: index})
+            })
     } catch (err) {
         res.status(500).send({
             "message": "Something wrong happened" + err

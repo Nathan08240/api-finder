@@ -1,13 +1,12 @@
-import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, Paper, Typography, } from '@mui/material'
-import { CircularProgressWithLabel } from '../../components/CircularWithProgression'
-import { FC, useContext } from 'react'
-import { AuthContext } from "../../App";
+import {Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, Paper, Typography,} from '@mui/material'
+import {CircularProgressWithLabel} from '../../components/CircularWithProgression'
+import {FC, useContext} from 'react'
+import {AuthContext} from "../../App";
 import ConfirmLogout from "../../components/confirm";
 import HomeIcon from '@mui/icons-material/Home';
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import DriveFolderUploadRoundedIcon from '@mui/icons-material/DriveFolderUploadRounded';
 import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
-import DriveFileMoveRoundedIcon from '@mui/icons-material/DriveFileMoveRounded';
 
 interface SideBarProps {
     open: boolean
@@ -49,6 +48,7 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
                 '& .MuiDrawer-paper': {
                     width: 240,
                     boxSizing: 'border-box',
+                    marginRight: '1000px',
                 },
                 zIndex: 2,
             }}

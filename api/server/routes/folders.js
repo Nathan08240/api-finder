@@ -8,7 +8,7 @@ const {getFolders, createFolder, deleteFolder, updateFolder} = require('../handl
 router.use(isAuth);
 router.route('/')
     .get(getFolders)
-    .post(isAdmin, createFolder)
+    .post(createFolder)
     .delete(isAdmin, deleteFolder)
     .put(isAdmin, updateFolder);
 
