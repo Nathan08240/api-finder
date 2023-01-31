@@ -1,8 +1,7 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {makeStyles} from "@mui/styles";
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import {Card, CardContent, CardMedia, Typography} from "@mui/material";
-import {AuthContext} from '../../App'
 
 const apiUrl = "http://localhost:5000/api/files";
 
@@ -47,10 +46,10 @@ const FileCard: React.FC<{ file: File, onClick: (file: File) => void }> = ({file
                 <Typography variant="body2" color="textSecondary" component="p">
                     {file.size} kb
                 </Typography>
-                <Typography gutterBottom variant="h5" component="h2">
+                <Typography variant="body2" color="textSecondary" component="p">
                     {file.modifiedAt}
                 </Typography>
-                <Typography gutterBottom variant="h5" component="h2">
+                <Typography variant="body2" color="textSecondary" component="p">
                     {file.extension}
                 </Typography>
                 <Typography variant="body2" color="textSecondary" component="p">
@@ -69,7 +68,6 @@ const FilesDisplay: React.FC<{ location: string }> = (location) => {
         while (!localStorage.getItem("authToken") && !location.location) {
             await new Promise(resolve => setTimeout(resolve, 50));
         }
-        console.log(location.location)
 
         let headers = {
             'Content-Type': 'application/json',
