@@ -26,6 +26,22 @@ export const Login = () => {
     setToken(token)
   }
 
+  const { setUser, setToken, setLocation } = useContext(AuthContext) as any
+  const { register, handleSubmit } = useForm<Inputs>()
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const res = await axios.post(
+      // @ts-ignore
+      `${import.meta.env.VITE_API_URL}/api/auth/login`,
+      data
+    )
+    const token = res.data.token
+    const user = jwtDecode(token)
+    setUser(user)
+    setToken(token)
+    // @ts-ignore
+    setLocation(`/${user.lastname}_${user.firstname}`)
+  }
+
   return (
     <AuthContext.Consumer key='lol'>
       {({}) => (

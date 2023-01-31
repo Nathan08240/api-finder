@@ -38,7 +38,6 @@ const CreateFolder: React.FC = () => {
         headers,
         body: JSON.stringify({ location: location, name: folderName }),
       })
-
       setOpen(false)
       setFolderName('')
       // refresh the file tree here

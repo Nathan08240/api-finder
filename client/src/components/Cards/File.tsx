@@ -1,9 +1,7 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { makeStyles } from '@mui/styles'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
-import FolderIcon from '@mui/icons-material/Folder'
 import { Card, CardContent, CardMedia, Typography } from '@mui/material'
-import { BackButton } from './style'
 import { AuthContext } from '../../App'
 
 const apiUrl = 'http://localhost:5000/api/files'
@@ -11,8 +9,7 @@ const apiUrl = 'http://localhost:5000/api/files'
 interface File {
   id: string
   name: string
-  type: 'file' | 'folder'
-  children?: File[]
+  type: 'file'
 }
 
 const useStyles = makeStyles({
@@ -32,15 +29,13 @@ const FileCard: React.FC<{ file: File; onClick: (file: File) => void }> = ({
   onClick,
 }) => {
   const classes = useStyles()
-  const Icon = file.type === 'file' ? InsertDriveFileIcon : FolderIcon
+  const Icon = InsertDriveFileIcon
 
   return (
     <Card className={classes.root} onClick={() => onClick(file)}>
       <CardMedia
         className={classes.media}
-        image={`https://via.placeholder.com/300x200/${
-          file.type === 'file' ? '555555' : '007777'
-        }/ffffff?text=${file.type === 'file' ? 'File' : 'Folder'}`}
+        image={`https://via.placeholder.com/300x200/555555/ffffff?text=File`}
         title={file.name}
       />
       <CardContent>
@@ -57,12 +52,12 @@ const FileCard: React.FC<{ file: File; onClick: (file: File) => void }> = ({
 
 const FilesDisplay: React.FC = () => {
   const [files, setFiles] = useState<File[]>([])
-  const [path, setPath] = useState<string>('/')
+  const [path] = useState<string>('')
+
   const { user } = useContext(AuthContext) as any
-  const location = `/${user.lastname}_${user.firstname}`
 
   const fetchFiles = async (path: string) => {
-    path = location
+    path = `/${user.lastname}_${user.firstname}`
     while (!localStorage.getItem('authToken')) {
       await new Promise((resolve) => setTimeout(resolve, 50))
     }
@@ -78,11 +73,6 @@ const FilesDisplay: React.FC = () => {
     return await result.json()
   }
 
-  const handleBackButton = () => {
-    if (path === '/') return
-    setPath(path.split('/').slice(0, -2).join('/') + '/')
-  }
-
   useEffect(() => {
     if (!localStorage.getItem('authToken')) return
     fetchFiles(path).then((data) => {
@@ -90,34 +80,22 @@ const FilesDisplay: React.FC = () => {
         data.files.map((file: any) => ({
           id: file.id,
           name: file.name,
-          children: file.type === 'directory ' ? file.children : undefined,
           type: file.type,
         }))
       )
+      console.log(data)
     })
   }, [path])
 
-  const handleFileClick = (file: File) => {
-    if (file.type === 'file') return
-    setPath(path + file.name + '/')
-  }
-
   return (
-    <>
-      <BackButton onClick={handleBackButton} disabled={path === '/'}>
-        Retour
-      </BackButton>
-      <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: '75px' }}>
-        {files.map((file) => (
-          <FileCard
-            key={file.id}
-            file={file}
-            onClick={() => handleFileClick(file)}
-          />
-        ))}
-      </div>
-    </>
+    <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: '75px' }}>
+      {files.map((file) => (
+        <FileCard key={file.id} file={file} onClick={() => void 0} />
+      ))}
+    </div>
   )
 }
+
+export default FilesDisplay
 
 export default FilesDisplay
