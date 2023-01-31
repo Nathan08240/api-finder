@@ -14,11 +14,9 @@ import { FC, useContext } from 'react'
 import { AuthContext } from "../../App";
 import ConfirmLogout from '../../components/Confirm'
 import CreateFolder from '../../components/CreateFolder'
-import UploadModal from '../../components/uploadModal';
+import UploadFile from '../../components/uploadFile';
 import HomeIcon from '@mui/icons-material/Home';
-import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import DriveFolderUploadRoundedIcon from '@mui/icons-material/DriveFolderUploadRounded';
-import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
 import DriveFileMoveRoundedIcon from '@mui/icons-material/DriveFileMoveRounded';
 
 interface SideBarProps {
@@ -48,10 +46,6 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
                 return 'Utilisateur'
         }
     }
-
-    const [openUploadModal, setOpenUploadModal] = React.useState(false);
-    const handleOpenUploadModal = () => setOpenUploadModal(true);
-    const handleCloseUploadModal = () => setOpenUploadModal(false);
 
     return (
         <Drawer
@@ -102,14 +96,7 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
                                     </ListItemIcon>
                                     <ListItemText>Importer un dossier</ListItemText>
                                 </ListItem>
-                                <ListItem key="importerFichier" onClick={handleOpenUploadModal} style={{ cursor: 'pointer' }}
-                                >
-                                    <ListItemIcon>
-                                        <UploadFileRoundedIcon />
-                                    </ListItemIcon>
-                                    <ListItemText>Importer un fichier</ListItemText>
-                                </ListItem>
-                                <UploadModal open={openUploadModal} handleClose={handleCloseUploadModal} />
+                                <UploadFile />
                                 <Divider />
                                 <ListItem key='Stockage'>
                                     <ListItemText>Stockage</ListItemText>

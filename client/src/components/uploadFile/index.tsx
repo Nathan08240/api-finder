@@ -7,11 +7,14 @@ import { useFilePicker } from 'use-file-picker';
 import {
     List,
     ListItem,
+    ListItemIcon,
     ListItemText,
     ListItemSecondaryAction,
     IconButton,
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
+import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
+import { AuthContext } from '../../App'
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -30,11 +33,27 @@ interface UploadModalProps {
     handleClose: () => void;
 }
 
-export default function UploadModal(props: UploadModalProps) {
+const UploadFile: React.FC = () => {
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
     const [files, setFiles] = React.useState<any>([]);
     const [openFileSelector, { filesContent, loading, errors, clear }] = useFilePicker({
         multiple: true,
     });
+
+    React.useEffect(() => {
+        setFiles([...filesContent])
+    }, [filesContent])
+
+    const { user } = React.useContext(AuthContext) as any
+    const location = `/${user.lastname}_${user.firstname}/`
+
+    const headers = {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('authToken'),
+    }
 
     const supprimerFichierDuBuffer = (index: number) => {
         filesContent.splice(index, 1);
@@ -47,16 +66,15 @@ export default function UploadModal(props: UploadModalProps) {
         clear();
     }
 
-    React.useEffect(() => {
-        setFiles([...filesContent])
-    }, [filesContent])
-
     return (
         <>
-            <Modal
-                open={props.open}
-                onClose={props.handleClose}
-            >
+            <ListItem key="importerFichier" style={{ cursor: 'pointer' }} onClick={handleOpen}>
+                <ListItemIcon>
+                    <UploadFileRoundedIcon />
+                </ListItemIcon>
+                <ListItemText primary="Importer un fichier" />
+            </ListItem>
+            <Modal open={open} onClose={handleClose}>
                 <Box sx={style}>
                     <Typography>
                         Importer un fichier
@@ -90,11 +108,11 @@ export default function UploadModal(props: UploadModalProps) {
                         </>
                     )
                     }
-
-
-                    <Button onClick={props.handleClose}>Fermer</Button>
+                    <Button onClick={handleClose}>Fermer</Button>
                 </Box>
             </Modal>
         </>
-    )
-}
+    );
+};
+
+export default UploadFile;
