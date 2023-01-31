@@ -1,13 +1,13 @@
 import React from 'react';
 import {
-  Divider,
-  Drawer,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Paper,
-  Typography,
+    Divider,
+    Drawer,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Paper,
+    Typography,
 } from '@mui/material'
 import { CircularProgressWithLabel } from '../../components/CircularWithProgression'
 import { FC, useContext } from 'react'
@@ -22,32 +22,32 @@ import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
 import DriveFileMoveRoundedIcon from '@mui/icons-material/DriveFileMoveRounded';
 
 interface SideBarProps {
-  open: boolean
+    open: boolean
 }
 
 interface RoleParams {
-  role: string
+    role: string
 }
 
 export const Sidebar: FC<SideBarProps> = ({ open }) => {
-  const { user } = useContext(AuthContext) as any
+    const { user } = useContext(AuthContext) as any
 
-  const role = ({ role }: RoleParams) => {
-    switch (role) {
-      case 'support':
-        return 'Support'
-      case 'administration':
-        return 'Administration'
-      case 'pilot':
-        return 'Pilote'
-      case 'speaker':
-        return 'Intervenant'
-      case 'student':
-        return 'Etudiant'
-      default:
-        return 'Utilisateur'
+    const role = ({ role }: RoleParams) => {
+        switch (role) {
+            case 'support':
+                return 'Support'
+            case 'administration':
+                return 'Administration'
+            case 'pilot':
+                return 'Pilote'
+            case 'speaker':
+                return 'Intervenant'
+            case 'student':
+                return 'Etudiant'
+            default:
+                return 'Utilisateur'
+        }
     }
-  }
 
     const [openUploadModal, setOpenUploadModal] = React.useState(false);
     const handleOpenUploadModal = () => setOpenUploadModal(true);
@@ -87,25 +87,23 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
                             <List sx={{
                                 height: '90%',
                             }}>
-                                <ListItem key="bibliotheque" onClick={() => alert("bibliothèque")}>
+                                <ListItem key="bibliotheque" onClick={() => alert("bibliothèque")} style={{ cursor: 'pointer' }}
+                                >
                                     <ListItemIcon>
                                         <HomeIcon />
                                     </ListItemIcon>
                                     <ListItemText>Bibliothèque</ListItemText>
                                 </ListItem>
-                                <ListItem key="creerDossier" onClick={() => alert("créer un dossier")}>
-                                    <ListItemIcon>
-                                        <CreateNewFolderIcon />
-                                    </ListItemIcon>
-                                    <ListItemText>Créer un dossier</ListItemText>
-                                </ListItem>
-                                <ListItem key="importerDossier" onClick={() => alert("importer dossier")}>
+                                <CreateFolder />
+                                <ListItem key="importerDossier" onClick={() => alert("importer dossier")} style={{ cursor: 'pointer' }}
+                                >
                                     <ListItemIcon>
                                         <DriveFolderUploadRoundedIcon />
                                     </ListItemIcon>
                                     <ListItemText>Importer un dossier</ListItemText>
                                 </ListItem>
-                                <ListItem key="importerFichier">
+                                <ListItem key="importerFichier" onClick={handleOpenUploadModal} style={{ cursor: 'pointer' }}
+                                >
                                     <ListItemIcon>
                                         <UploadFileRoundedIcon />
                                     </ListItemIcon>
