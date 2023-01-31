@@ -8,7 +8,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PWD}
       MONGO_INITDB_DATABASE: ${MONGODB_DATABASE}
     ports:
-      - 27017:27017
+      - 27018:27017
     volumes:
       - mongo-finder-volume:/data/db
     hostname: finder-mongodb
