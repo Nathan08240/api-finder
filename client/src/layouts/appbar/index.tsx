@@ -49,7 +49,7 @@ const StyledInputBase = styled(InputBase)(({theme}) => ({
 }))
 
 export const AppBarHead = () => {
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(true)
 
     const handleDrawerOpen = () => {
         setOpen(true)

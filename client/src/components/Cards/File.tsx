@@ -10,6 +10,10 @@ interface File {
     id: string;
     name: string;
     type: "file";
+    path: string;
+    size: number;
+    extension: string;
+    modifiedAt: string;
 }
 
 const useStyles = makeStyles({
@@ -41,6 +45,15 @@ const FileCard: React.FC<{ file: File, onClick: (file: File) => void }> = ({file
                     {file.name}
                 </Typography>
                 <Typography variant="body2" color="textSecondary" component="p">
+                    {file.size} kb
+                </Typography>
+                <Typography gutterBottom variant="h5" component="h2">
+                    {file.modifiedAt}
+                </Typography>
+                <Typography gutterBottom variant="h5" component="h2">
+                    {file.extension}
+                </Typography>
+                <Typography variant="body2" color="textSecondary" component="p">
                     <Icon fontSize="large"/>
                 </Typography>
             </CardContent>
@@ -48,17 +61,15 @@ const FileCard: React.FC<{ file: File, onClick: (file: File) => void }> = ({file
     );
 };
 
-const FilesDisplay: React.FC = () => {
+const FilesDisplay: React.FC<{ location: string }> = (location) => {
     const [files, setFiles] = useState<File[]>([]);
-    const [path] = useState<string>("");
+    const [path] = useState<string>(location.location)
 
-    const {user} = useContext(AuthContext) as any
-
-    const fetchFiles = async (path: string) => {
-        path = `/${user.lastname}_${user.firstname}`
-        while (!localStorage.getItem("authToken")) {
+    const fetchFiles = async (path: string = location.location) => {
+        while (!localStorage.getItem("authToken") && !location.location) {
             await new Promise(resolve => setTimeout(resolve, 50));
         }
+        console.log(location.location)
 
         let headers = {
             'Content-Type': 'application/json',
@@ -78,8 +89,11 @@ const FilesDisplay: React.FC = () => {
                 id: file.id,
                 name: file.name,
                 type: file.type,
+                path: file.path,
+                size: file.size,
+                extension: file.extension,
+                modifiedAt: file.modifiedAt
             })));
-            console.log(data)
         });
 
     }, [path]);

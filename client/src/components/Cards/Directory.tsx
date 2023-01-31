@@ -27,7 +27,7 @@ const useStyles = makeStyles({
     },
 });
 
-const FileCard: React.FC<{ directory: Directory, onClick: (directory: Directory) => void }> = ({directory, onClick}) => {
+const DirectoryCard: React.FC<{ directory: Directory, onClick: (directory: Directory) => void }> = ({directory, onClick}) => {
 
     const classes = useStyles();
     const Icon = FolderIcon
@@ -51,17 +51,14 @@ const FileCard: React.FC<{ directory: Directory, onClick: (directory: Directory)
     );
 };
 
-const DirectoriesDisplay: React.FC = () => {
+const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
     const [directories, setDirectories] = useState<Directory[]>([])
-    const {user, location,setLocation} = useContext(AuthContext) as any
-    const [path, setPath] = useState<string>(location)
-    const fetchDirectories = async (path: string = location) => {
-        while (!localStorage.getItem("authToken") && !location) {
+    const {user,setLocation} = useContext(AuthContext) as any
+    const [path, setPath] = useState<string>(location.location)
+    const fetchDirectories = async (path: string = location.location) => {
+        while (!localStorage.getItem("authToken") && !location.location) {
             await new Promise(resolve => setTimeout(resolve, 50));
         }
-
-
-
         let headers = {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + localStorage.getItem("authToken")
@@ -83,10 +80,8 @@ const DirectoriesDisplay: React.FC = () => {
                 type: directory.type,
                 children: directory.children
             })));
-            console.log(data)
         });
     }, [path]);
-
 
     const handleDirectoryClick = (directory: Directory) => {
         setLocation(directory.path)
@@ -106,7 +101,7 @@ const DirectoriesDisplay: React.FC = () => {
             </BackButton>
             <div style={{display: 'flex', flexWrap: 'wrap', marginTop: '75px'}}>
                 {directories.map(directory => (
-                    <FileCard
+                    <DirectoryCard
                         key={directory.id}
                         directory={directory}
                         onClick={() => handleDirectoryClick(directory)}

@@ -8,7 +8,17 @@ const getFiles = (req, res) => {
     try {
         fs.readdirSync("." + path, {withFileTypes: true}).forEach(function (file, index) {
             if (file.isFile()) {
-                files.push({name: file.name, type: "file", id: index})
+                const filePath = '.' + path + "/" + file.name;
+                const stats = fs.statSync(filePath);
+                files.push({
+                    name: file.name,
+                    type: "file",
+                    id: index,
+                    path: path + "/" + file.name,
+                    size: stats.size / 1024,
+                    extension: file.name.split('.').pop(),
+                    modifiedAt: stats.mtime
+                })
             }
         })
     } catch (err) {
