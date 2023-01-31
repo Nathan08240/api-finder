@@ -78,25 +78,29 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
                             <List sx={{
                                 height: '90%',
                             }}>
-                                <ListItem key="bibliotheque" onClick={() => alert("bibliothèque")}>
+                                <ListItem key="bibliotheque" onClick={() => alert("bibliothèque")} style={{ cursor: 'pointer' }}
+                                >
                                     <ListItemIcon>
                                         <HomeIcon />
                                     </ListItemIcon>
                                     <ListItemText>Bibliothèque</ListItemText>
                                 </ListItem>
-                                <ListItem key="creerDossier" onClick={() => alert("créer un dossier")}>
+                                <ListItem key="creerDossier" onClick={() => alert("créer un dossier")} style={{ cursor: 'pointer' }}
+                                >
                                     <ListItemIcon>
                                         <CreateNewFolderIcon />
                                     </ListItemIcon>
                                     <ListItemText>Créer un dossier</ListItemText>
                                 </ListItem>
-                                <ListItem key="importerDossier" onClick={() => alert("importer dossier")}>
+                                <ListItem key="importerDossier" onClick={() => alert("importer dossier")} style={{ cursor: 'pointer' }}
+                                >
                                     <ListItemIcon>
                                         <DriveFolderUploadRoundedIcon />
                                     </ListItemIcon>
                                     <ListItemText>Importer un dossier</ListItemText>
                                 </ListItem>
-                                <ListItem key="importerFichier" onClick={handleOpenUploadModal}>
+                                <ListItem key="importerFichier" onClick={handleOpenUploadModal} style={{ cursor: 'pointer' }}
+                                >
                                     <ListItemIcon>
                                         <UploadFileRoundedIcon />
                                     </ListItemIcon>
