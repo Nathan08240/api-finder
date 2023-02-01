@@ -3,7 +3,6 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { useFilePicker } from 'use-file-picker';
 import {
     List,
     ListItem,
@@ -15,6 +14,9 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
 import { AuthContext } from '../../App'
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
+
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -28,43 +30,75 @@ const style = {
     p: 4,
 };
 
-interface UploadModalProps {
-    open: boolean;
-    handleClose: () => void;
-}
-
 const UploadFile: React.FC = () => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const [files, setFiles] = React.useState<any>([]);
-    const [openFileSelector, { filesContent, loading, errors, clear }] = useFilePicker({
-        multiple: true,
-    });
+    const [alertOpen, setAlertOpen] = React.useState(false);
+    const handleAlertOpen = () => setAlertOpen(true);
+    const handleAlertClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setAlertOpen(false);
+    };
 
-    React.useEffect(() => {
-        setFiles([...filesContent])
-    }, [filesContent])
+
+    const [file, setFile] = React.useState<any>(undefined);
+
+    const handleInput = (e: any) => {
+        console.log(e.target.files[0])
+        setFile(e.target.files[0]);
+    };
 
     const { user } = React.useContext(AuthContext) as any
-    const location = `/${user.lastname}_${user.firstname}/`
+    const target = `/${user.lastname}_${user.firstname}/`
+    const apiUrl = `http://localhost:5000/api/files?target=${target}`
 
     const headers = {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + localStorage.getItem('authToken'),
     }
 
-    const supprimerFichierDuBuffer = (index: number) => {
-        filesContent.splice(index, 1);
-        setFiles([...filesContent])
-        console.log("filesContent : ", filesContent)
+    const retirerFichier = () => {
+        setFile(undefined);
+        console.log("file : ", file)
     }
 
-    const importerFichier = () => {
-        console.log("files : ", files)
-        clear();
+    const importerFichier = async () => {
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", headers.Authorization);
+        console.log("myHeaders : ", myHeaders);
+
+        var formdata = new FormData();
+        formdata.append("file", file, file.name);
+
+        var requestOptions: RequestInit = {
+            method: 'POST',
+            headers: myHeaders,
+            body: formdata,
+            redirect: 'follow'
+        };
+
+        fetch(apiUrl, requestOptions)
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch(error => console.log('error', error));
+
+
+        handleClose();
+        handleAlertOpen();
+        setFile(undefined);
+
     }
+
+    const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+        props,
+        ref,
+    ) {
+        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    });
 
     return (
         <>
@@ -79,31 +113,29 @@ const UploadFile: React.FC = () => {
                     <Typography>
                         Importer un fichier
                     </Typography>
-                    {files.length > 0 && (
+                    {file && (
                         <>
                             <List>
-                                {files.map((file: any, index: number) => (
-                                    <ListItem key={file.index}>
-                                        <ListItemText primary={file.name} />
-                                        <ListItemSecondaryAction>
-                                            <IconButton
-                                                edge="end"
-                                                aria-label="delete"
-                                                onClick={() => supprimerFichierDuBuffer(index)}
-                                            >
-                                                <DeleteIcon />
-                                            </IconButton>
-                                        </ListItemSecondaryAction>
-                                    </ListItem>
-                                ))}
+                                <ListItem >
+                                    <ListItemText primary={file.name} />
+                                    <ListItemSecondaryAction>
+                                        <IconButton
+                                            edge="end"
+                                            aria-label="delete"
+                                            onClick={() => retirerFichier()}
+                                        >
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </ListItemSecondaryAction>
+                                </ListItem>
                             </List>
                             <Button onClick={importerFichier}>Importer</Button>
                             <br />
                         </>
                     )}
-                    {files.length === 0 && (
+                    {!file && (
                         <>
-                            <Button onClick={openFileSelector}>Sélectionner</Button>
+                            <input type="file" onChange={handleInput} />
                             <br />
                         </>
                     )
@@ -111,6 +143,11 @@ const UploadFile: React.FC = () => {
                     <Button onClick={handleClose}>Fermer</Button>
                 </Box>
             </Modal>
+            <Snackbar open={alertOpen} anchorOrigin={{vertical: "bottom", horizontal: "right"}} autoHideDuration={6000} onClose={handleAlertClose}>
+                <Alert onClose={handleAlertClose} severity="success" sx={{ width: '100%' }}>
+                    Fichier importé avec succès !
+                </Alert>
+            </Snackbar>
         </>
     );
 };
