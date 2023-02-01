@@ -4,10 +4,7 @@ const getFolders = (req, res) => {
   const { path } = req.query
   console.log('List of folders')
   const folders = []
-  fs.readdirSync('.' + path, { withFileTypes: true }).forEach(function (
-    folder,
-    index
-  ) {
+  fs.readdirSync('.' + path, { withFileTypes: true }).forEach(function (folder, index) {
     if (folder.isDirectory()) {
       const folderPath = '.' + path + '/' + folder.name
       const stats = fs.statSync(folderPath)

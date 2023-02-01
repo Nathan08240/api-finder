@@ -6,8 +6,8 @@ const {getFiles, uploadFile, deleteFile, updateFile} = require('../handlers/file
 router.use(isAuth);
 router.route('/')
     .get(getFiles)
-    .post(isAdmin, uploadFile)
-    .delete(isAdmin, deleteFile)
-    .put(isAdmin, updateFile)
+    .post(uploadFile)
+    .delete(deleteFile)
+    .put(updateFile)
 
 module.exports = router;
