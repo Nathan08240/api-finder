@@ -47,11 +47,11 @@ const UploadFile: React.FC = () => {
     };
 
 
-    const [file, setFile] = React.useState<any>(undefined);
+    const [files, setFiles] = React.useState<any>(undefined);
 
     const handleInput = (e: any) => {
-        console.log(e.target.files[0])
-        setFile(e.target.files[0]);
+        console.log(e.target.files)
+        setFiles(e.target.files);
     };
 
     const { user } = React.useContext(AuthContext) as any
@@ -63,9 +63,9 @@ const UploadFile: React.FC = () => {
         Authorization: 'Bearer ' + localStorage.getItem('authToken'),
     }
 
-    const retirerFichier = () => {
-        setFile(undefined);
-        console.log("file : ", file)
+    const retirerFichier = (index: any) => {
+        setFiles(undefined);
+        console.log("files : ", files)
     }
 
     const importerFichier = async () => {
@@ -74,7 +74,16 @@ const UploadFile: React.FC = () => {
         console.log("myHeaders : ", myHeaders);
 
         var formdata = new FormData();
-        formdata.append("file", file, file.name);
+
+        if (files.length == 1) {
+            console.log("files : ", files)
+            formdata.append("file", files[0], files[0].name);
+        }
+        if (files.length > 1) {
+            for (let i = 0; i < files.length; i++) {
+                formdata.append("file", files[i], files[i].name);
+            }
+        }
 
         var requestOptions: RequestInit = {
             method: 'POST',
@@ -91,7 +100,7 @@ const UploadFile: React.FC = () => {
 
         handleClose();
         handleAlertOpen();
-        setFile(undefined);
+        setFiles(undefined);
 
     }
 
@@ -115,42 +124,62 @@ const UploadFile: React.FC = () => {
                     <Typography>
                         Importer un fichier
                     </Typography>
-                    {file && (
+                    {files && (
                         <>
                             <List>
-                                <ListItem >
-                                    <ListItemText primary={file.name} />
-                                    <ListItemSecondaryAction>
-                                        <IconButton
-                                            edge="end"
-                                            aria-label="delete"
-                                            onClick={() => retirerFichier()}
-                                        >
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    </ListItemSecondaryAction>
-                                </ListItem>
+                                {files.length == 1 && (
+                                    <ListItem >
+                                        <ListItemText primary={files[0].name} />
+                                        <ListItemSecondaryAction>
+                                            <IconButton
+                                                edge="end"
+                                                aria-label="delete"
+                                                onClick={() => retirerFichier(0)}
+                                            >
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </ListItemSecondaryAction>
+                                    </ListItem>
+                                )}
+                                {files.length > 1 && 
+                                <Typography>TO FIX : map des fichiers sélectionnés.</Typography>
+                                // files.map((file: any, index: any) => (
+                                //     <ListItem >
+                                //         <ListItemText primary={file.name} />
+                                //         <ListItemSecondaryAction>
+                                //             <IconButton
+
+                                //                 edge="end"
+                                //                 aria-label="delete"
+                                //                 onClick={() => retirerFichier(index)}
+                                //             >
+                                //                 <DeleteIcon />
+                                //             </IconButton>
+                                //         </ListItemSecondaryAction>
+                                //     </ListItem>
+                                // ))
+                                }
                             </List>
                             <Button variant='contained' onClick={importerFichier} startIcon={<UploadIcon />}>Importer</Button>
                             <br />
                         </>
                     )}
-                    {!file && (
+                    {!files && (
                         <>
                             <br />
                             <label htmlFor='upload-file'>
-                            <input style={{display: "none"}} type="file" id="upload-file" name="upload-file" onChange={handleInput} />
-                            <Button variant='outlined' component='span'>Séléctionner</Button>
+                                <input style={{ display: "none" }} type="file" multiple id="upload-file" name="upload-file" onChange={handleInput} />
+                                <Button variant='outlined' component='span'>Séléctionner</Button>
                             </label>
                             <br />
                         </>
                     )
                     }
-                    <CloseIcon onClick={handleClose} style={{ cursor: 'pointer' }} sx={{position: "absolute", top: "0", right:"0"}} />
+                    <CloseIcon onClick={handleClose} style={{ cursor: 'pointer' }} sx={{ position: "absolute", top: "0", right: "0" }} />
                     {/* <Button onClick={handleClose}>Fermer</Button> */}
                 </Box>
             </Modal>
-            <Snackbar open={alertOpen} anchorOrigin={{vertical: "bottom", horizontal: "right"}} autoHideDuration={6000} onClose={handleAlertClose}>
+            <Snackbar open={alertOpen} anchorOrigin={{ vertical: "bottom", horizontal: "right" }} autoHideDuration={6000} onClose={handleAlertClose}>
                 <Alert onClose={handleAlertClose} severity="success" sx={{ width: '100%' }}>
                     Fichier importé avec succès !
                 </Alert>
