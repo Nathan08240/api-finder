@@ -3,6 +3,7 @@ import { makeStyles } from '@mui/styles'
 import FolderIcon from '@mui/icons-material/Folder'
 import { Card, CardContent, CardMedia, Typography } from '@mui/material'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import CropIcon from '@mui/icons-material/Crop'
 import { BackButton } from './style'
 import { AuthContext } from '../../App'
 
@@ -141,19 +142,43 @@ const DirectoriesDisplay: React.FC = () => {
             padding: '10px',
           }}
         >
-          <button
+          <div
             style={{
-              border: 'none',
+              display: 'flex',
+              justifyContent: 'center',
             }}
-            onClick={() => setShowSidebar(false)}
           >
-            <InfoOutlinedIcon fontSize='large' />
-          </button>
-          <div style={{ fontSize: '2rem', textAlign: 'center' }}>
-            {selectedDirectory.name}
+            <button
+              style={{
+                border: 'none',
+                background: 'white',
+                width: '50px',
+              }}
+              onClick={() => setShowSidebar(false)}
+            >
+              <CropIcon fontSize='large' style={{ cursor: 'pointer' }} />
+            </button>
+            <button
+              style={{
+                border: 'none',
+                background: 'white',
+                width: '50px',
+              }}
+              onClick={() => setShowSidebar(false)}
+            >
+              <InfoOutlinedIcon
+                fontSize='large'
+                style={{ cursor: 'pointer' }}
+              />
+            </button>
+          </div>
+          <div
+            style={{ fontSize: '2rem', textAlign: 'center', margin: '20px 0' }}
+          >
+            {selectedDirectory?.name}
           </div>
           <div className={classes.sidebarDetails}>
-            Emplacement: {selectedDirectory.path}
+            Emplacement: {selectedDirectory?.path}
           </div>
         </div>
       )}
