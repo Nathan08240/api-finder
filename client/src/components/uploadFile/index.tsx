@@ -11,11 +11,13 @@ import {
     ListItemSecondaryAction,
     IconButton,
 } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
 import { AuthContext } from '../../App'
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import UploadIcon from '@mui/icons-material/Upload';
 
 
 const style = {
@@ -129,18 +131,23 @@ const UploadFile: React.FC = () => {
                                     </ListItemSecondaryAction>
                                 </ListItem>
                             </List>
-                            <Button onClick={importerFichier}>Importer</Button>
+                            <Button variant='contained' onClick={importerFichier} startIcon={<UploadIcon />}>Importer</Button>
                             <br />
                         </>
                     )}
                     {!file && (
                         <>
-                            <input type="file" onChange={handleInput} />
+                            <br />
+                            <label htmlFor='upload-file'>
+                            <input style={{display: "none"}} type="file" id="upload-file" name="upload-file" onChange={handleInput} />
+                            <Button variant='outlined' component='span'>Séléctionner</Button>
+                            </label>
                             <br />
                         </>
                     )
                     }
-                    <Button onClick={handleClose}>Fermer</Button>
+                    <CloseIcon onClick={handleClose} style={{ cursor: 'pointer' }} sx={{position: "absolute", top: "0", right:"0"}} />
+                    {/* <Button onClick={handleClose}>Fermer</Button> */}
                 </Box>
             </Modal>
             <Snackbar open={alertOpen} anchorOrigin={{vertical: "bottom", horizontal: "right"}} autoHideDuration={6000} onClose={handleAlertClose}>
