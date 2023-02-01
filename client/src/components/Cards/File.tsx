@@ -12,7 +12,7 @@ interface File {
     path: string;
     size: number;
     extension: string;
-    modifiedAt: string;
+    modifiedAt: Date;
 }
 
 const useStyles = makeStyles({
@@ -47,6 +47,7 @@ const FileCard: React.FC<{ file: File, onClick: (file: File) => void }> = ({file
                     {file.size} kb
                 </Typography>
                 <Typography variant="body2" color="textSecondary" component="p">
+                    {/*// @ts-ignore*/}
                     {file.modifiedAt}
                 </Typography>
                 <Typography variant="body2" color="textSecondary" component="p">
@@ -65,7 +66,7 @@ const FilesDisplay: React.FC<{ location: string }> = (location) => {
     const [path] = useState<string>(location.location)
 
     const fetchFiles = async (path: string = location.location) => {
-        while (!localStorage.getItem("authToken") && !location.location) {
+        while (!localStorage.getItem("authToken") && !location.location ) {
             await new Promise(resolve => setTimeout(resolve, 50));
         }
 

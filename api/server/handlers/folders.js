@@ -6,8 +6,15 @@ const getFolders = (req, res) => {
   const folders = []
   fs.readdirSync('.' + path, { withFileTypes: true }).forEach(function(folder, index ) {
     if (folder.isDirectory()) {
-      folders.push({id:index, path: `${path}/${folder.name}`, name: folder.name, type: 'directory' })
-      // path: `${path}/${folder.name}`,
+      const filePath = '.' + path + "/" + folder.name;
+      const stats = fs.statSync(filePath);
+      folders.push({
+        id:index,
+        path: `${path}/${folder.name}`,
+        name: folder.name,
+        type: 'directory',
+        modifiedAt: stats.mtime,
+      })
     }
   })
   res.send({directories: folders})

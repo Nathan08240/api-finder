@@ -1,71 +1,80 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { makeStyles } from '@mui/styles'
+import React, {useContext, useEffect, useState} from 'react'
+import {makeStyles} from '@mui/styles'
 import FolderIcon from '@mui/icons-material/Folder'
-import { Card, CardContent, CardMedia, Typography } from '@mui/material'
+import {Card, CardContent, CardMedia, Typography} from '@mui/material'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { BackButton } from './style'
-import { AuthContext } from '../../App'
+import {BackButton, Container, CardDirectory} from './style'
+import {AuthContext} from '../../App'
 
 const apiUrl = 'http://localhost:5000/api/folders'
 
 interface Directory {
-  id: string
-  path: string
-  name: string
-  type: 'directory'
-  children?: File[] | Directory[]
+    id: string
+    path: string
+    name: string
+    type: 'directory'
+    modifiedAt: Date
+    children?: File[] | Directory[]
 }
 
 const useStyles = makeStyles({
-  root: {
-    minWidth: 200,
-    margin: '10px',
-    display: 'inline-block',
-    cursor: 'pointer',
-  },
-  media: {
-    height: 140,
-  },
-  sidebarDetails: {
-    margin: '10px 0',
-    fontSize: '1rem',
-  },
+    root: {
+        minWidth: 200,
+        margin: '10px',
+        display: 'inline-block',
+        cursor: 'pointer',
+        borderRadius: 0,
+        boxShadow: 'none',
+        border :"none"
+    },
+    media: {
+        height: 140,
+    },
+    sidebarDetails: {
+        margin: '10px 0',
+        fontSize: '1rem',
+    },
+    CardContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        alignContent: 'center',
+        gap: '10px'
+    },
 })
 
-const DirectoryCard: React.FC<{ directory: Directory, onClick: (directory: Directory) => void }> = ({directory, onClick}) => {
-
+const DirectoryCard: React.FC<{ directory: Directory, onClick: (directory: Directory) => void }> = ({
+                                                                                                        directory,
+                                                                                                        onClick
+                                                                                                    }) => {
     const classes = useStyles();
     const Icon = FolderIcon
 
-  return (
-    <Card className={classes.root} onClick={() => onClick(directory)}>
-      <CardMedia
-        className={classes.media}
-        image={`https://via.placeholder.com/300x200/000000/fbe026?text=Folder`}
-        title={directory.name}
-      />
-      <CardContent>
-        <Typography gutterBottom variant='h5' component='h2'>
-          {directory.name}
-        </Typography>
-        <Typography variant='body2' color='textSecondary' component='p'>
-          <Icon fontSize='large' />
-        </Typography>
-      </CardContent>
-    </Card>
-  )
+    return (
+        <Card className={classes.root} onClick={() => onClick(directory)}>
+            <CardContent className={classes.CardContainer}>
+                <Typography variant='body2' color='textSecondary' component='p'>
+                    <Icon fontSize='large'/>
+                </Typography>
+                <Typography gutterBottom variant='h5' component='h2'>
+                    {directory.name}
+                </Typography>
+            </CardContent>
+        </Card>
+    )
 }
 
 const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
     const [directories, setDirectories] = useState<Directory[]>([])
-    const {user,setLocation} = useContext(AuthContext) as any
+    const {user, setLocation} = useContext(AuthContext) as any
     const [path, setPath] = useState<string>(location.location)
     const [showSidebar, setShowSidebar] = useState<boolean>(false)
     const [selectedDirectory, setSelectedDirectory] = useState<Directory | undefined>(undefined)
     const classes = useStyles()
 
-    const fetchDirectories = async (path: string = location.location) => {
-        while (!localStorage.getItem("authToken") && !location.location) {
+    const fetchDirectories = async (path: string) => {
+        while (!localStorage.getItem("authToken") && !location.location ) {
             await new Promise(resolve => setTimeout(resolve, 50));
         }
 
@@ -74,11 +83,11 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
             'Authorization': 'Bearer ' + localStorage.getItem("authToken")
         };
 
-    const url = new URL(apiUrl)
-    url.searchParams.set('path', path)
-    const result = await fetch(url.href, { method: 'GET', headers: headers })
-    return await result.json()
-  }
+        const url = new URL(apiUrl)
+        url.searchParams.set('path', path)
+        const result = await fetch(url.href, {method: 'GET', headers: headers})
+        return await result.json()
+    }
 
     useEffect(() => {
         if (!localStorage.getItem("authToken")) return;
@@ -88,6 +97,7 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
                 path: directory.path,
                 name: directory.name,
                 type: directory.type,
+                modifiedAt: directory.modifiedAt,
                 children: directory.children
             })));
         });
@@ -115,11 +125,12 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
         handleClick(event)
     }
 
-  const handleBackButton = () => {
-    if (path === `/${user.lastname}_${user.firstname}`) return
-    setPath(path.substring(0, path.lastIndexOf('/')))
-    setLocation(path.substring(0, path.lastIndexOf('/')))
-  }
+    const handleBackButton = () => {
+        if (path === `/${user.lastname}_${user.firstname}`) return
+        setPath(path.substring(0, path.lastIndexOf('/')))
+        setLocation(path.substring(0, path.lastIndexOf('/')))
+    }
+
 
     return (
         <>
@@ -141,9 +152,9 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
                         }}
                         onClick={() => setShowSidebar(false)}
                     >
-                        <InfoOutlinedIcon fontSize='large' />
+                        <InfoOutlinedIcon fontSize='large'/>
                     </button>
-                    <div style={{ fontSize: '2rem', textAlign: 'center' }}>
+                    <div style={{fontSize: '2rem', textAlign: 'center'}}>
                         {selectedDirectory?.name}
                     </div>
                     <div className={classes.sidebarDetails}>
@@ -154,15 +165,17 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
             <BackButton onClick={handleBackButton} disabled={path === '/'}>
                 Retour
             </BackButton>
-            <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: '75px' }}>
+            <Container>
                 {directories.map((directory) => (
-                    <DirectoryCard
-                        key={directory.id}
-                        directory={directory}
-                        onClick={() => handleDirectoryClick(directory)}
-                    />
+                    <>
+                        <DirectoryCard
+                            key={directory.id}
+                            directory={directory}
+                            onClick={() => handleDirectoryClick(directory)}
+                        />
+                    </>
                 ))}
-            </div>
+            </Container>
         </>
     )
 };
