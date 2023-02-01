@@ -4,13 +4,25 @@ const getFolders = (req, res) => {
   const { path } = req.query
   console.log('List of folders')
   const folders = []
-  fs.readdirSync('.' + path, { withFileTypes: true }).forEach(function(folder, index ) {
+  fs.readdirSync('.' + path, { withFileTypes: true }).forEach(function (
+    folder,
+    index
+  ) {
     if (folder.isDirectory()) {
-      folders.push({id:index, path: `${path}/${folder.name}`, name: folder.name, type: 'directory' })
+      const folderPath = '.' + path + '/' + folder.name
+      const stats = fs.statSync(folderPath)
+      folders.push({
+        id: index,
+        path: `${path}/${folder.name}`,
+        name: folder.name,
+        type: 'directory',
+        size: folder.size,
+        modifiedAt: stats.mtime,
+      })
       // path: `${path}/${folder.name}`,
     }
   })
-  res.send({directories: folders})
+  res.send({ directories: folders })
 }
 
 const createFolder = (req, res) => {

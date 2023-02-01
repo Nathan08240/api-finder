@@ -1,9 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { makeStyles } from '@mui/styles'
-import FolderIcon from '@mui/icons-material/Folder'
 import { Card, CardContent, CardMedia, Typography } from '@mui/material'
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import CropIcon from '@mui/icons-material/Crop'
+import FolderIcon from '@mui/icons-material/Folder'
 import { BackButton } from './style'
 import { AuthContext } from '../../App'
 
@@ -14,6 +12,8 @@ interface Directory {
   path: string
   name: string
   type: 'directory'
+  size: number
+  modifiedAt: string
   children?: File[] | Directory[]
 }
 
@@ -26,10 +26,6 @@ const useStyles = makeStyles({
   },
   media: {
     height: 140,
-  },
-  sidebarDetails: {
-    margin: '10px 0',
-    fontSize: '1rem',
   },
 })
 
@@ -63,11 +59,6 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
   const [directories, setDirectories] = useState<Directory[]>([])
   const { user, setLocation } = useContext(AuthContext) as any
   const [path, setPath] = useState<string>(location.location)
-  const [showSidebar, setShowSidebar] = useState<boolean>(false)
-  const [selectedDirectory, setSelectedDirectory] = useState<
-    Directory | undefined
-  >(undefined)
-  const classes = useStyles()
 
   const fetchDirectories = async (path: string = location.location) => {
     while (!localStorage.getItem('authToken') && !location.location) {
@@ -94,6 +85,8 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
           path: directory.path,
           name: directory.name,
           type: directory.type,
+          size: directory.size,
+          modifiedAt: directory.modifiedAt,
           children: directory.children,
         }))
       )
@@ -101,24 +94,8 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
   }, [path])
 
   const handleDirectoryClick = (directory: Directory) => {
-    const handleClick = (event: any) => {
-      switch (event.detail) {
-        case 1: {
-          setShowSidebar(true)
-          setSelectedDirectory(directory)
-          break
-        }
-        case 2: {
-          setLocation(directory.path)
-          setPath(directory.path)
-          break
-        }
-        default: {
-          break
-        }
-      }
-    }
-    handleClick(event)
+    setLocation(directory.path)
+    setPath(directory.path)
   }
 
   const handleBackButton = () => {
@@ -129,70 +106,16 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
 
   return (
     <>
-      {showSidebar && (
-        <div
-          style={{
-            position: 'fixed',
-            right: '0',
-            top: '75px',
-            width: '300px',
-            height: '100%',
-            background: 'white',
-            padding: '10px',
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-            }}
-          >
-            <button
-              style={{
-                border: 'none',
-                background: 'white',
-                width: '50px',
-              }}
-              onClick={() => setShowSidebar(false)}
-            >
-              <CropIcon fontSize='large' style={{ cursor: 'pointer' }} />
-            </button>
-            <button
-              style={{
-                border: 'none',
-                background: 'white',
-                width: '50px',
-              }}
-              onClick={() => setShowSidebar(false)}
-            >
-              <InfoOutlinedIcon
-                fontSize='large'
-                style={{ cursor: 'pointer' }}
-              />
-            </button>
-          </div>
-          <div
-            style={{ fontSize: '2rem', textAlign: 'center', margin: '20px 0' }}
-          >
-            {selectedDirectory?.name}
-          </div>
-          <div className={classes.sidebarDetails}>
-            Emplacement: {selectedDirectory?.path}
-          </div>
-        </div>
-      )}
       <BackButton onClick={handleBackButton} disabled={path === '/'}>
         Retour
       </BackButton>
       <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: '75px' }}>
         {directories.map((directory) => (
-          <FileCard
-            key={directory.id}
-            directory={directory}
-            onClick={() => handleDirectoryClick(directory)}
-          />
+          <DirectoryCard key={directory.id} directory={directory} onClick={() => handleDirectoryClick(directory)} />
         ))}
       </div>
     </>
   )
 }
+
+export default DirectoriesDisplay
