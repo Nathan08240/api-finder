@@ -9,16 +9,14 @@ import {
     Paper,
     Typography,
 } from '@mui/material'
-import {CircularProgressWithLabel} from '../../components/CircularWithProgression'
-import {FC, useContext} from 'react'
-import {AuthContext} from "../../App";
+import { CircularProgressWithLabel } from '../../components/CircularWithProgression'
+import { FC, useContext } from 'react'
+import { AuthContext } from "../../App";
 import ConfirmLogout from '../../components/Confirm'
 import CreateFolder from '../../components/CreateFolder'
-import UploadModal from '../../components/uploadModal';
+import UploadFile from '../../components/uploadFile';
 import HomeIcon from '@mui/icons-material/Home';
-import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import DriveFolderUploadRoundedIcon from '@mui/icons-material/DriveFolderUploadRounded';
-import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
 import DriveFileMoveRoundedIcon from '@mui/icons-material/DriveFileMoveRounded';
 
 interface SideBarProps {
@@ -29,10 +27,10 @@ interface RoleParams {
     role: string
 }
 
-export const Sidebar: FC<SideBarProps> = ({open}) => {
-    const {user} = useContext(AuthContext) as any
+export const Sidebar: FC<SideBarProps> = ({ open }) => {
+    const { user } = useContext(AuthContext) as any
 
-    const role = ({role}: RoleParams) => {
+    const role = ({ role }: RoleParams) => {
         switch (role) {
             case 'support':
                 return 'Support'
@@ -49,10 +47,6 @@ export const Sidebar: FC<SideBarProps> = ({open}) => {
         }
     }
 
-    const [openUploadModal, setOpenUploadModal] = React.useState(false);
-    const handleOpenUploadModal = () => setOpenUploadModal(true);
-    const handleCloseUploadModal = () => setOpenUploadModal(false);
-
     return (
         <Drawer
             variant='persistent'
@@ -68,12 +62,12 @@ export const Sidebar: FC<SideBarProps> = ({open}) => {
                 zIndex: 2,
             }}
         >
-            <Typography variant='h5' sx={{p: 2, textAlign: 'center'}}>
+            <Typography variant='h5' sx={{ p: 2, textAlign: 'center' }}>
                 {
                     user?.is_confirmed ? user.fullname : 'Get Dropped'
                 }
             </Typography>
-            <Divider/>
+            <Divider />
             <Paper
                 sx={{
                     height: '100%',
@@ -87,42 +81,39 @@ export const Sidebar: FC<SideBarProps> = ({open}) => {
                             <List sx={{
                                 height: '90%',
                             }}>
-                                <ListItem key="bibliotheque" onClick={() => alert("bibliothèque")}>
+                                <ListItem key="bibliotheque" onClick={() => alert("bibliothèque")} style={{ cursor: 'pointer' }}
+                                >
                                     <ListItemIcon>
-                                        <HomeIcon/>
+                                        <HomeIcon />
                                     </ListItemIcon>
                                     <ListItemText>Bibliothèque</ListItemText>
                                 </ListItem>
-                                <CreateFolder/>
-                                <ListItem key="importerDossier" onClick={() => alert("importer dossier")}>
+                                <CreateFolder />
+                                <ListItem key="importerDossier" onClick={() => alert("importer dossier")} style={{ cursor: 'pointer' }}
+                                >
                                     <ListItemIcon>
-                                        <DriveFolderUploadRoundedIcon/>
+                                        <DriveFolderUploadRoundedIcon />
                                     </ListItemIcon>
                                     <ListItemText>Importer un dossier</ListItemText>
                                 </ListItem>
-                                <ListItem key="importerFichier" onClick={handleOpenUploadModal} style={{cursor: 'pointer'}}>
-                                    <ListItemIcon>
-                                        <UploadFileRoundedIcon/>
-                                    </ListItemIcon>
-                                    <ListItemText>Importer un fichier</ListItemText>
-                                </ListItem>
-                                <UploadModal open={openUploadModal} handleClose={handleCloseUploadModal}/>
-                                <Divider/>
+                                <UploadFile />
+                                <Divider />
                                 <ListItem key='Stockage'>
                                     <ListItemText>Stockage</ListItemText>
                                     <ListItemIcon>
-                                        <CircularProgressWithLabel value={72}/>
+                                        <CircularProgressWithLabel value={72} />
                                     </ListItemIcon>
                                 </ListItem>
-                                <Divider/>
+                                <Divider />
                                 <ListItem key='Utilisateur'>
                                     <ListItemText>Connecté :</ListItemText>
                                 </ListItem>
-                                <ListItemText sx={{paddingLeft: 2}}>{user?.email ?? ' '}</ListItemText>
-                                <ListItemText sx={{paddingLeft: 2}}>{role({role: user?.role})}</ListItemText>
+                                <ListItemText sx={{ paddingLeft: 2 }}>{user?.email ?? ' '}</ListItemText>
+                                <ListItemText sx={{ paddingLeft: 2 }}>{role({ role: user?.role })}</ListItemText>
                             </List>
-                            <ConfirmLogout/>
+                            <ConfirmLogout />
                         </>
+
                     )
                 }
             </Paper>
