@@ -33,7 +33,7 @@ const useStyles = makeStyles({
   },
 })
 
-const FileCard: React.FC<{
+const DirectoryCard: React.FC<{
   directory: Directory
   onClick: (directory: Directory) => void
 }> = ({ directory, onClick }) => {
@@ -59,18 +59,18 @@ const FileCard: React.FC<{
   )
 }
 
-const DirectoriesDisplay: React.FC = () => {
+const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
   const [directories, setDirectories] = useState<Directory[]>([])
-  const { user, location, setLocation } = useContext(AuthContext) as any
-  const [path, setPath] = useState<string>(location)
+  const { user, setLocation } = useContext(AuthContext) as any
+  const [path, setPath] = useState<string>(location.location)
   const [showSidebar, setShowSidebar] = useState<boolean>(false)
   const [selectedDirectory, setSelectedDirectory] = useState<
     Directory | undefined
   >(undefined)
   const classes = useStyles()
 
-  const fetchDirectories = async (path: string = location) => {
-    while (!localStorage.getItem('authToken') && !location) {
+  const fetchDirectories = async (path: string = location.location) => {
+    while (!localStorage.getItem('authToken') && !location.location) {
       await new Promise((resolve) => setTimeout(resolve, 50))
     }
 
@@ -97,7 +97,6 @@ const DirectoriesDisplay: React.FC = () => {
           children: directory.children,
         }))
       )
-      console.log(data)
     })
   }, [path])
 
@@ -197,5 +196,3 @@ const DirectoriesDisplay: React.FC = () => {
     </>
   )
 }
-
-export default DirectoriesDisplay
