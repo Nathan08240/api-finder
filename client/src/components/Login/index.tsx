@@ -13,7 +13,7 @@ type Inputs = {
 }
 
 export const Login = () => {
-  const { setUser, setToken } = useContext(AuthContext) as any
+  const { setUser, setToken, setLocation } = useContext(AuthContext) as any
   const { register, handleSubmit } = useForm<Inputs>()
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const res = await axios.post(
