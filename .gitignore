@@ -1,4 +1,1 @@
 .idea
-api/docker-compose.yml
-api/Makefile
-api/server/db/mongoose.js
