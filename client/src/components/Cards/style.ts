@@ -1,12 +1,5 @@
 import styled from 'styled-components'
 
-export const BackButton = styled.button`
-  margin: 0;
-  padding: 0;
-  border: none;
-  background: none;
-  cursor: pointer;
-`
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -19,9 +12,9 @@ export const Container = styled.div`
 `
 
 export const CardDirectory = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
 `

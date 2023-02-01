@@ -21,46 +21,37 @@ interface File {
 
 const useStyles = makeStyles({
   root: {
-    minWidth: 200,
-    margin: '10px',
+    width: '200px',
     display: 'inline-block',
     cursor: 'pointer',
+    borderRadius: '10px',
+    padding: '0',
+    border: '1px solid #a6a6a6',
   },
-  media: {
-    height: 140,
+  CardContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: '10px',
   },
 })
 
 const FileCard: React.FC<{ file: File; onClick: (file: File) => void }> = ({ file, onClick }) => {
   const classes = useStyles()
   const Icon = InsertDriveFileIcon
+  const fileName = file.name
+  const nameWithoutExtension = fileName.split('.').slice(0, -1).join('.')
+  const limitedName =
+    nameWithoutExtension.length > 30 ? nameWithoutExtension.slice(0, 15) + '...' : nameWithoutExtension
 
   return (
     <Card className={classes.root} onClick={() => onClick(file)}>
-      <CardMedia
-        className={classes.media}
-        image={`https://via.placeholder.com/300x200/555555/ffffff?text=File`}
-        title={file.name}
-      />
-      <CardContent>
-        <Typography gutterBottom variant='h5' component='h2'>
-          {file.name}
-        </Typography>
+      <CardContent className={classes.CardContainer}>
         <Typography variant='body2' color='textSecondary' component='p'>
-          {file.size}KB
+          <Icon sx={{ fontSize: 100 }} />
         </Typography>
-        <Typography variant='body2' color='textSecondary' component='p'>
-          {new Date(file!.modifiedAt).toLocaleDateString('fr-FR', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-          })}
-        </Typography>
-        <Typography variant='body2' color='textSecondary' component='p'>
-          {file.extension.toUpperCase()}
-        </Typography>
-        <Typography variant='body2' color='textSecondary' component='p'>
-          <Icon fontSize='large' />
+        <Typography variant='h6' component='h2'>
+          {limitedName}
         </Typography>
       </CardContent>
     </Card>
@@ -127,13 +118,14 @@ const FilesDisplay: React.FC<{ location: string }> = (location) => {
   }
 
   return (
-    <Grid container spacing={1}>
-      <Grid item xs={10}>
-        <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: '75px' }}>
-          {files.map((file) => (
-            <FileCard key={file.id} file={file} onClick={() => handleFileClick(file)} />
-          ))}
-        </div>
+    <Grid container>
+      <Grid item xs={2}></Grid>
+      <Grid container xs={8}>
+        {files.map((file) => (
+          <Grid item xs={2} key={file.id}>
+            <FileCard file={file} onClick={() => handleFileClick(file)} />
+          </Grid>
+        ))}
       </Grid>
       <Grid item xs={2}>
         {showSidebar && (

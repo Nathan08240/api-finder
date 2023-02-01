@@ -70,6 +70,7 @@ const DetailsSidebar: React.FC<DetailsSidebarProps> = ({ selectedContent, setSho
       style={{
         width: '300px',
         height: '100%',
+        wordWrap: 'break-word',
       }}
     >
       <div className={classes.buttonsContainer}>
