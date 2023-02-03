@@ -69,6 +69,8 @@ const FilesDisplay: React.FC<{ location: string }> = (location) => {
       await new Promise((resolve) => setTimeout(resolve, 50))
     }
 
+    const apiUrl = 'http://localhost:5000/api/files'
+
     let headers = {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + localStorage.getItem('authToken'),

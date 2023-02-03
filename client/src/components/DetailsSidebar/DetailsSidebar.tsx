@@ -84,7 +84,6 @@ const DetailsSidebar: React.FC<DetailsSidebarProps> = ({ selectedContent, setSho
       <div className={classes.fileName}>{selectedContent?.name}</div>
       <Table className={classes.table}>
         <TableBody>
-          {/* @ts-ignore */}
           {details.map(({ label, value }) => (
             <TableRow key={label}>
               <TableCell>{label}:</TableCell>
