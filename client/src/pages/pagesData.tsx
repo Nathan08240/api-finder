@@ -2,7 +2,7 @@ import { routerType } from '../types/router.types'
 import { Promotion } from './Promotion'
 import { Home } from './Home'
 import { AppBarHead } from '../layouts/appbar'
-import ErrorPage from './error'
+import ErrorPage from './Error'
 
 const pagesData: routerType[] = [
   {
