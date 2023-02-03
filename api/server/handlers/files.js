@@ -32,7 +32,7 @@ const getFiles = (req, res) => {
 const uploadFile = (req, res) => {
     const target = `${req.query.target}`;
     let storage = getMulterStorage(target);
-    const upload = multer({storage: storage}).single("file");
+    const upload = multer({storage: storage}).array("file");
     upload(req, res, (err) => {
         if (err) {
             if (!fs.existsSync(`.${target}`)) {
