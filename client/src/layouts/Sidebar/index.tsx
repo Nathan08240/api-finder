@@ -7,10 +7,11 @@ import { makeStyles } from '@mui/styles'
 import { AuthContext } from '../../App'
 import ConfirmLogout from '../../components/Confirm'
 import CreateFolder from '../../components/CreateFolder'
-import UploadFile from '../../components/uploadFile'
+import UploadFile from '../../components/UploadFile'
 import HomeIcon from '@mui/icons-material/Home'
 import DriveFolderUploadRoundedIcon from '@mui/icons-material/DriveFolderUploadRounded'
 import DriveFileMoveRoundedIcon from '@mui/icons-material/DriveFileMoveRounded'
+import PeopleIcon from '@mui/icons-material/People'
 import SchoolIcon from '@mui/icons-material/School'
 import { ClassNames } from '@emotion/react'
 
@@ -93,9 +94,17 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
               </ListItem>
               <ListItem key='promotion' style={{ cursor: 'pointer' }}>
                 <ListItemIcon>
+                  <PeopleIcon />
+                </ListItemIcon>
+                <Link className={classes.link} to='/users'>
+                  <ListItemText>Gestion des Utilisateurs</ListItemText>
+                </Link>
+              </ListItem>
+              <ListItem key='promotion' style={{ cursor: 'pointer' }}>
+                <ListItemIcon>
                   <SchoolIcon />
                 </ListItemIcon>
-                <Link className={classes.link} to='/promotion'>
+                <Link className={classes.link} to='/promotions'>
                   <ListItemText>Gestion des Promotions</ListItemText>
                 </Link>
               </ListItem>

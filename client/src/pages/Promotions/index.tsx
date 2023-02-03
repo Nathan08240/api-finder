@@ -1,4 +1,4 @@
-export const Promotion = () => {
+export const Promotions = () => {
   return (
     <div>
       <h1>Bonjour</h1>

@@ -1,7 +1,6 @@
 import { FormControl, InputAdornment, Modal, TextField } from '@mui/material'
 import { ButtonSubmit, Form, LoginBox, LoginWrapper } from './style'
 import { AccountCircle, Lock, Mail } from '@mui/icons-material'
-import axios from 'axios'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { AuthContext } from '../../App'
 import { useContext } from 'react'
@@ -16,18 +15,29 @@ export const Login = () => {
   const { setUser, setToken, setLocation } = useContext(AuthContext) as any
   const { register, handleSubmit } = useForm<Inputs>()
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const res = await axios.post(
-      // @ts-ignore
-      `${import.meta.env.VITE_API_URL}/api/auth/login`,
-      data
-    )
-    const token = res.data.token
-    const user = jwtDecode(token)
-    setUser(user)
-    setToken(token)
-
     // @ts-ignore
-    setLocation(`/${user.lastname}_${user.firstname}`)
+    const apiUrl = `${import.meta.env.VITE_API_URL}/api/auth/login`
+    const url = new URL(apiUrl)
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+      const res = await response.json()
+      const token = res.token
+      const user = jwtDecode(token)
+      setUser(user)
+      setToken(token)
+
+      // @ts-ignore
+      setLocation(`/${user.lastname}_${user.firstname}`)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (

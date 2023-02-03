@@ -48,21 +48,13 @@ const CreateFolder: React.FC = () => {
 
   return (
     <>
-      <ListItem
-        key='creerDossier'
-        style={{ cursor: 'pointer' }}
-        onClick={handleClickOpen}
-      >
+      <ListItem key='creerDossier' style={{ cursor: 'pointer' }} onClick={handleClickOpen}>
         <ListItemIcon>
           <CreateNewFolderIcon />
         </ListItemIcon>
         <ListItemText>Créer un dossier</ListItemText>
       </ListItem>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby='form-dialog-title'
-      >
+      <Dialog open={open} onClose={handleClose} aria-labelledby='form-dialog-title'>
         <DialogTitle id='form-dialog-title'>Nouveau dossier</DialogTitle>
         <DialogContent>
           <TextField

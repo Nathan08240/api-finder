@@ -100,23 +100,8 @@ const FilesDisplay: React.FC<{ location: string }> = (location) => {
   }, [path])
 
   const handleFileClick = (file: File) => {
-    const handleClick = (event: any) => {
-      switch (event.detail) {
-        case 1: {
-          setShowSidebar(true)
-          setShowFileSidebar(file)
-          break
-        }
-        case 2: {
-          console.log('voir le fichier')
-          break
-        }
-        default: {
-          break
-        }
-      }
-    }
-    handleClick(event)
+    setShowSidebar(true)
+    setShowFileSidebar(file)
   }
 
   return (

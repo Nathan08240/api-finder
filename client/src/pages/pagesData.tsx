@@ -1,8 +1,11 @@
 import { routerType } from '../types/router.types'
-import { Promotion } from './Promotion'
+import { Promotions } from './Promotions'
 import { Home } from './Home'
-import { AppBarHead } from '../layouts/appbar'
+import { Users } from './Users'
+import { AppBarHead } from '../layouts/Appbar'
 import ErrorPage from './Error'
+import CreateUser from '../components/Users/CreateUser'
+import EditUser from '../components/Users/EditUser'
 
 const pagesData: routerType[] = [
   {
@@ -17,15 +20,48 @@ const pagesData: routerType[] = [
     title: 'home',
   },
   {
-    path: 'promotion',
+    path: 'users',
     element: (
       <>
         <AppBarHead />
-        <Promotion />
+        <Users />
       </>
     ),
     errorElement: <ErrorPage />,
-    title: 'promotion',
+    title: 'home',
+  },
+  {
+    path: 'users/create',
+    element: (
+      <>
+        <AppBarHead />
+        <CreateUser />
+      </>
+    ),
+    errorElement: <ErrorPage />,
+    title: 'create user',
+  },
+  {
+    path: 'users/edit/:id',
+    element: (
+      <>
+        <AppBarHead />
+        <EditUser />
+      </>
+    ),
+    errorElement: <ErrorPage />,
+    title: 'edit user',
+  },
+  {
+    path: 'promotions',
+    element: (
+      <>
+        <AppBarHead />
+        <Promotions />
+      </>
+    ),
+    errorElement: <ErrorPage />,
+    title: 'promotions',
   },
 ]
 

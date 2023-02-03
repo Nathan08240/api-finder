@@ -68,6 +68,9 @@ const DetailsSidebar: React.FC<DetailsSidebarProps> = ({ selectedContent, setSho
   return (
     <div
       style={{
+        position: 'absolute',
+        top: '80px',
+        right: '0px',
         width: '300px',
         height: '100%',
         wordWrap: 'break-word',
