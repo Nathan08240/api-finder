@@ -46,14 +46,14 @@ const UploadFile: React.FC = () => {
         setAlertOpen(false);
     };
 
-    const [files, setFiles] = React.useState<FileList>();
-    const getFiles = () => {
-        return files;
+    const [filesArray, setFilesArray] = React.useState<any>([]);
+    const getFilesArray = () => {
+        return filesArray;
     }
 
     const handleInput = (e: any) => {
-        console.log(e.target.files)
-        setFiles(e.target.files);
+        console.log("e.target.files : ", e.target.files)
+        setFilesArray(Array.from(e.target.files));
     };
 
     const { user } = React.useContext(AuthContext) as any
@@ -66,8 +66,8 @@ const UploadFile: React.FC = () => {
     }
 
     const retirerFichier = (index: any) => {
-        setFiles(undefined);
-        console.log("files : ", files)
+        setFilesArray(filesArray.filter((file: any, i: any) => i !== index));
+        console.log("filesArray : ", filesArray)
     }
 
     const importerFichier = async () => {
@@ -77,16 +77,13 @@ const UploadFile: React.FC = () => {
 
         var formdata = new FormData();
 
-        if (files?.length == 1) {
-            console.log("files : ", files)
-            formdata.append("file", files[0], files[0].name);
+        if (filesArray?.length == 1) {
+            console.log("filesArray : ", filesArray)
+            formdata.append("file", filesArray[0], filesArray[0].name);
         }
-        // @ts-ignore
-        if (files?.length > 1) {
-            // @ts-ignore
-            for (let i = 0; i < files.length; i++) {
-                // @ts-ignore
-                formdata.append("file", files[i], files[i].name);
+        if (filesArray?.length > 1) {
+            for (let i = 0; i < filesArray.length; i++) {
+                formdata.append("file", filesArray[i], filesArray[i].name);
             }
         }
 
@@ -105,7 +102,7 @@ const UploadFile: React.FC = () => {
 
         handleClose();
         handleAlertOpen();
-        setFiles(undefined);
+        setFilesArray([]);
 
     }
 
@@ -117,11 +114,11 @@ const UploadFile: React.FC = () => {
     });
 
     const DisplayList: React.FunctionComponent<{}> = () => {
-        getFiles();
+        getFilesArray();
         return (
             <>
-                {console.log("files : ", files)}
-                {Array.from(files!).map((file: any, index: any) => {
+                {console.log("filesArray : ", filesArray)}
+                {filesArray.map((file: any, index: any) => {
                     return (
                         <ListItem key={index}>
                             <ListItemText primary={file.name} />
@@ -142,8 +139,6 @@ const UploadFile: React.FC = () => {
         )
     }
 
-
-
     return (
         <>
             <ListItem key="importerFichier" style={{ cursor: 'pointer' }} onClick={handleOpen}>
@@ -157,7 +152,7 @@ const UploadFile: React.FC = () => {
                     <Typography>
                         Importer un fichier
                     </Typography>
-                    {files && (
+                    {filesArray.length > 0 && (
                         <>
                             <List>
                                 <DisplayList />
@@ -166,7 +161,7 @@ const UploadFile: React.FC = () => {
                             <br />
                         </>
                     )}
-                    {!files && (
+                    {filesArray.length == 0 && (
                         <>
                             <br />
                             <label htmlFor='upload-file'>
