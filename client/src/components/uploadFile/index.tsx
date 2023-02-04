@@ -46,8 +46,10 @@ const UploadFile: React.FC = () => {
         setAlertOpen(false);
     };
 
-
-    const [files, setFiles] = React.useState<any>(undefined);
+    const [files, setFiles] = React.useState<FileList>();
+    const getFiles = () => {
+        return files;
+    }
 
     const handleInput = (e: any) => {
         console.log(e.target.files)
@@ -75,12 +77,15 @@ const UploadFile: React.FC = () => {
 
         var formdata = new FormData();
 
-        if (files.length == 1) {
+        if (files?.length == 1) {
             console.log("files : ", files)
             formdata.append("file", files[0], files[0].name);
         }
-        if (files.length > 1) {
+        // @ts-ignore
+        if (files?.length > 1) {
+            // @ts-ignore
             for (let i = 0; i < files.length; i++) {
+                // @ts-ignore
                 formdata.append("file", files[i], files[i].name);
             }
         }
@@ -111,6 +116,34 @@ const UploadFile: React.FC = () => {
         return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
     });
 
+    const DisplayList: React.FunctionComponent<{}> = () => {
+        getFiles();
+        return (
+            <>
+                {console.log("files : ", files)}
+                {Array.from(files!).map((file: any, index: any) => {
+                    return (
+                        <ListItem key={index}>
+                            <ListItemText primary={file.name} />
+                            <ListItemSecondaryAction>
+                                <IconButton
+                                    edge="end"
+                                    aria-label="delete"
+                                    onClick={() => retirerFichier(index)}
+                                >
+                                    <DeleteIcon />
+                                </IconButton>
+                            </ListItemSecondaryAction>
+                        </ListItem>
+                    )
+                }
+                )}
+            </>
+        )
+    }
+
+
+
     return (
         <>
             <ListItem key="importerFichier" style={{ cursor: 'pointer' }} onClick={handleOpen}>
@@ -127,38 +160,7 @@ const UploadFile: React.FC = () => {
                     {files && (
                         <>
                             <List>
-                                {files.length == 1 && (
-                                    <ListItem >
-                                        <ListItemText primary={files[0].name} />
-                                        <ListItemSecondaryAction>
-                                            <IconButton
-                                                edge="end"
-                                                aria-label="delete"
-                                                onClick={() => retirerFichier(0)}
-                                            >
-                                                <DeleteIcon />
-                                            </IconButton>
-                                        </ListItemSecondaryAction>
-                                    </ListItem>
-                                )}
-                                {files.length > 1 && 
-                                <Typography>TO FIX : map des fichiers sélectionnés.</Typography>
-                                // files.map((file: any, index: any) => (
-                                //     <ListItem >
-                                //         <ListItemText primary={file.name} />
-                                //         <ListItemSecondaryAction>
-                                //             <IconButton
-
-                                //                 edge="end"
-                                //                 aria-label="delete"
-                                //                 onClick={() => retirerFichier(index)}
-                                //             >
-                                //                 <DeleteIcon />
-                                //             </IconButton>
-                                //         </ListItemSecondaryAction>
-                                //     </ListItem>
-                                // ))
-                                }
+                                <DisplayList />
                             </List>
                             <Button variant='contained' onClick={importerFichier} startIcon={<UploadIcon />}>Importer</Button>
                             <br />
@@ -176,7 +178,6 @@ const UploadFile: React.FC = () => {
                     )
                     }
                     <CloseIcon onClick={handleClose} style={{ cursor: 'pointer' }} sx={{ position: "absolute", top: "0", right: "0" }} />
-                    {/* <Button onClick={handleClose}>Fermer</Button> */}
                 </Box>
             </Modal>
             <Snackbar open={alertOpen} anchorOrigin={{ vertical: "bottom", horizontal: "right" }} autoHideDuration={6000} onClose={handleAlertClose}>
@@ -188,4 +189,5 @@ const UploadFile: React.FC = () => {
     );
 };
 
-export default UploadFile;
+
+export default UploadFile
