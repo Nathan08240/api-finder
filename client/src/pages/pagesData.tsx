@@ -6,6 +6,7 @@ import { AppBarHead } from '../layouts/Appbar'
 import ErrorPage from './Error'
 import CreateUser from '../components/Users/CreateUser'
 import EditUser from '../components/Users/EditUser'
+import DetailsUser from '../components/Users/DetailsUser'
 
 const pagesData: routerType[] = [
   {
@@ -42,7 +43,7 @@ const pagesData: routerType[] = [
     title: 'create user',
   },
   {
-    path: 'users/edit/:id',
+    path: 'users/edit/:_id',
     element: (
       <>
         <AppBarHead />
@@ -51,6 +52,17 @@ const pagesData: routerType[] = [
     ),
     errorElement: <ErrorPage />,
     title: 'edit user',
+  },
+  {
+    path: 'users/details/:_id',
+    element: (
+      <>
+        <AppBarHead />
+        <DetailsUser />
+      </>
+    ),
+    errorElement: <ErrorPage />,
+    title: 'details user',
   },
   {
     path: 'promotions',

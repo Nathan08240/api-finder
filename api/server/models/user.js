@@ -11,11 +11,6 @@ const { sendEmail } = require('../utils/mailer')
 
 const userSchema = new Schema(
   {
-    id: {
-      type: Number,
-      required: true,
-      unique: true,
-    },
     lastname: {
       type: String,
       required: true,

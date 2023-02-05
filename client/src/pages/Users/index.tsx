@@ -1,13 +1,13 @@
-import { Container, Table, TableBody, TableRow, TableCell, TableHead, Button, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { Delete, ModeEdit } from '@mui/icons-material'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { Container, Table, TableBody, TableRow, TableCell, TableHead, Button, Typography } from '@mui/material'
+import { Delete, ModeEdit, VisibilityOutlined } from '@mui/icons-material'
 import { makeStyles } from '@mui/styles'
 
 const apiUrl = 'http://localhost:5000/api/users'
 
 interface User {
-  id: string
+  _id: string
   lastname: string
   firstname: string
   email: string
@@ -23,13 +23,42 @@ const useStyles = makeStyles({
 })
 
 export const Users = () => {
-  const [usersData, setUsersData] = useState([])
+  const [usersData, setUsersData] = useState<User[]>([])
   const classes = useStyles()
-
+  const navigate = useNavigate()
   const url = new URL(apiUrl)
   let headers = {
     'Content-Type': 'application/json',
     Authorization: 'Bearer ' + localStorage.getItem('authToken'),
+  }
+
+  const loadDetails = (_id: string) => {
+    navigate(`details/${_id}`)
+  }
+
+  const loadEdit = (_id: string) => {
+    navigate(`edit/${_id}`)
+  }
+
+  const RemoveFunction = (_id: string) => {
+    if (window.confirm('Voulez-vous supprimer cet utilisateur ?')) {
+      const url = new URL(apiUrl + '/' + _id)
+      let headers = {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('authToken'),
+      }
+      fetch(url, { method: 'DELETE', headers: headers })
+        .then((data) => {
+          return data.json()
+        })
+        .then((resp) => {
+          console.log(resp)
+          window.location.reload()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
   }
 
   useEffect(() => {
@@ -68,16 +97,34 @@ export const Users = () => {
         <TableBody>
           {usersData &&
             usersData.map((user: User) => (
-              <TableRow key={user.id}>
+              <TableRow key={user._id}>
                 <TableCell align='center'>{user.lastname}</TableCell>
                 <TableCell align='center'>{user.firstname}</TableCell>
                 <TableCell align='center'>{user.email}</TableCell>
                 <TableCell align='center'>{user.role}</TableCell>
                 <TableCell align='center'>
-                  <Button color='inherit'>
+                  <Button
+                    color='inherit'
+                    onClick={() => {
+                      loadDetails(user._id)
+                    }}
+                  >
+                    <VisibilityOutlined />
+                  </Button>
+                  <Button
+                    color='inherit'
+                    onClick={() => {
+                      loadEdit(user._id)
+                    }}
+                  >
                     <ModeEdit />
                   </Button>
-                  <Button color='primary'>
+                  <Button
+                    color='primary'
+                    onClick={() => {
+                      RemoveFunction(user._id)
+                    }}
+                  >
                     <Delete />
                   </Button>
                 </TableCell>
