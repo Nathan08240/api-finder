@@ -40,23 +40,20 @@ export const Users = () => {
     navigate(`edit/${_id}`)
   }
 
-  const RemoveFunction = (_id: string) => {
+  const RemoveFunction = async (_id: string) => {
     if (window.confirm('Voulez-vous supprimer cet utilisateur ?')) {
       const url = new URL(apiUrl + '/' + _id)
       let headers = {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + localStorage.getItem('authToken'),
       }
-      fetch(url, { method: 'DELETE', headers: headers })
-        .then((data) => {
-          return data.json()
-        })
+      await fetch(url, { method: 'DELETE', headers: headers })
         .then((resp) => {
-          console.log(resp)
+          alert('Utilisateur supprimé avec succès !')
           window.location.reload()
         })
         .catch((err) => {
-          console.log(err)
+          console.log(err.message)
         })
     }
   }

@@ -38,7 +38,7 @@ const getUserByID = async function (req, res) {
     }
     res.send(user)
   } catch (error) {
-    res.status(500).send
+    res.status(500).send()
   }
 }
 
@@ -50,7 +50,7 @@ const deleteUserByID = async function (req, res) {
     }
     res.send(user)
   } catch (error) {
-    res.status(500).send
+    res.status(500).send()
   }
 }
 

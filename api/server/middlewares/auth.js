@@ -14,7 +14,7 @@ const isAuth = (req, res, next) => {
 }
 
 const isAdmin = (req, res, next) => {
-  if (req.userData.role !== 'support') {
+  if (!req.userData || req.userData.role !== 'support') {
     return res.status(401).json({
       message: 'Role not authorized',
     })

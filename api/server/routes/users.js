@@ -5,8 +5,8 @@ const { isAuth, isAdmin } = require('../middlewares/auth')
 
 /* GET users listing. */
 router.use(isAuth)
-router.route('/').get(getUsers).post(isAdmin, createUser)
+router.route('/').get(getUsers).post(createUser)
 
-router.route('/:id').get(getUserByID).delete(isAdmin, deleteUserByID).put(isAdmin, UpdateUserByID)
+router.route('/:id').get(getUserByID).delete(deleteUserByID).put(UpdateUserByID)
 
 module.exports = router
