@@ -1,8 +1,5 @@
 const Users = require('../models/user')
-const { sendEmail } = require('../utils/mailer')
-const CryptoJS = require('crypto-js')
 const client = require('../utils/redis')
-const bcrypt = require('bcrypt')
 const fs = require('fs')
 
 const createUser = async function (req, res) {

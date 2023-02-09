@@ -44,7 +44,7 @@ const deletePromotionByID = async function (req, res) {
   }
 }
 
-const UpdatePromotionByID = async function (req, res) {
+const updatePromotionByID = async function (req, res) {
   try {
     const promotion = await Promotion.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -64,5 +64,5 @@ module.exports = {
   getPromotion,
   getPromotionByID,
   deletePromotionByID,
-  UpdatePromotionByID,
+  updatePromotionByID,
 }

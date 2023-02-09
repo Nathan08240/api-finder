@@ -1,8 +1,8 @@
-const express = require('express');
-const router = express.Router();
-const {login} = require('../handlers/auth');
+const express = require('express')
+const router = express.Router()
+const { login } = require('../handlers/auth')
 
-router.route('/login')
-    .post(login);
+router.route('/login').post(login)
 
-module.exports = router;
+module.exports = router
+s
