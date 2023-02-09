@@ -142,7 +142,7 @@ const UploadFile: React.FC = () => {
                 {filesArray.map((file: any, index: any) => {
                     return (
                         <ListItem key={index}>
-                            <ListItemText primary={file.name} />
+                            <ListItemText primary={file.name.length > 30 ? file.name.substring(0, 12) + "(...)" + file.name.substring(file.name.length - 12, file.name.length) : file.name} />
                             <ListItemSecondaryAction>
                                 <IconButton
                                     edge="end"
