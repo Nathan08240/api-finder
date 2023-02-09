@@ -4,6 +4,7 @@ const createPromotion = async function (req, res) {
   try {
     const promotion = new Promotion(req.body)
     await promotion.save()
+    fs.mkdirSync(`../BDD/${promotion.name}`, { recursive: true })
     res.status(201).send(promotion)
   } catch (error) {
     console.log(error)

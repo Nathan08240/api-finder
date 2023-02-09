@@ -6,7 +6,7 @@ const createUser = async function (req, res) {
   try {
     const user = new Users(req.body)
     await user.save()
-    fs.mkdirSync(`./${user.lastname}_${user.firstname}`, { recursive: true })
+    fs.mkdirSync(`../BDD/${user.lastname}_${user.firstname}`, { recursive: true })
     user.createToken()
     // const token = await client.get('registerToken')
     console.log(token)
