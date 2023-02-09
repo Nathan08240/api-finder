@@ -8,7 +8,7 @@ const createUser = async function (req, res) {
     await user.save()
     fs.mkdirSync(`./${user.lastname}_${user.firstname}`, { recursive: true })
     user.createToken()
-    const token = await client.get('registerToken')
+    // const token = await client.get('registerToken')
     console.log(token)
     user.createValidationEmail(token)
     res.status(201).send(user)
@@ -62,6 +62,7 @@ const UpdateUserByID = async function (req, res) {
     }
     res.send(user)
   } catch (error) {
+    console.log(error)
     res.status(500).send()
   }
 }

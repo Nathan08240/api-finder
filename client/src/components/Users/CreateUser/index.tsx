@@ -62,7 +62,7 @@ const CreateUser = () => {
       <Typography style={{ textAlign: 'center', margin: '10px 0' }} variant='h4'>
         Ajouter un utilisateur
       </Typography>
-      <form onSubmit={handleSubmit} noValidate autoComplete='off'>
+      <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField disabled autoFocus fullWidth label='Id' name='_id' onChange={(e) => setId(e.target.value)} />

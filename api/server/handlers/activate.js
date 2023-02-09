@@ -4,7 +4,7 @@ const CryptoJS = require('crypto-js')
 
 const activeAccount = async function (req, res) {
   try {
-    const token = await client.get('registerToken')
+    // const token = await client.get('registerToken')
     console.log('received token : ' + token)
     let bytes = CryptoJS.AES.decrypt(token, process.env.CRYPTOJS_SECRET)
     let originalText = bytes.toString(CryptoJS.enc.Utf8)

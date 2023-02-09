@@ -67,7 +67,7 @@ userSchema.methods.createAuthToken = async function () {
     this.firstname.charAt(0).toUpperCase() +
     this.firstname.slice(1)
   const payload = {
-    id: this.id,
+    _id: this._id,
     role: this.role,
     email: this.email,
     fullname: fullname,
@@ -80,7 +80,7 @@ userSchema.methods.createAuthToken = async function () {
 
 userSchema.methods.createToken = async function () {
   const token = CryptoJS.AES.encrypt(this.email, process.env.CRYPTOJS_SECRET).toString()
-  await client.set('registerToken', token, 'EX', 60 * 15)
+  // await client.set('registerToken', token, 'EX', 60 * 15)
 }
 
 userSchema.methods.createValidationEmail = async function (token) {
