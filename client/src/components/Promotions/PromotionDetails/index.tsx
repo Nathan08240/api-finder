@@ -2,17 +2,16 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { Button, Container, Typography } from '@mui/material'
 
-const apiUrl = 'http://localhost:5000/api/users'
+const apiUrl = 'http://localhost:5000/api/promotions'
 
-interface User {
+interface Promotion {
   _id: string
-  lastname: string
-  firstname: string
-  email: string
-  role: string
+  name: string
+  reference: string
+  // referent: string
 }
 
-const DetailsUser = () => {
+const PromotionDetails = () => {
   const { _id } = useParams()
   const url = new URL(apiUrl + '/' + _id)
   let headers = {
@@ -20,12 +19,11 @@ const DetailsUser = () => {
     Authorization: 'Bearer ' + localStorage.getItem('authToken'),
   }
 
-  const [userData, setUserData] = useState<User>({
+  const [promotionData, setPromotionData] = useState<Promotion>({
     _id: '',
-    lastname: '',
-    firstname: '',
-    email: '',
-    role: '',
+    name: '',
+    reference: '',
+    // referent: '',
   })
 
   useEffect(() => {
@@ -34,7 +32,7 @@ const DetailsUser = () => {
         return data.json()
       })
       .then((resp) => {
-        setUserData(resp)
+        setPromotionData(resp)
       })
       .catch((err) => {
         console.log(err)
@@ -43,30 +41,27 @@ const DetailsUser = () => {
 
   return (
     <Container>
-      {userData && (
+      {promotionData && (
         <div>
           <Typography style={{ textAlign: 'center', margin: '10px 0' }} variant='h4'>
-            Détail de l'utilisateur
+            Détail de la promotion
           </Typography>
           <Typography style={{ textAlign: 'center', margin: '10px 0' }} variant='h6'>
-            Id: {userData._id}
+            Id: {promotionData._id}
           </Typography>
           <Typography style={{ textAlign: 'center', margin: '10px 0' }} variant='h6'>
-            Nom: {userData.lastname}
+            Référence: {promotionData.reference}
           </Typography>
           <Typography style={{ textAlign: 'center', margin: '10px 0' }} variant='h6'>
-            Prénom: {userData.firstname}
+            Nom: {promotionData.name}
           </Typography>
-          <Typography style={{ textAlign: 'center', margin: '10px 0' }} variant='h6'>
-            Email: {userData.email}
-          </Typography>
-          <Typography style={{ textAlign: 'center', margin: '10px 0' }} variant='h6'>
-            Role: {userData.role}
-          </Typography>
+          {/* <Typography style={{ textAlign: 'center', margin: '10px 0' }} variant='h6'>
+            Référent: {promotionData.referent}
+          </Typography> */}
         </div>
       )}
       <Link
-        to='/users'
+        to='/promotions'
         style={{
           display: 'flex',
           justifyContent: 'center',
@@ -83,4 +78,4 @@ const DetailsUser = () => {
   )
 }
 
-export default DetailsUser
+export default PromotionDetails

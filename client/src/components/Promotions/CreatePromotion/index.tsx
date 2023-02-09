@@ -1,43 +1,62 @@
-import { useState, FormEvent } from 'react'
+import { useState, FormEvent, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   Container,
   Typography,
   TextField,
-  FormControl,
-  InputLabel,
-  Select,
   MenuItem,
-  SelectChangeEvent,
   Button,
   Box,
   Grid,
+  FormControl,
+  InputLabel,
+  Select,
+  SelectChangeEvent,
 } from '@mui/material'
 
-const apiUrl = 'http://localhost:5000/api/users'
+const apiUrl = 'http://localhost:5000/api/promotions'
+const apiUsersUrl = 'http://localhost:5000/api/users'
 
-const roles = [
-  { value: 'support', label: 'Support' },
-  { value: 'administration', label: 'Administration' },
-  { value: 'pilot', label: 'Pilote' },
-  { value: 'speaker', label: 'Intervenant' },
-  { value: 'student', label: 'Etudiant' },
-]
+interface User {
+  _id: string
+  firstname: string
+  lastname: string
+  email: string
+  password: string
+  role: string
+}
 
-const CreateUser = () => {
+const CreatePromotion = () => {
   const [id, setId] = useState('')
-  const [lastname, setLastname] = useState('')
-  const [firstname, setFirstname] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [role, setRole] = useState('')
-
+  const [reference, setReference] = useState('')
+  const [name, setName] = useState('')
+  const [referent, setReferent] = useState('')
+  const [pilot, setPilot] = useState<Array<User>>([])
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const fetchPilots = async () => {
+      let headers = {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('authToken'),
+      }
+      await fetch(apiUsersUrl, { method: 'GET', headers: headers })
+        .then((res) => res.json())
+        .then((data) => {
+          const pilots = data.filter((user: User) => user.role === 'pilot')
+          setPilot(pilots)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+    fetchPilots()
+  }, [])
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     const url = new URL(apiUrl)
-    const userData = { lastname, firstname, email, password, role }
+    const promotionData = { reference, name }
     const headers = {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + localStorage.getItem('authToken'),
@@ -46,10 +65,10 @@ const CreateUser = () => {
     await fetch(url, {
       method: 'POST',
       headers: headers,
-      body: JSON.stringify(userData),
+      body: JSON.stringify(promotionData),
     })
       .then((res) => {
-        alert('Utilisateur créé avec succès')
+        alert('Promotion créée avec succès')
         navigate('/users')
       })
       .catch((err) => {
@@ -60,7 +79,7 @@ const CreateUser = () => {
   return (
     <Container>
       <Typography style={{ textAlign: 'center', margin: '10px 0' }} variant='h4'>
-        Ajouter un utilisateur
+        Ajouter une promotion
       </Typography>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
@@ -68,44 +87,39 @@ const CreateUser = () => {
             <TextField disabled autoFocus fullWidth label='Id' name='_id' onChange={(e) => setId(e.target.value)} />
           </Grid>
           <Grid item xs={12}>
-            <TextField autoFocus fullWidth label='Nom' name='lastname' onChange={(e) => setLastname(e.target.value)} />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField fullWidth label='Prénom' name='firstname' onChange={(e) => setFirstname(e.target.value)} />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField fullWidth label='Email' name='email' onChange={(e) => setEmail(e.target.value)} />
-          </Grid>
-          <Grid item xs={12}>
             <TextField
+              autoFocus
               fullWidth
-              label='Mot de passe'
-              type='password'
-              name='password'
-              onChange={(e) => setPassword(e.target.value)}
+              label='Référence'
+              name='referennce'
+              onChange={(e) => setReference(e.target.value)}
             />
           </Grid>
           <Grid item xs={12}>
+            <TextField fullWidth label='Nom' name='name' onChange={(e) => setName(e.target.value)} />
+          </Grid>
+          <Grid item xs={12}>
             <FormControl fullWidth>
-              <InputLabel htmlFor='role-select'>Rôle</InputLabel>
+              <InputLabel htmlFor='pilot-select'>Référant</InputLabel>
               <Select
-                onChange={(e: SelectChangeEvent<string>) => setRole(e.target.value)}
+                onChange={(e: SelectChangeEvent<string>) => setReferent(e.target.value)}
                 inputProps={{
-                  name: 'role',
-                  id: 'role-select',
+                  name: 'referent',
+                  id: 'pilot-select',
                 }}
               >
-                {roles.map((role, index) => (
-                  <MenuItem key={index} value={role.value}>
-                    {role.label}
-                  </MenuItem>
-                ))}
+                {pilot &&
+                  pilot.map((pilot: User) => (
+                    <MenuItem key={pilot._id} value={pilot._id}>
+                      {pilot.firstname + ' ' + pilot.lastname}
+                    </MenuItem>
+                  ))}
               </Select>
             </FormControl>
           </Grid>
           <Grid item xs={12}>
             <Box mt={2} style={{ display: 'flex', justifyContent: 'end' }}>
-              <Link to='/users' style={{ textDecoration: 'none', color: '#000', marginRight: '10px' }}>
+              <Link to='/promotions' style={{ textDecoration: 'none', color: '#000', marginRight: '10px' }}>
                 <Button variant='contained' color='inherit'>
                   Retour
                 </Button>
@@ -121,4 +135,4 @@ const CreateUser = () => {
   )
 }
 
-export default CreateUser
+export default CreatePromotion

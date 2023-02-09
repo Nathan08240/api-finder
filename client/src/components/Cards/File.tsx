@@ -107,7 +107,7 @@ const FilesDisplay: React.FC<{ location: string }> = (location) => {
   return (
     <Grid container>
       <Grid item xs={2}></Grid>
-      <Grid container xs={8}>
+      <Grid container>
         {files.map((file) => (
           <Grid item xs={2} key={file.id}>
             <FileCard file={file} onClick={() => handleFileClick(file)} />

@@ -23,6 +23,7 @@ const getUsers = async function (req, res) {
     const users = await Users.find({})
     res.send(users)
   } catch (error) {
+    console.log(error)
     res.status(500).send(error)
   }
 }

@@ -67,6 +67,7 @@ const pagesData: routerType[] = [
     errorElement: <ErrorPage />,
     title: 'User details',
   },
+
   {
     path: 'promotions',
     element: (

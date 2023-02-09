@@ -12,7 +12,7 @@ interface User {
   role: string
 }
 
-const DetailsUser = () => {
+const UserDetails = () => {
   const { _id } = useParams()
   const url = new URL(apiUrl + '/' + _id)
   let headers = {
@@ -83,4 +83,4 @@ const DetailsUser = () => {
   )
 }
 
-export default DetailsUser
+export default UserDetails

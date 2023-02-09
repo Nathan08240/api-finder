@@ -1,8 +1,11 @@
-const Promotion = require('../models/promotion')
+const Promotions = require('../models/promotion')
+const mongoose = require('mongoose')
+const fs = require('fs')
 
 const createPromotion = async function (req, res) {
   try {
-    const promotion = new Promotion(req.body)
+    const { user } = req.body
+    const promotion = new Promotions({ ...req.body, referent: mongoose.Types.ObjectId(user) })
     await promotion.save()
     fs.mkdirSync(`../BDD/${promotion.name}`, { recursive: true })
     res.status(201).send(promotion)
@@ -12,18 +15,19 @@ const createPromotion = async function (req, res) {
   }
 }
 
-const getPromotion = async function (req, res) {
+const getPromotions = async function (req, res) {
   try {
-    const Promotion = await Promotion.find({})
-    res.send(Promotion)
+    const promotions = await Promotions.find({})
+    res.send(promotions)
   } catch (error) {
+    console.log(error)
     res.status(500).send(error)
   }
 }
 
 const getPromotionByID = async function (req, res) {
   try {
-    const promotion = await Promotion.findById(req.params.id)
+    const promotion = await Promotions.findById(req.params.id)
     if (!promotion) {
       return res.status(404).send()
     }
@@ -35,7 +39,7 @@ const getPromotionByID = async function (req, res) {
 
 const deletePromotionByID = async function (req, res) {
   try {
-    const promotion = await Promotion.findByIdAndDelete(req.params.id)
+    const promotion = await Promotions.findByIdAndDelete(req.params.id)
     if (!promotion) {
       return res.status(404).send()
     }
@@ -47,7 +51,7 @@ const deletePromotionByID = async function (req, res) {
 
 const updatePromotionByID = async function (req, res) {
   try {
-    const promotion = await Promotion.findByIdAndUpdate(req.params.id, req.body, {
+    const promotion = await Promotions.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
     })
@@ -62,7 +66,7 @@ const updatePromotionByID = async function (req, res) {
 
 module.exports = {
   createPromotion,
-  getPromotion,
+  getPromotions,
   getPromotionByID,
   deletePromotionByID,
   updatePromotionByID,

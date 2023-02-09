@@ -14,6 +14,11 @@ const promotionSchema = new Schema(
       length: 8,
       unique: true,
     },
+    referent: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
   },
   { timestamps: true }
 )
