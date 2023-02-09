@@ -170,11 +170,6 @@ const UploadFile: React.FC<UploadFileProps> = ({
 
     return (
         <>
-            <Snackbar open={fileTooLargeAlert} anchorOrigin={{ vertical: "bottom", horizontal: "right" }} autoHideDuration={6000} onClose={handleFileTooLargeAlertClose} sx={{ zIndex: 5000 }}>
-                <Alert onClose={handleFileTooLargeAlertClose} severity="error" sx={{ width: '100%' }}>
-                    Fichier trop volumineux (5Mo maximum)
-                </Alert>
-            </Snackbar>
             <ListItem key="importerFichier" style={{ cursor: 'pointer' }} disabled={activeTab != "bibliotheque" ? true : false} onClick={() => {
                 if (activeTab != "bibliotheque") {
                     return;
@@ -213,6 +208,11 @@ const UploadFile: React.FC<UploadFileProps> = ({
                     )
                     }
                     <CloseIcon onClick={handleClose} style={{ cursor: 'pointer' }} sx={{ position: "absolute", top: "0", right: "0" }} />
+                    <Snackbar open={fileTooLargeAlert} anchorOrigin={{ vertical: "bottom", horizontal: "right" }} autoHideDuration={6000} onClose={handleFileTooLargeAlertClose}>
+                        <Alert onClose={handleFileTooLargeAlertClose} severity="error" sx={{ width: '100%' }}>
+                            Fichier trop volumineux (5Mo maximum)
+                        </Alert>
+                    </Snackbar>
                 </Box>
             </Modal>
             <Snackbar open={alertOpen} anchorOrigin={{ vertical: "bottom", horizontal: "right" }} autoHideDuration={6000} onClose={handleAlertClose}>
