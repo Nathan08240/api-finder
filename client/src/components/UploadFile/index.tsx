@@ -32,7 +32,15 @@ const style = {
     p: 4,
 };
 
-const UploadFile: React.FC = () => {
+type UploadFileProps = {
+    activeTab: string,
+    setActiveTab: (activeTab: string) => void,
+}
+
+const UploadFile: React.FC<UploadFileProps> = ({
+    activeTab,
+    setActiveTab,
+}) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -167,7 +175,13 @@ const UploadFile: React.FC = () => {
                     Fichier trop volumineux (5Mo maximum)
                 </Alert>
             </Snackbar>
-            <ListItem key="importerFichier" style={{ cursor: 'pointer' }} onClick={handleOpen}>
+            <ListItem key="importerFichier" style={{ cursor: 'pointer' }} disabled={activeTab != "bibliotheque" ? true : false} onClick={() => {
+                if (activeTab != "bibliotheque") {
+                    return;
+                } else {
+                    handleOpen();
+                }
+            }}>
                 <ListItemIcon>
                     <UploadFileRoundedIcon />
                 </ListItemIcon>

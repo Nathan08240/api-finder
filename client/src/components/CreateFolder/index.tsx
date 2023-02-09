@@ -11,7 +11,15 @@ import { AuthContext } from '../../App'
 
 const apiUrl = 'http://localhost:5000/api/folders'
 
-const CreateFolder: React.FC = () => {
+type CreateFolderProps = {
+  activeTab: string,
+  setActiveTab: (activeTab: string) => void,
+}
+
+const CreateFolder: React.FC<CreateFolderProps> = ({
+  activeTab,
+  setActiveTab,
+}) => {
   const [open, setOpen] = useState(false)
   const [folderName, setFolderName] = useState('')
   const { user } = useContext(AuthContext) as any
@@ -48,7 +56,13 @@ const CreateFolder: React.FC = () => {
 
   return (
     <>
-      <ListItem key='creerDossier' style={{ cursor: 'pointer' }} onClick={handleClickOpen}>
+      <ListItem key='creerDossier' style={{ cursor: 'pointer' }} disabled={activeTab != "bibliotheque" ? true : false} onClick={() => {
+                if (activeTab != "bibliotheque") {
+                    return;
+                } else {
+                    handleClickOpen();
+                }
+            }}>
         <ListItemIcon>
           <CreateNewFolderIcon />
         </ListItemIcon>
