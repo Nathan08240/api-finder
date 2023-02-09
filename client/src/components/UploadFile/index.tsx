@@ -59,6 +59,12 @@ const UploadFile: React.FC = () => {
     const { user } = React.useContext(AuthContext) as any
     const target = `/${user.lastname}_${user.firstname}/`
     const apiUrl = `http://localhost:5000/api/files?target=${target}`
+    
+    
+    const path = window.localStorage.getItem('location')
+    const uploadTarget = path ? path : `/${user?.lastname}_${user?.firstname}`
+    const apiUploadUrl = `http://localhost:5000/api/files?target=${uploadTarget}`
+
 
     const headers = {
         'Content-Type': 'application/json',
@@ -94,7 +100,7 @@ const UploadFile: React.FC = () => {
             redirect: 'follow'
         };
 
-        fetch(apiUrl, requestOptions)
+        fetch(apiUploadUrl, requestOptions)
             .then(response => response.text())
             .then(result => console.log(result))
             .catch(error => console.log('error', error));
