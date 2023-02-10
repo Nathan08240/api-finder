@@ -51,6 +51,8 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
     }
   }
 
+  const [activeTab, setActiveTab] = React.useState("bibliotheque")
+
   return (
     <Drawer
       variant='persistent'
@@ -88,15 +90,34 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
                 <ListItemIcon>
                   <HomeIcon />
                 </ListItemIcon>
-                <Link className={classes.link} to='/'>
+                <Link className={classes.link} to='/' onClick={() => {
+                  setActiveTab("bibliotheque")
+                }}>
                   <ListItemText>Bibliothèque</ListItemText>
                 </Link>
               </ListItem>
+              <CreateFolder activeTab={activeTab} setActiveTab={setActiveTab} />
+              <ListItem key='importerDossier' disabled={activeTab != "bibliotheque" ? true : false} onClick={() => {
+                if (activeTab != "bibliotheque") {
+                    return;
+                } else {
+                    alert("importer un dossier");
+                }
+            }} style={{ cursor: 'pointer' }}>
+                <ListItemIcon>
+                  <DriveFolderUploadRoundedIcon />
+                </ListItemIcon>
+                <ListItemText>Importer un dossier</ListItemText>
+              </ListItem>
+              <UploadFile activeTab={activeTab} setActiveTab={setActiveTab} />
+              <Divider />
               <ListItem key='promotion' style={{ cursor: 'pointer' }}>
                 <ListItemIcon>
                   <PeopleIcon />
                 </ListItemIcon>
-                <Link className={classes.link} to='/users'>
+                <Link className={classes.link} to='/users' onClick={() => {
+                  setActiveTab("users")
+                }}>
                   <ListItemText>Gestion des Utilisateurs</ListItemText>
                 </Link>
               </ListItem>
@@ -104,18 +125,12 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
                 <ListItemIcon>
                   <SchoolIcon />
                 </ListItemIcon>
-                <Link className={classes.link} to='/promotions'>
+                <Link className={classes.link} to='/promotions' onClick={() => {
+                  setActiveTab("promotions")
+                }}>
                   <ListItemText>Gestion des Promotions</ListItemText>
                 </Link>
               </ListItem>
-              <CreateFolder />
-              <ListItem key='importerDossier' onClick={() => alert('importer dossier')} style={{ cursor: 'pointer' }}>
-                <ListItemIcon>
-                  <DriveFolderUploadRoundedIcon />
-                </ListItemIcon>
-                <ListItemText>Importer un dossier</ListItemText>
-              </ListItem>
-              <UploadFile />
               <Divider />
               <ListItem key='Stockage'>
                 <ListItemText>Stockage</ListItemText>

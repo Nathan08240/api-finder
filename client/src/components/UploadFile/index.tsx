@@ -32,7 +32,15 @@ const style = {
     p: 4,
 };
 
-const UploadFile: React.FC = () => {
+type UploadFileProps = {
+    activeTab: string,
+    setActiveTab: (activeTab: string) => void,
+}
+
+const UploadFile: React.FC<UploadFileProps> = ({
+    activeTab,
+    setActiveTab,
+}) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -46,19 +54,35 @@ const UploadFile: React.FC = () => {
         setAlertOpen(false);
     };
 
+    const [fileTooLargeAlert, setFileTooLargeAlert] = React.useState(false);
+    const handleFileTooLargeAlertOpen = () => setFileTooLargeAlert(true);
+    const handleFileTooLargeAlertClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setFileTooLargeAlert(false);
+    };
+
     const [filesArray, setFilesArray] = React.useState<any>([]);
     const getFilesArray = () => {
         return filesArray;
     }
 
-    const handleInput = (e: any) => {
+    const handleInput = async (e: any) => {
         console.log("e.target.files : ", e.target.files)
-        setFilesArray(Array.from(e.target.files));
+        await setFilesArray(Array.from(e.target.files));
+        console.log("filesArray : ", filesArray)
     };
 
     const { user } = React.useContext(AuthContext) as any
     const target = `/${user.lastname}_${user.firstname}/`
     const apiUrl = `http://localhost:5000/api/files?target=${target}`
+
+
+    const path = window.localStorage.getItem('location')
+    const uploadTarget = path ? path : `/${user?.lastname}_${user?.firstname}`
+    const apiUploadUrl = `http://localhost:5000/api/files?target=${uploadTarget}`
+
 
     const headers = {
         'Content-Type': 'application/json',
@@ -94,7 +118,7 @@ const UploadFile: React.FC = () => {
             redirect: 'follow'
         };
 
-        fetch(apiUrl, requestOptions)
+        fetch(apiUploadUrl, requestOptions)
             .then(response => response.text())
             .then(result => console.log(result))
             .catch(error => console.log('error', error));
@@ -114,14 +138,19 @@ const UploadFile: React.FC = () => {
     });
 
     const DisplayList: React.FunctionComponent<{}> = () => {
-        getFilesArray();
         return (
             <>
                 {console.log("filesArray : ", filesArray)}
                 {filesArray.map((file: any, index: any) => {
+                    if (file.size > 5000000) {
+                        retirerFichier(index);
+                        setFileTooLargeAlert(true);
+                    }
+                })}
+                {filesArray.map((file: any, index: any) => {
                     return (
                         <ListItem key={index}>
-                            <ListItemText primary={file.name} />
+                            <ListItemText primary={file.name.length > 30 ? file.name.substring(0, 12) + "(...)" + file.name.substring(file.name.length - 12, file.name.length) : file.name} />
                             <ListItemSecondaryAction>
                                 <IconButton
                                     edge="end"
@@ -141,7 +170,13 @@ const UploadFile: React.FC = () => {
 
     return (
         <>
-            <ListItem key="importerFichier" style={{ cursor: 'pointer' }} onClick={handleOpen}>
+            <ListItem key="importerFichier" style={{ cursor: 'pointer' }} disabled={activeTab != "bibliotheque" ? true : false} onClick={() => {
+                if (activeTab != "bibliotheque") {
+                    return;
+                } else {
+                    handleOpen();
+                }
+            }}>
                 <ListItemIcon>
                     <UploadFileRoundedIcon />
                 </ListItemIcon>
@@ -173,6 +208,11 @@ const UploadFile: React.FC = () => {
                     )
                     }
                     <CloseIcon onClick={handleClose} style={{ cursor: 'pointer' }} sx={{ position: "absolute", top: "0", right: "0" }} />
+                    <Snackbar open={fileTooLargeAlert} anchorOrigin={{ vertical: "bottom", horizontal: "right" }} autoHideDuration={6000} onClose={handleFileTooLargeAlertClose}>
+                        <Alert onClose={handleFileTooLargeAlertClose} severity="error" sx={{ width: '100%' }}>
+                            Fichier trop volumineux (5Mo maximum)
+                        </Alert>
+                    </Snackbar>
                 </Box>
             </Modal>
             <Snackbar open={alertOpen} anchorOrigin={{ vertical: "bottom", horizontal: "right" }} autoHideDuration={6000} onClose={handleAlertClose}>
