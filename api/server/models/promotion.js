@@ -1,22 +1,28 @@
-const mongoose = require('mongoose');
-const User = require('./user');
-const {Schema} = mongoose;
+const mongoose = require('mongoose')
+const { Schema } = mongoose
 
-const promotionSchema = new Schema({
+const promotionSchema = new Schema(
+  {
     name: {
-        type: String,
-        required: true,
+      type: String,
+      minlength: 3,
+      required: true,
     },
-    referance: {
-        type: String,
-        required: true,
-        unique: true,
+    reference: {
+      type: String,
+      required: true,
+      length: 8,
+      unique: true,
     },
-    User: {
-        type: User
+    referent: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
     },
-}, {timestamps: true});
+  },
+  { timestamps: true }
+)
 
-const Promotion = mongoose.model('Promotion', promotionSchema);
+const Promotion = mongoose.model('Promotion', promotionSchema)
 
-module.exports = Promotion;
+module.exports = Promotion

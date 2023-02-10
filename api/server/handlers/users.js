@@ -1,17 +1,14 @@
 const Users = require('../models/user')
-const { sendEmail } = require('../utils/mailer')
-const CryptoJS = require('crypto-js')
 const client = require('../utils/redis')
-const bcrypt = require('bcrypt')
 const fs = require('fs')
 
 const createUser = async function (req, res) {
   try {
     const user = new Users(req.body)
     await user.save()
-    fs.mkdirSync(`./${user.lastname}_${user.firstname}`, { recursive: true })
+    fs.mkdirSync(`../BDD/${user.lastname}_${user.firstname}`, { recursive: true })
     user.createToken()
-    const token = await client.get('registerToken')
+    // const token = await client.get('registerToken')
     console.log(token)
     user.createValidationEmail(token)
     res.status(201).send(user)
@@ -26,6 +23,7 @@ const getUsers = async function (req, res) {
     const users = await Users.find({})
     res.send(users)
   } catch (error) {
+    console.log(error)
     res.status(500).send(error)
   }
 }
@@ -65,6 +63,7 @@ const UpdateUserByID = async function (req, res) {
     }
     res.send(user)
   } catch (error) {
+    console.log(error)
     res.status(500).send()
   }
 }

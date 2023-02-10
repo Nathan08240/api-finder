@@ -10,9 +10,7 @@ const app = express()
 
 const allowedOrigins = ['http://localhost:5173']
 
-app.use(
-  cors()
-)
+app.use(cors())
 
 app.use(express.json())
 app.use(logger('dev'))

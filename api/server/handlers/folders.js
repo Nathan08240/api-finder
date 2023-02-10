@@ -16,7 +16,6 @@ const getFolders = (req, res) => {
         size: folder.size,
         modifiedAt: stats.mtime,
       })
-      // path: `${path}/${folder.name}`,
     }
   })
   res.send({ directories: folders })

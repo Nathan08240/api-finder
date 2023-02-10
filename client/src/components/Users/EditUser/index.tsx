@@ -49,6 +49,7 @@ const EditUser = () => {
         setLastname(resp.lastname)
         setFirstname(resp.firstname)
         setEmail(resp.email)
+        setPassword(resp.password)
         setRole(resp.role)
       })
       .catch((err) => {
@@ -58,16 +59,16 @@ const EditUser = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    const url = new URL(apiUrl)
-    const userData = { _id, lastname, firstname, email, password, role }
-    const headers = {
+    const url = new URL(apiUrl + '/' + _id)
+    const userData = { lastname, firstname, email, password, role }
+    let headers = {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + localStorage.getItem('authToken'),
     }
 
     await fetch(url, {
       method: 'PUT',
-      headers,
+      headers: headers,
       body: JSON.stringify(userData),
     })
       .then((res) => {
@@ -84,7 +85,7 @@ const EditUser = () => {
       <Typography style={{ textAlign: 'center', margin: '10px 0' }} variant='h4'>
         Modifier l'utilisateur
       </Typography>
-      <form onSubmit={handleSubmit} noValidate autoComplete='off'>
+      <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField disabled fullWidth name='_id' value={id} onChange={(e) => setId(e.target.value)} />
@@ -113,10 +114,12 @@ const EditUser = () => {
           </Grid>
           <Grid item xs={12}>
             <TextField
+              hidden
               fullWidth
               label='Mot de passe'
               type='password'
               name='password'
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </Grid>

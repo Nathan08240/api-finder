@@ -8,6 +8,7 @@ const CryptoJS = require('crypto-js')
 const client = require('../utils/redis')
 const { Schema } = mongoose
 const { sendEmail } = require('../utils/mailer')
+const Promotion = require('./promotion')
 
 const userSchema = new Schema(
   {
@@ -60,6 +61,7 @@ const userSchema = new Schema(
 )
 
 userSchema.methods.createAuthToken = async function () {
+  // const promotion = await Promotion.findById(this.promotion)
   const fullname =
     this.lastname.charAt(0).toUpperCase() +
     this.lastname.slice(1) +
@@ -67,12 +69,16 @@ userSchema.methods.createAuthToken = async function () {
     this.firstname.charAt(0).toUpperCase() +
     this.firstname.slice(1)
   const payload = {
-    id: this.id,
+    _id: this._id,
     role: this.role,
     email: this.email,
     fullname: fullname,
     lastname: this.lastname,
     firstname: this.firstname,
+    // promotion: {
+    //   name: promotion.name,
+    //   reference: promotion.reference,
+    // },
     is_confirmed: this.is_confirmed,
   }
   return createToken(payload, 60 * 60)
@@ -80,7 +86,7 @@ userSchema.methods.createAuthToken = async function () {
 
 userSchema.methods.createToken = async function () {
   const token = CryptoJS.AES.encrypt(this.email, process.env.CRYPTOJS_SECRET).toString()
-  await client.set('registerToken', token, 'EX', 60 * 15)
+  // await client.set('registerToken', token, 'EX', 60 * 15)
 }
 
 userSchema.methods.createValidationEmail = async function (token) {

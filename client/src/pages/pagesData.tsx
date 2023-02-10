@@ -6,7 +6,10 @@ import { AppBarHead } from '../layouts/Appbar'
 import ErrorPage from './Error'
 import CreateUser from '../components/Users/CreateUser'
 import EditUser from '../components/Users/EditUser'
-import DetailsUser from '../components/Users/DetailsUser'
+import UserDetails from '../components/Users/UserDetails'
+import CreatePromotion from '../components/Promotions/CreatePromotion'
+import EditPromotion from '../components/Promotions/EditPromotion'
+import PromotionDetails from '../components/Promotions/PromotionDetails'
 
 const pagesData: routerType[] = [
   {
@@ -18,7 +21,7 @@ const pagesData: routerType[] = [
       </>
     ),
     errorElement: <ErrorPage />,
-    title: 'home',
+    title: 'Home',
   },
   {
     path: 'users',
@@ -29,7 +32,7 @@ const pagesData: routerType[] = [
       </>
     ),
     errorElement: <ErrorPage />,
-    title: 'home',
+    title: 'Users',
   },
   {
     path: 'users/create',
@@ -51,19 +54,20 @@ const pagesData: routerType[] = [
       </>
     ),
     errorElement: <ErrorPage />,
-    title: 'edit user',
+    title: 'Edit user',
   },
   {
     path: 'users/details/:_id',
     element: (
       <>
         <AppBarHead />
-        <DetailsUser />
+        <UserDetails />
       </>
     ),
     errorElement: <ErrorPage />,
-    title: 'details user',
+    title: 'User details',
   },
+
   {
     path: 'promotions',
     element: (
@@ -73,7 +77,40 @@ const pagesData: routerType[] = [
       </>
     ),
     errorElement: <ErrorPage />,
-    title: 'promotions',
+    title: 'Promotions',
+  },
+  {
+    path: 'promotions/create',
+    element: (
+      <>
+        <AppBarHead />
+        <CreatePromotion />
+      </>
+    ),
+    errorElement: <ErrorPage />,
+    title: 'Create promotion',
+  },
+  {
+    path: 'promotions/details/:_id',
+    element: (
+      <>
+        <AppBarHead />
+        <PromotionDetails />
+      </>
+    ),
+    errorElement: <ErrorPage />,
+    title: 'Promotion details',
+  },
+  {
+    path: 'promotions/edit/:_id',
+    element: (
+      <>
+        <AppBarHead />
+        <EditPromotion />
+      </>
+    ),
+    errorElement: <ErrorPage />,
+    title: 'Edit promotion',
   },
 ]
 
