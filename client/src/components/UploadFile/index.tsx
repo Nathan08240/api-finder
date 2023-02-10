@@ -32,7 +32,15 @@ const style = {
     p: 4,
 };
 
-const UploadFile: React.FC = () => {
+type UploadFileProps = {
+    activeTab: string,
+    setActiveTab: (activeTab: string) => void,
+}
+
+const UploadFile: React.FC<UploadFileProps> = ({
+    activeTab,
+    setActiveTab,
+}) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -46,17 +54,35 @@ const UploadFile: React.FC = () => {
         setAlertOpen(false);
     };
 
+    const [fileTooLargeAlert, setFileTooLargeAlert] = React.useState(false);
+    const handleFileTooLargeAlertOpen = () => setFileTooLargeAlert(true);
+    const handleFileTooLargeAlertClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setFileTooLargeAlert(false);
+    };
 
-    const [files, setFiles] = React.useState<any>(undefined);
+    const [filesArray, setFilesArray] = React.useState<any>([]);
+    const getFilesArray = () => {
+        return filesArray;
+    }
 
-    const handleInput = (e: any) => {
-        console.log(e.target.files)
-        setFiles(e.target.files);
+    const handleInput = async (e: any) => {
+        console.log("e.target.files : ", e.target.files)
+        await setFilesArray(Array.from(e.target.files));
+        console.log("filesArray : ", filesArray)
     };
 
     const { user } = React.useContext(AuthContext) as any
     const target = `/${user.lastname}_${user.firstname}/`
     const apiUrl = `http://localhost:5000/api/files?target=${target}`
+
+
+    const path = window.localStorage.getItem('location')
+    const uploadTarget = path ? path : `/${user?.lastname}_${user?.firstname}`
+    const apiUploadUrl = `http://localhost:5000/api/files?target=${uploadTarget}`
+
 
     const headers = {
         'Content-Type': 'application/json',
@@ -64,8 +90,8 @@ const UploadFile: React.FC = () => {
     }
 
     const retirerFichier = (index: any) => {
-        setFiles(undefined);
-        console.log("files : ", files)
+        setFilesArray(filesArray.filter((file: any, i: any) => i !== index));
+        console.log("filesArray : ", filesArray)
     }
 
     const importerFichier = async () => {
@@ -75,13 +101,13 @@ const UploadFile: React.FC = () => {
 
         var formdata = new FormData();
 
-        if (files.length == 1) {
-            console.log("files : ", files)
-            formdata.append("file", files[0], files[0].name);
+        if (filesArray?.length == 1) {
+            console.log("filesArray : ", filesArray)
+            formdata.append("file", filesArray[0], filesArray[0].name);
         }
-        if (files.length > 1) {
-            for (let i = 0; i < files.length; i++) {
-                formdata.append("file", files[i], files[i].name);
+        if (filesArray?.length > 1) {
+            for (let i = 0; i < filesArray.length; i++) {
+                formdata.append("file", filesArray[i], filesArray[i].name);
             }
         }
 
@@ -92,7 +118,7 @@ const UploadFile: React.FC = () => {
             redirect: 'follow'
         };
 
-        fetch(apiUrl, requestOptions)
+        fetch(apiUploadUrl, requestOptions)
             .then(response => response.text())
             .then(result => console.log(result))
             .catch(error => console.log('error', error));
@@ -100,7 +126,7 @@ const UploadFile: React.FC = () => {
 
         handleClose();
         handleAlertOpen();
-        setFiles(undefined);
+        setFilesArray([]);
 
     }
 
@@ -111,9 +137,46 @@ const UploadFile: React.FC = () => {
         return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
     });
 
+    const DisplayList: React.FunctionComponent<{}> = () => {
+        return (
+            <>
+                {console.log("filesArray : ", filesArray)}
+                {filesArray.map((file: any, index: any) => {
+                    if (file.size > 5000000) {
+                        retirerFichier(index);
+                        setFileTooLargeAlert(true);
+                    }
+                })}
+                {filesArray.map((file: any, index: any) => {
+                    return (
+                        <ListItem key={index}>
+                            <ListItemText primary={file.name.length > 30 ? file.name.substring(0, 12) + "(...)" + file.name.substring(file.name.length - 12, file.name.length) : file.name} />
+                            <ListItemSecondaryAction>
+                                <IconButton
+                                    edge="end"
+                                    aria-label="delete"
+                                    onClick={() => retirerFichier(index)}
+                                >
+                                    <DeleteIcon />
+                                </IconButton>
+                            </ListItemSecondaryAction>
+                        </ListItem>
+                    )
+                }
+                )}
+            </>
+        )
+    }
+
     return (
         <>
-            <ListItem key="importerFichier" style={{ cursor: 'pointer' }} onClick={handleOpen}>
+            <ListItem key="importerFichier" style={{ cursor: 'pointer' }} disabled={activeTab != "bibliotheque" ? true : false} onClick={() => {
+                if (activeTab != "bibliotheque") {
+                    return;
+                } else {
+                    handleOpen();
+                }
+            }}>
                 <ListItemIcon>
                     <UploadFileRoundedIcon />
                 </ListItemIcon>
@@ -124,47 +187,16 @@ const UploadFile: React.FC = () => {
                     <Typography>
                         Importer un fichier
                     </Typography>
-                    {files && (
+                    {filesArray.length > 0 && (
                         <>
                             <List>
-                                {files.length == 1 && (
-                                    <ListItem >
-                                        <ListItemText primary={files[0].name} />
-                                        <ListItemSecondaryAction>
-                                            <IconButton
-                                                edge="end"
-                                                aria-label="delete"
-                                                onClick={() => retirerFichier(0)}
-                                            >
-                                                <DeleteIcon />
-                                            </IconButton>
-                                        </ListItemSecondaryAction>
-                                    </ListItem>
-                                )}
-                                {files.length > 1 && 
-                                <Typography>TO FIX : map des fichiers sélectionnés.</Typography>
-                                // files.map((file: any, index: any) => (
-                                //     <ListItem >
-                                //         <ListItemText primary={file.name} />
-                                //         <ListItemSecondaryAction>
-                                //             <IconButton
-
-                                //                 edge="end"
-                                //                 aria-label="delete"
-                                //                 onClick={() => retirerFichier(index)}
-                                //             >
-                                //                 <DeleteIcon />
-                                //             </IconButton>
-                                //         </ListItemSecondaryAction>
-                                //     </ListItem>
-                                // ))
-                                }
+                                <DisplayList />
                             </List>
                             <Button variant='contained' onClick={importerFichier} startIcon={<UploadIcon />}>Importer</Button>
                             <br />
                         </>
                     )}
-                    {!files && (
+                    {filesArray.length == 0 && (
                         <>
                             <br />
                             <label htmlFor='upload-file'>
@@ -176,7 +208,11 @@ const UploadFile: React.FC = () => {
                     )
                     }
                     <CloseIcon onClick={handleClose} style={{ cursor: 'pointer' }} sx={{ position: "absolute", top: "0", right: "0" }} />
-                    {/* <Button onClick={handleClose}>Fermer</Button> */}
+                    <Snackbar open={fileTooLargeAlert} anchorOrigin={{ vertical: "bottom", horizontal: "right" }} autoHideDuration={6000} onClose={handleFileTooLargeAlertClose}>
+                        <Alert onClose={handleFileTooLargeAlertClose} severity="error" sx={{ width: '100%' }}>
+                            Fichier trop volumineux (5Mo maximum)
+                        </Alert>
+                    </Snackbar>
                 </Box>
             </Modal>
             <Snackbar open={alertOpen} anchorOrigin={{ vertical: "bottom", horizontal: "right" }} autoHideDuration={6000} onClose={handleAlertClose}>
@@ -188,4 +224,5 @@ const UploadFile: React.FC = () => {
     );
 };
 
-export default UploadFile;
+
+export default UploadFile

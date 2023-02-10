@@ -82,7 +82,7 @@ userSchema.methods.createAuthToken = async function () {
 
 userSchema.methods.createToken = async function () {
   const token = CryptoJS.AES.encrypt(this.email, process.env.CRYPTOJS_SECRET).toString()
-  // await client.set('registerToken', token, 'EX', 60 * 15)
+  await client.set('registerToken', token, 'EX', 60 * 15)
 }
 
 userSchema.methods.createValidationEmail = async function (token) {
@@ -91,9 +91,64 @@ userSchema.methods.createValidationEmail = async function (token) {
       email: this.email,
       subject: 'Welcome to the app',
       message: `
-                    <h1>Activation de votre compte</h1>
-                    <p>Vous pouvez activer votre compte en cliquant sur le lien ci-dessous</p>
-                    <a href="http://localhost:5000/api/auth/activate/token?=${token}">Activation</a>
+                    <!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <title>Confirmation de compte</title>
+    <style type="text/css">
+      /* Stylez votre e-mail ici */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        padding: 50px;
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+      .confirmation-container {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        margin: 0 auto;
+        width: 600px;
+      }
+      .confirmation-message {
+        font-size: 18px;
+        line-height: 1.5;
+        color: #333;
+        margin-bottom: 30px;
+      }
+      .confirmation-button {
+        display: inline-block;
+        padding: 15px 30px;
+        background-color: #0077ff;
+        color: #fff;
+        border-radius: 30px;
+        text-decoration: none;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+        margin-top: 30px;
+      }
+      .confirmation-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="confirmation-container">
+      <h1>Confirmation de compte</h1>
+      <div class="confirmation-message">
+        Merci de vous être inscrit! Pour activer votre compte, veuillez cliquer sur le bouton ci-dessous.
+      </div>
+      <a href="http://localhost:5000/api/auth/activate/token?=${token}" class="confirmation-button">Activer mon compte</a>
+    </div>
+  </body>
+</html>
                 `,
     })
   } catch (error) {
