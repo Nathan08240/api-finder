@@ -4,8 +4,8 @@ const fs = require('fs')
 
 const createPromotion = async function (req, res) {
   try {
-    const { user } = req.body
-    const promotion = new Promotions({ ...req.body, referent: mongoose.Types.ObjectId(user) })
+    const { referent } = req.body
+    const promotion = new Promotions({ ...req.body, referent: mongoose.Types.ObjectId(referent) })
     await promotion.save()
     fs.mkdirSync(`../BDD/${promotion.name}`, { recursive: true })
     res.status(201).send(promotion)

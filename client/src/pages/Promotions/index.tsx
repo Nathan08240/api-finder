@@ -5,7 +5,7 @@ import { Delete, ModeEdit, VisibilityOutlined } from '@mui/icons-material'
 import { makeStyles } from '@mui/styles'
 
 const apiUrl = 'http://localhost:5000/api/promotions'
-const userUrl = 'http://localhost:5000/api/users'
+const apiUsersUrl = 'http://localhost:5000/api/users'
 
 interface Promotion {
   _id: string
@@ -15,8 +15,8 @@ interface Promotion {
 }
 interface User {
   _id: string
-  firstName: string
-  lastName: string
+  firstname: string
+  lastname: string
 }
 
 const useStyles = makeStyles({
@@ -75,7 +75,7 @@ export const Promotions = () => {
       .catch((err) => {
         console.log(err)
       })
-    fetch(userUrl, { method: 'GET', headers: headers })
+    fetch(apiUsersUrl, { method: 'GET', headers: headers })
       .then((data) => {
         return data.json()
       })
@@ -115,7 +115,7 @@ export const Promotions = () => {
                   <TableCell align='center'>{promotion.reference}</TableCell>
                   <TableCell align='center'>{promotion.name}</TableCell>
                   <TableCell align='center'>
-                    {referent ? `${referent.firstName} ${referent.lastName}` : 'Aucun référant'}
+                    {referent ? `${referent.firstname} ${referent.lastname}` : 'Aucun référant'}
                   </TableCell>
                   <TableCell align='center'>
                     <Button

@@ -63,11 +63,12 @@ const userSchema = new Schema(
 userSchema.methods.createAuthToken = async function () {
   // const promotion = await Promotion.findById(this.promotion)
   const fullname =
-    this.lastname.charAt(0).toUpperCase() +
-    this.lastname.slice(1) +
-    ' ' +
     this.firstname.charAt(0).toUpperCase() +
-    this.firstname.slice(1)
+    this.firstname.slice(1) +
+    ' ' +
+    this.lastname.charAt(0).toUpperCase() +
+    this.lastname.slice(1)
+
   const payload = {
     _id: this._id,
     role: this.role,
