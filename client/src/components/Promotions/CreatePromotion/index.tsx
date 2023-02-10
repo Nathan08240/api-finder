@@ -21,8 +21,6 @@ interface User {
   _id: string
   firstname: string
   lastname: string
-  email: string
-  password: string
   role: string
 }
 
@@ -56,7 +54,7 @@ const CreatePromotion = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     const url = new URL(apiUrl)
-    const promotionData = { reference, name }
+    const promotionData = { reference, name, referent }
     const headers = {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + localStorage.getItem('authToken'),
