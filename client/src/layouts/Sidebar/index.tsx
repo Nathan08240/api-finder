@@ -92,22 +92,26 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
                   <ListItemText>Bibliothèque</ListItemText>
                 </Link>
               </ListItem>
-              <ListItem key='promotion' style={{ cursor: 'pointer' }}>
-                <ListItemIcon>
-                  <PeopleIcon />
-                </ListItemIcon>
-                <Link className={classes.link} to='/users'>
-                  <ListItemText>Gestion des Utilisateurs</ListItemText>
-                </Link>
-              </ListItem>
-              <ListItem key='promotion' style={{ cursor: 'pointer' }}>
-                <ListItemIcon>
-                  <SchoolIcon />
-                </ListItemIcon>
-                <Link className={classes.link} to='/promotions'>
-                  <ListItemText>Gestion des Promotions</ListItemText>
-                </Link>
-              </ListItem>
+              {(user?.role === 'support' || user?.role === 'administration') && (
+                <>
+                  <ListItem key='promotion' style={{ cursor: 'pointer' }}>
+                    <ListItemIcon>
+                      <PeopleIcon />
+                    </ListItemIcon>
+                    <Link className={classes.link} to='/users'>
+                      <ListItemText>Gestion des Utilisateurs</ListItemText>
+                    </Link>
+                  </ListItem>
+                  <ListItem key='promotion' style={{ cursor: 'pointer' }}>
+                    <ListItemIcon>
+                      <SchoolIcon />
+                    </ListItemIcon>
+                    <Link className={classes.link} to='/promotions'>
+                      <ListItemText>Gestion des Promotions</ListItemText>
+                    </Link>
+                  </ListItem>
+                </>
+              )}
               <CreateFolder />
               <ListItem key='importerDossier' onClick={() => alert('importer dossier')} style={{ cursor: 'pointer' }}>
                 <ListItemIcon>

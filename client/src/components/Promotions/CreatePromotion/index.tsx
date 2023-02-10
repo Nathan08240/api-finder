@@ -60,6 +60,7 @@ const CreatePromotion = () => {
       Authorization: 'Bearer ' + localStorage.getItem('authToken'),
     }
 
+    console.log(promotionData)
     await fetch(url, {
       method: 'POST',
       headers: headers,
@@ -67,7 +68,7 @@ const CreatePromotion = () => {
     })
       .then((res) => {
         alert('Promotion créée avec succès')
-        navigate('/users')
+        navigate('/promotions')
       })
       .catch((err) => {
         console.log(err.message)
