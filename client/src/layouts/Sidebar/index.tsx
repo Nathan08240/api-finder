@@ -1,13 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, Paper, Typography } from '@mui/material'
-import { CircularProgressWithLabel } from '../../components/CircularWithProgression'
 import { FC, useContext } from 'react'
 import { makeStyles } from '@mui/styles'
 import { AuthContext } from '../../App'
 import ConfirmLogout from '../../components/Confirm'
 import CreateFolder from '../../components/CreateFolder'
 import UploadFile from '../../components/UploadFile'
+import Storage from '../../components/Storage';
 import HomeIcon from '@mui/icons-material/Home'
 import DriveFolderUploadRoundedIcon from '@mui/icons-material/DriveFolderUploadRounded'
 import DriveFileMoveRoundedIcon from '@mui/icons-material/DriveFileMoveRounded'
@@ -132,12 +132,7 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
                 </Link>
               </ListItem>
               <Divider />
-              <ListItem key='Stockage'>
-                <ListItemText>Stockage</ListItemText>
-                <ListItemIcon>
-                  <CircularProgressWithLabel value={72} />
-                </ListItemIcon>
-              </ListItem>
+              <Storage />
               <Divider />
               <ListItem key='Utilisateur'>
                 <ListItemText>Connecté :</ListItemText>
