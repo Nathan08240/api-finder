@@ -29,7 +29,7 @@ const CreatePromotion = () => {
   const [reference, setReference] = useState('')
   const [name, setName] = useState('')
   const [referent, setReferent] = useState('')
-  const [pilot, setPilot] = useState<Array<User>>([])
+  const [pilot, setPilot] = useState<User[]>([])
   const navigate = useNavigate()
 
   useEffect(() => {

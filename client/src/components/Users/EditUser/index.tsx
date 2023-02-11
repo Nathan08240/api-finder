@@ -15,6 +15,12 @@ import {
 } from '@mui/material'
 
 const apiUrl = 'http://localhost:5000/api/users'
+const apiPromotionsUrl = 'http://localhost:5000/api/promotions'
+
+interface Promotion {
+  _id: string
+  name: string
+}
 
 const roles = [
   { value: 'support', label: 'Support' },
@@ -31,6 +37,8 @@ const EditUser = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [role, setRole] = useState('')
+  const [promotion, setPromotion] = useState('')
+  const [promotions, setPromotions] = useState<Promotion[]>([])
   const navigate = useNavigate()
   const { _id } = useParams()
   const url = new URL(apiUrl + '/' + _id)
@@ -55,12 +63,22 @@ const EditUser = () => {
       .catch((err) => {
         console.log(err)
       })
+    fetch(apiPromotionsUrl, { method: 'GET', headers: headers })
+      .then((data) => {
+        return data.json()
+      })
+      .then((resp) => {
+        setPromotions(resp)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }, [])
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     const url = new URL(apiUrl + '/' + _id)
-    const userData = { lastname, firstname, email, password, role }
+    const userData = { lastname, firstname, email, password, role, promotion }
     let headers = {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + localStorage.getItem('authToken'),
@@ -139,6 +157,26 @@ const EditUser = () => {
                     {role.label}
                   </MenuItem>
                 ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12}>
+            <FormControl fullWidth>
+              <InputLabel htmlFor='promotion-select'>Promotion</InputLabel>
+              <Select
+                value={promotion}
+                onChange={(e: SelectChangeEvent<string>) => setPromotion(e.target.value)}
+                inputProps={{
+                  name: 'promotion',
+                  id: 'promotion-select',
+                }}
+              >
+                {promotions &&
+                  promotions.map((promotion: Promotion) => (
+                    <MenuItem key={promotion._id} value={promotion._id}>
+                      {promotion.name}
+                    </MenuItem>
+                  ))}
               </Select>
             </FormControl>
           </Grid>

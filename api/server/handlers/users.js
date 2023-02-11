@@ -1,4 +1,5 @@
 const Users = require('../models/user')
+const Promotions = require('../models/promotion')
 const client = require('../utils/redis')
 const fs = require('fs')
 
@@ -6,7 +7,11 @@ const createUser = async function (req, res) {
   try {
     const user = new Users(req.body)
     await user.save()
-    fs.mkdirSync(`../BDD/${user.lastname}_${user.firstname}`, { recursive: true })
+    const promotion = await Promotions.findById(user.promotion)
+    if (!promotion) {
+      return res.status(404).send()
+    }
+    fs.mkdirSync(`../BDD/${promotion.name}/${user.lastname}_${user.firstname}`, { recursive: true })
     user.createToken()
     const token = await client.get('registerToken')
     console.log(token)

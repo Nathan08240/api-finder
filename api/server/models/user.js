@@ -8,7 +8,6 @@ const CryptoJS = require('crypto-js')
 const client = require('../utils/redis')
 const { Schema } = mongoose
 const { sendEmail } = require('../utils/mailer')
-const Promotion = require('./promotion')
 
 const userSchema = new Schema(
   {
@@ -51,6 +50,10 @@ const userSchema = new Schema(
           throw new Error('Password is invalid')
         }
       },
+    },
+    promotion: {
+      type: Schema.Types.ObjectId,
+      ref: 'Promotion',
     },
     is_confirmed: {
       type: Boolean,
