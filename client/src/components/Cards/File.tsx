@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@mui/styles'
-import { Card, CardContent, CardMedia, Typography } from '@mui/material'
+import { Card, CardContent, Typography } from '@mui/material'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
+import ImageIcon from '@mui/icons-material/Image'
+import DescriptionIcon from '@mui/icons-material/Description'
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
+import MovieIcon from '@mui/icons-material/Movie'
+import GifBoxIcon from '@mui/icons-material/GifBox'
+import LibraryMusicIcon from '@mui/icons-material/LibraryMusic'
 import Grid from '@mui/material/Grid'
-
 import Sidebar from '../../components/DetailsSidebar/DetailsSidebar'
-import { ClassNames } from '@emotion/react'
 
 const apiUrl = 'http://localhost:5000/api/files'
 
@@ -47,11 +51,50 @@ const useStyles = makeStyles({
 
 const FileCard: React.FC<{ file: File; onClick: (file: File) => void }> = ({ file, onClick }) => {
   const classes = useStyles()
-  const Icon = InsertDriveFileIcon
+  let Icon = InsertDriveFileIcon
   const fileName = file.name
+  const fileExtension = file.extension
   const nameWithoutExtension = fileName.split('.').slice(0, -1).join('.')
   const limitedName =
     nameWithoutExtension.length > 30 ? nameWithoutExtension.slice(0, 15) + '...' : nameWithoutExtension
+
+  switch (fileExtension) {
+    case 'pdf':
+      Icon = PictureAsPdfIcon
+      break
+    case 'docx':
+      Icon = DescriptionIcon
+      break
+    case 'xlsx':
+      Icon = DescriptionIcon
+      break
+    case 'pptx':
+      Icon = DescriptionIcon
+      break
+    case 'txt':
+      Icon = DescriptionIcon
+      break
+    case 'jpg':
+      Icon = ImageIcon
+      break
+    case 'png':
+      Icon = ImageIcon
+      break
+    case 'jpeg':
+      Icon = ImageIcon
+      break
+    case 'gif':
+      Icon = GifBoxIcon
+      break
+    case 'mp4':
+      Icon = MovieIcon
+      break
+    case 'mp3':
+      Icon = LibraryMusicIcon
+      break
+    default:
+      Icon = InsertDriveFileIcon
+  }
 
   return (
     <Card className={classes.root} onClick={() => onClick(file)}>
