@@ -90,13 +90,7 @@ export const AppBarHead = () => {
           >
             {!open ? <ArrowBack /> : <MenuIcon />}
           </Button>
-          <Button
-            color='inherit'
-            onClick={() => {
-              alert('File download')
-            }}
-            disabled={true}
-          >
+          <Button color='inherit'>
             <FileDownload />
           </Button>
           <Button

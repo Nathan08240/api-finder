@@ -89,7 +89,7 @@ const EditPromotion = () => {
     })
       .then((res) => {
         alert('Promotion modifiée avec succès')
-        navigate('/users')
+        navigate('/promotions')
       })
       .catch((err) => {
         console.log(err.message)

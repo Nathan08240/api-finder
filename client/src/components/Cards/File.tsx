@@ -34,6 +34,15 @@ const useStyles = makeStyles({
     alignItems: 'center',
     padding: '10px',
   },
+  ClickedCard: {
+    width: '200px',
+    display: 'inline-block',
+    cursor: 'pointer',
+    borderRadius: '10px',
+    padding: '0',
+    border: '1px solid #a6a6a6',
+    backgroundColor: '#c678d2',
+  },
 })
 
 const FileCard: React.FC<{ file: File; onClick: (file: File) => void }> = ({ file, onClick }) => {
@@ -86,7 +95,7 @@ const FilesDisplay: React.FC<{ location: string }> = (location) => {
     if (!localStorage.getItem('authToken')) return
     fetchFiles(path).then((data) => {
       setFiles(
-        data.files.map((file: any) => ({
+        data.files.map((file: File) => ({
           id: file.id,
           name: file.name,
           type: file.type,
@@ -106,10 +115,18 @@ const FilesDisplay: React.FC<{ location: string }> = (location) => {
 
   return (
     <Grid container>
-      <Grid item xs={2}></Grid>
       <Grid container>
         {files.map((file) => (
-          <Grid item xs={2} key={file.id}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            lg={4}
+            xl={2}
+            key={file.id}
+            sx={{ display: 'flex', justifyContent: 'center' }}
+          >
             <FileCard file={file} onClick={() => handleFileClick(file)} />
           </Grid>
         ))}

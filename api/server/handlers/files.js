@@ -49,6 +49,18 @@ const uploadFile = (req, res) => {
   })
 }
 
+const downloadFile = (req, res) => {
+  const target = `${req.query.target}`
+  const fileName = req.params.name
+  res.download(`.${target}/${fileName}`, fileName, (err) => {
+    if (err) {
+      res.status(500).send({
+        message: 'Could not download the file. ' + err,
+      })
+    }
+  })
+}
+
 const deleteFile = (req, res) => {
   const target = `${req.query.target}`
   if (!fs.existsSync(`.${target}`)) {
@@ -85,4 +97,5 @@ module.exports = {
   uploadFile,
   deleteFile,
   updateFile,
+  downloadFile,
 }
