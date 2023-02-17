@@ -25,7 +25,7 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 500,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -35,11 +35,13 @@ const style = {
 type UploadFileProps = {
     activeTab: string,
     setActiveTab: (activeTab: string) => void,
+    calculateStorageMo: number;
 }
 
 const UploadFile: React.FC<UploadFileProps> = ({
     activeTab,
     setActiveTab,
+    calculateStorageMo,
 }) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -61,6 +63,15 @@ const UploadFile: React.FC<UploadFileProps> = ({
             return;
         }
         setFileTooLargeAlert(false);
+    };
+
+    const [notEnoughStorageAlert, setNotEnoughStorageAlert] = React.useState(false);
+    const handleNotEnoughStorageAlertOpen = () => setNotEnoughStorageAlert(true);
+    const handleNotEnoughStorageAlertClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setNotEnoughStorageAlert(false);
     };
 
     const [filesArray, setFilesArray] = React.useState<any>([]);
@@ -142,10 +153,24 @@ const UploadFile: React.FC<UploadFileProps> = ({
             <>
                 {console.log("filesArray : ", filesArray)}
                 {filesArray.map((file: any, index: any) => {
+                    let totalSize = 0;
+                    console.log("filesize : ", file.size)
+                    totalSize += file.size / 1000000;
                     if (file.size > 5000000) {
                         retirerFichier(index);
+                        totalSize -= file.size / 1000000;
                         setFileTooLargeAlert(true);
                     }
+                    console.log("totalSize : ", totalSize)
+                    if (totalSize > 1000 - calculateStorageMo) {
+                        retirerFichier(index);
+                        totalSize -= file.size / 1000000;
+                        setNotEnoughStorageAlert(true);
+                    }
+                }
+                )}
+                {filesArray.map((file: any, index: any) => {
+
                 })}
                 {filesArray.map((file: any, index: any) => {
                     return (
@@ -168,10 +193,13 @@ const UploadFile: React.FC<UploadFileProps> = ({
         )
     }
 
+    const storageAvailable = 1000 - calculateStorageMo;
+    console.log("storageAvailable : ", storageAvailable)
+
     return (
         <>
-            <ListItem key="importerFichier" style={{ cursor: 'pointer' }} disabled={activeTab != "bibliotheque" ? true : false} onClick={() => {
-                if (activeTab != "bibliotheque") {
+            <ListItem key="importerFichier" style={{ cursor: 'pointer' }} disabled={activeTab != "bibliotheque" || calculateStorageMo >= 1000 ? true : false} onClick={() => {
+                if (activeTab != "bibliotheque" || calculateStorageMo >= 1000) {
                     return;
                 } else {
                     handleOpen();
@@ -185,7 +213,7 @@ const UploadFile: React.FC<UploadFileProps> = ({
             <Modal open={open} onClose={handleClose}>
                 <Box sx={style}>
                     <Typography>
-                        Importer un fichier
+                        Importer un fichier (espace disponible : {storageAvailable} Mo)
                     </Typography>
                     {filesArray.length > 0 && (
                         <>
@@ -213,10 +241,15 @@ const UploadFile: React.FC<UploadFileProps> = ({
                             Fichier trop volumineux (5Mo maximum)
                         </Alert>
                     </Snackbar>
+                    <Snackbar open={notEnoughStorageAlert} anchorOrigin={{ vertical: "bottom", horizontal: "right" }} autoHideDuration={6000} onClose={handleNotEnoughStorageAlertClose}>
+                        <Alert onClose={handleNotEnoughStorageAlertClose} severity="error" sx={{ width: '100%' }}>
+                            Stockage insuffisant pour importer ce fichier
+                        </Alert>
+                    </Snackbar>
                 </Box>
             </Modal>
             <Snackbar open={alertOpen} anchorOrigin={{ vertical: "bottom", horizontal: "right" }} autoHideDuration={6000} onClose={handleAlertClose}>
-                <Alert onClose={handleAlertClose} severity="success" sx={{ width: '100%' }}>
+                <Alert onClose={handleAlertClose} severity="success" sx={{ width: '100%', ml: 2 }}>
                     Fichier importé avec succès !
                 </Alert>
             </Snackbar>

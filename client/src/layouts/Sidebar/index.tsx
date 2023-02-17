@@ -53,6 +53,62 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
 
   const [activeTab, setActiveTab] = React.useState("bibliotheque")
 
+  const [storage, setStorage] = React.useState(0);
+
+  // début calcul de l'occupation du stockage
+
+  const path = `/${user?.lastname}_${user?.firstname}`
+
+  const [filesSize, setFilesSizes] = React.useState([])
+
+  const fetchFiles = async (path: string) => {
+    let headers = {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + localStorage.getItem('authToken'),
+    }
+    const apiUrl = 'http://localhost:5000/api/files'
+    const url = new URL(apiUrl)
+    url.searchParams.set('path', path)
+    const result = await fetch(url.href, { method: 'GET', headers: headers })
+    return await result.json()
+  }
+
+  const fetchDirectories = async (path: string) => {
+    let headers = {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + localStorage.getItem('authToken'),
+    }
+    const apiUrl = 'http://localhost:5000/api/folders'
+    const url = new URL(apiUrl)
+    url.searchParams.set('path', path)
+    const result = await fetch(url.href, { method: 'GET', headers: headers })
+    return await result.json()
+  }
+
+  React.useEffect(() => {
+    var temp: any = []
+    if (!localStorage.getItem('authToken')) return
+    fetchFiles(path).then((data) => {
+      const sizes = data.files.map((file: any) => file.size)
+      temp.push(sizes)
+    })
+    fetchDirectories(path).then((data) => {
+      data.directories.map((directory: any) => {
+        fetchFiles(directory.path).then((data) => {
+          const sizes = data.files.map((file: any) => file.size)
+          sizes.map((size: any) => {
+            temp[0].push(size)
+          })
+          setFilesSizes(temp[0])
+        })
+      })
+    })
+  }, [])
+
+  const calculateStorageMo = Math.round(filesSize.reduce((a: number, b: number) => a + b, 0) / 1000);
+
+  // fin calcul de l'occupation du stockage
+
   return (
     <Drawer
       variant='persistent'
@@ -99,17 +155,17 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
               <CreateFolder activeTab={activeTab} setActiveTab={setActiveTab} />
               <ListItem key='importerDossier' disabled={activeTab != "bibliotheque" ? true : false} onClick={() => {
                 if (activeTab != "bibliotheque") {
-                    return;
+                  return;
                 } else {
-                    alert("importer un dossier");
+                  alert("importer un dossier");
                 }
-            }} style={{ cursor: 'pointer' }}>
+              }} style={{ cursor: 'pointer' }}>
                 <ListItemIcon>
                   <DriveFolderUploadRoundedIcon />
                 </ListItemIcon>
                 <ListItemText>Importer un dossier</ListItemText>
               </ListItem>
-              <UploadFile activeTab={activeTab} setActiveTab={setActiveTab} />
+              <UploadFile activeTab={activeTab} setActiveTab={setActiveTab} calculateStorageMo={calculateStorageMo} />
               <Divider />
               <ListItem key='promotion' style={{ cursor: 'pointer' }}>
                 <ListItemIcon>
@@ -132,7 +188,7 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
                 </Link>
               </ListItem>
               <Divider />
-              <Storage />
+              <Storage storage={calculateStorageMo} />
               <Divider />
               <ListItem key='Utilisateur'>
                 <ListItemText>Connecté :</ListItemText>
