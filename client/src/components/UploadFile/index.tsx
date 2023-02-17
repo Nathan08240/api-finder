@@ -149,6 +149,10 @@ const UploadFile: React.FC<UploadFileProps> = ({
     });
 
     const DisplayList: React.FunctionComponent<{}> = () => {
+        const getFileSizeMo = (fileSize: number) => {
+            let size = (fileSize / 1000000).toFixed(2);
+            return `(${size} Mo)`;
+        }
         return (
             <>
                 {console.log("filesArray : ", filesArray)}
@@ -175,7 +179,7 @@ const UploadFile: React.FC<UploadFileProps> = ({
                 {filesArray.map((file: any, index: any) => {
                     return (
                         <ListItem key={index}>
-                            <ListItemText primary={file.name.length > 30 ? file.name.substring(0, 12) + "(...)" + file.name.substring(file.name.length - 12, file.name.length) : file.name} />
+                            <ListItemText primary={file.name.length > 30 ? file.name.substring(0, 12) + "(...)" + file.name.substring(file.name.length - 12, file.name.length) + " " + getFileSizeMo(file.size) : file.name + " " + getFileSizeMo(file.size)} />
                             <ListItemSecondaryAction>
                                 <IconButton
                                     edge="end"
