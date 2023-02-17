@@ -13,12 +13,27 @@ interface StorageProps {
 
 const Storage: React.FC<StorageProps> = ({ storage }) => {
 
+    const progressStyle = (value: number) => {
+        if (value < 700) {
+            return {
+                color: 'green',
+            }
+        } else if (value < 850) {
+            return {
+                color: 'orange',
+            }
+        } else {
+            return {
+                color: 'red',
+            }
+        }
+    }
     return (
         <>
             <ListItem key='Stockage'>
                 <ListItemText>Stockage<br />{storage}Mo / 1Go</ListItemText>
                 <ListItemIcon>
-                    <CircularProgressWithLabel value={storage / 10} />
+                    <CircularProgressWithLabel value={storage / 10} sx={{ color: progressStyle(storage) }} />
                 </ListItemIcon>
             </ListItem>
         </>
