@@ -44,7 +44,7 @@ const DetailsSidebar: React.FC<DetailsSidebarProps> = ({ selectedContent, setSho
 
   const path = selectedContent?.path
   const pathArray = path?.split('/')
-  const updatedPath = `.../${pathArray?.slice(2, pathArray.length - 1).join('/')}/`
+  const updatedPath = `${pathArray?.slice(2, pathArray.length - 1).join('/')}/`
 
   const size = Math.floor(selectedContent?.size) + 'KB'
 

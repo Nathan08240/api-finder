@@ -11,8 +11,6 @@ import LibraryMusicIcon from '@mui/icons-material/LibraryMusic'
 import Grid from '@mui/material/Grid'
 import Sidebar from '../../components/DetailsSidebar/DetailsSidebar'
 
-const apiUrl = 'http://localhost:5000/api/files'
-
 interface File {
   id: string
   name: string
@@ -49,7 +47,11 @@ const useStyles = makeStyles({
   },
 })
 
-const FileCard: React.FC<{ file: File; onClick: (file: File) => void }> = ({ file, onClick }) => {
+const FileCard: React.FC<{ file: File; onClick: (file: File) => void; isClicked: boolean }> = ({
+  file,
+  onClick,
+  isClicked,
+}) => {
   const classes = useStyles()
   let Icon = InsertDriveFileIcon
   const fileName = file.name
@@ -97,7 +99,13 @@ const FileCard: React.FC<{ file: File; onClick: (file: File) => void }> = ({ fil
   }
 
   return (
-    <Card className={classes.root} onClick={() => onClick(file)}>
+    <Card
+      sx={{ backgroundColor: isClicked ? '#ffc5ff' : '' }}
+      className={classes.root}
+      onClick={() => {
+        onClick(file)
+      }}
+    >
       <CardContent className={classes.CardContainer}>
         <Typography variant='body2' color='textSecondary' component='p'>
           <Icon sx={{ fontSize: 100 }} />
@@ -170,7 +178,7 @@ const FilesDisplay: React.FC<{ location: string }> = (location) => {
             key={file.id}
             sx={{ display: 'flex', justifyContent: 'center' }}
           >
-            <FileCard file={file} onClick={() => handleFileClick(file)} />
+            <FileCard file={file} onClick={() => handleFileClick(file)} isClicked />
           </Grid>
         ))}
       </Grid>
