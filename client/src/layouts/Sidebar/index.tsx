@@ -174,6 +174,7 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
                 </ListItemIcon>
                 <ListItemText>Importer un dossier</ListItemText>
               </ListItem>
+
               <UploadFile activeTab={activeTab} setActiveTab={setActiveTab} calculateStorageMo={calculateStorageMo} />
               <Divider />
               {(user?.role === "support" || user?.role === "administration") && (
