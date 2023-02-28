@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import { makeStyles } from '@mui/styles'
-import { Card, CardContent, Typography } from '@mui/material'
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
-import ImageIcon from '@mui/icons-material/Image'
-import DescriptionIcon from '@mui/icons-material/Description'
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
-import MovieIcon from '@mui/icons-material/Movie'
-import GifBoxIcon from '@mui/icons-material/GifBox'
-import LibraryMusicIcon from '@mui/icons-material/LibraryMusic'
-import Grid from '@mui/material/Grid'
-import Sidebar from '../../components/DetailsSidebar/DetailsSidebar'
+import React, { useEffect, useState } from "react"
+import { makeStyles } from "@mui/styles"
+import { Card, CardContent, Typography } from "@mui/material"
+import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile"
+import ImageIcon from "@mui/icons-material/Image"
+import DescriptionIcon from "@mui/icons-material/Description"
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf"
+import MovieIcon from "@mui/icons-material/Movie"
+import GifBoxIcon from "@mui/icons-material/GifBox"
+import LibraryMusicIcon from "@mui/icons-material/LibraryMusic"
+import Grid from "@mui/material/Grid"
+import Sidebar from "../../components/DetailsSidebar/DetailsSidebar"
 
 interface File {
   id: string
   name: string
-  type: 'file'
+  type: "file"
   path: string
   size: number
   extension: string
@@ -23,27 +23,27 @@ interface File {
 
 const useStyles = makeStyles({
   root: {
-    width: '200px',
-    display: 'inline-block',
-    cursor: 'pointer',
-    borderRadius: '10px',
-    padding: '0',
-    border: '1px solid #a6a6a6',
+    width: "200px",
+    display: "inline-block",
+    cursor: "pointer",
+    borderRadius: "10px",
+    padding: "0",
+    border: "1px solid #a6a6a6",
   },
   CardContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: '10px',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: "10px",
   },
   ClickedCard: {
-    width: '200px',
-    display: 'inline-block',
-    cursor: 'pointer',
-    borderRadius: '10px',
-    padding: '0',
-    border: '1px solid #a6a6a6',
-    backgroundColor: '#c678d2',
+    width: "200px",
+    display: "inline-block",
+    cursor: "pointer",
+    borderRadius: "10px",
+    padding: "0",
+    border: "1px solid #a6a6a6",
+    backgroundColor: "#c678d2",
   },
 })
 
@@ -56,42 +56,42 @@ const FileCard: React.FC<{ file: File; onClick: (file: File) => void; isClicked:
   let Icon = InsertDriveFileIcon
   const fileName = file.name
   const fileExtension = file.extension
-  const nameWithoutExtension = fileName.split('.').slice(0, -1).join('.')
+  const nameWithoutExtension = fileName.split(".").slice(0, -1).join(".")
   const limitedName =
-    nameWithoutExtension.length > 30 ? nameWithoutExtension.slice(0, 15) + '...' : nameWithoutExtension
+    nameWithoutExtension.length > 30 ? nameWithoutExtension.slice(0, 15) + "..." : nameWithoutExtension
 
   switch (fileExtension) {
-    case 'pdf':
+    case "pdf":
       Icon = PictureAsPdfIcon
       break
-    case 'docx':
+    case "docx":
       Icon = DescriptionIcon
       break
-    case 'xlsx':
+    case "xlsx":
       Icon = DescriptionIcon
       break
-    case 'pptx':
+    case "pptx":
       Icon = DescriptionIcon
       break
-    case 'txt':
+    case "txt":
       Icon = DescriptionIcon
       break
-    case 'jpg':
+    case "jpg":
       Icon = ImageIcon
       break
-    case 'png':
+    case "png":
       Icon = ImageIcon
       break
-    case 'jpeg':
+    case "jpeg":
       Icon = ImageIcon
       break
-    case 'gif':
+    case "gif":
       Icon = GifBoxIcon
       break
-    case 'mp4':
+    case "mp4":
       Icon = MovieIcon
       break
-    case 'mp3':
+    case "mp3":
       Icon = LibraryMusicIcon
       break
     default:
@@ -100,7 +100,7 @@ const FileCard: React.FC<{ file: File; onClick: (file: File) => void; isClicked:
 
   return (
     <Card
-      sx={{ backgroundColor: isClicked ? '#ffc5ff' : '' }}
+      sx={{ backgroundColor: isClicked ? "#ffc5ff" : "" }}
       className={classes.root}
       onClick={() => {
         onClick(file)
@@ -125,25 +125,25 @@ const FilesDisplay: React.FC<{ location: string }> = (location) => {
   const [path] = useState<string>(location.location)
 
   const fetchFiles = async (path: string = location.location) => {
-    while (!localStorage.getItem('authToken') && !location.location) {
+    while (!localStorage.getItem("authToken") && !location.location) {
       await new Promise((resolve) => setTimeout(resolve, 50))
     }
 
-    const apiUrl = 'http://localhost:5000/api/files'
+    const apiUrl = "http://localhost:5000/api/files"
 
     let headers = {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + localStorage.getItem('authToken'),
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("authToken"),
     }
 
     const url = new URL(apiUrl)
-    url.searchParams.set('path', path)
-    const result = await fetch(url.href, { method: 'GET', headers: headers })
+    url.searchParams.set("path", path)
+    const result = await fetch(url.href, { method: "GET", headers: headers })
     return await result.json()
   }
 
   useEffect(() => {
-    if (!localStorage.getItem('authToken')) return
+    if (!localStorage.getItem("authToken")) return
     fetchFiles(path).then((data) => {
       setFiles(
         data.files.map((file: File) => ({
@@ -176,7 +176,7 @@ const FilesDisplay: React.FC<{ location: string }> = (location) => {
             lg={4}
             xl={2}
             key={file.id}
-            sx={{ display: 'flex', justifyContent: 'center' }}
+            sx={{ display: "flex", justifyContent: "center", marginBottom: "10px" }}
           >
             <FileCard file={file} onClick={() => handleFileClick(file)} isClicked />
           </Grid>

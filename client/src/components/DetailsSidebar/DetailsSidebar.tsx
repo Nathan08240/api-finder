@@ -1,8 +1,11 @@
-import React from 'react'
-import { Table, TableBody, TableCell, TableRow } from '@mui/material'
-import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'
-import CropIcon from '@mui/icons-material/Crop'
-import { makeStyles } from '@mui/styles'
+import React from "react"
+import { Table, TableBody, TableCell, TableRow } from "@mui/material"
+import Modal from "@mui/material/Modal"
+import CloseIcon from "@mui/icons-material/Close"
+import DownloadIcon from "@mui/icons-material/Download"
+import DeleteIcon from "@mui/icons-material/Delete"
+import Box from "@mui/material/Box"
+import { makeStyles } from "@mui/styles"
 
 interface DetailsSidebarProps {
   selectedContent: {
@@ -17,24 +20,23 @@ interface DetailsSidebarProps {
 }
 
 const useStyles = makeStyles({
-  buttonsContainer: {
-    display: 'flex',
-    justifyContent: 'space-evenly',
+  buttonContainer: {
+    display: "flex",
+    justifyContent: "space-between",
   },
-  sidebarButton: {
-    border: 'none',
-    background: 'white',
-    width: '50px',
+  button: {
+    cursor: "pointer",
+    margin: "5px",
   },
   fileName: {
-    fontSize: '2rem',
-    textAlign: 'center',
-    margin: '20px 10px',
+    fontSize: "2rem",
+    textAlign: "center",
+    margin: "20px 10px",
   },
   table: {
-    border: 'none',
-    '& td': {
-      border: 'none',
+    border: "none",
+    "& td": {
+      border: "none",
     },
   },
 })
@@ -42,60 +44,111 @@ const useStyles = makeStyles({
 const DetailsSidebar: React.FC<DetailsSidebarProps> = ({ selectedContent, setShowSidebar }) => {
   const classes = useStyles()
 
-  const path = selectedContent?.path
-  const pathArray = path?.split('/')
-  const updatedPath = `${pathArray?.slice(2, pathArray.length - 1).join('/')}/`
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: "Bearer " + localStorage.getItem("authToken"),
+  }
 
-  const size = Math.floor(selectedContent?.size) + 'KB'
+  const path = selectedContent?.path
+  const pathArray = path?.split("/")
+  const updatedPath = `${pathArray?.slice(2, pathArray.length - 1).join("/")}/`
+
+  const size = Math.floor(selectedContent?.size) + "KB"
 
   const details = [
-    { label: 'Format', value: selectedContent?.extension?.toUpperCase() },
-    { label: 'Taille', value: size },
+    { label: "Format", value: selectedContent?.extension?.toUpperCase() },
+    { label: "Taille", value: size },
     {
-      label: 'Modifié',
-      value: new Date(selectedContent?.modifiedAt).toLocaleDateString('fr-FR', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
+      label: "Modifié",
+      value: new Date(selectedContent?.modifiedAt).toLocaleDateString("fr-FR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
       }),
     },
     {
-      label: 'Emplacement',
+      label: "Emplacement",
       value: updatedPath,
     },
   ]
 
+  console.log(path)
+
+  const apiDownloadUrl = `http://localhost:5000/api/files?target=${path}`
+
+  const handleDownload = async () => {
+    const url = new URL(apiDownloadUrl)
+    try {
+      await fetch(url, {
+        method: "GET",
+        headers: headers,
+      })
+        .then((res) => res.blob())
+        .then((blob) => {
+          const url = window.URL.createObjectURL(new Blob([blob]))
+          const link = document.createElement("a")
+          link.href = url
+          link.setAttribute("download", selectedContent?.name)
+          document.body.appendChild(link)
+          link.click()
+          link.parentNode?.removeChild(link)
+        })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleDelete = () => {
+    const url = new URL(apiDownloadUrl)
+    try {
+      fetch(url, {
+        method: "DELETE",
+        headers: headers,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data)
+        })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const style = {
+    position: "absolute" as "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    borderRadius: 2,
+    boxShadow: 24,
+    p: 2,
+  }
+
   return (
-    <div
-      style={{
-        position: 'absolute',
-        top: '80px',
-        right: '0px',
-        width: '300px',
-        height: '100%',
-        wordWrap: 'break-word',
-      }}
-    >
-      <div className={classes.buttonsContainer}>
-        <button className={classes.sidebarButton}>
-          <CropIcon fontSize='large' style={{ cursor: 'pointer' }} />
-        </button>
-        <button className={classes.sidebarButton} onClick={() => setShowSidebar(false)}>
-          <CancelOutlinedIcon fontSize='large' style={{ cursor: 'pointer' }} />
-        </button>
-      </div>
-      <div className={classes.fileName}>{selectedContent?.name}</div>
-      <Table className={classes.table}>
-        <TableBody>
-          {details.map(({ label, value }) => (
-            <TableRow key={label}>
-              <TableCell>{label}:</TableCell>
-              <TableCell>{value}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+    <Modal open={setShowSidebar}>
+      <Box sx={style}>
+        <div className={classes.buttonContainer}>
+          <div>
+            <DownloadIcon onClick={handleDownload} className={classes.button} />
+            <DeleteIcon onClick={handleDelete} className={classes.button} />
+          </div>
+          <CloseIcon onClick={() => setShowSidebar(false)} className={classes.button} />
+        </div>
+        <div className={classes.fileName}>{selectedContent?.name}</div>
+        <Table className={classes.table}>
+          <TableBody>
+            {details.map(({ label, value }) => (
+              <TableRow key={label}>
+                <TableCell>{label}:</TableCell>
+                <TableCell>{value}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Box>
+    </Modal>
   )
 }
 
