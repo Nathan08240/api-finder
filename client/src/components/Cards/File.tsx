@@ -36,21 +36,11 @@ const useStyles = makeStyles({
     alignItems: "center",
     padding: "10px",
   },
-  ClickedCard: {
-    width: "200px",
-    display: "inline-block",
-    cursor: "pointer",
-    borderRadius: "10px",
-    padding: "0",
-    border: "1px solid #a6a6a6",
-    backgroundColor: "#c678d2",
-  },
 })
 
-const FileCard: React.FC<{ file: File; onClick: (file: File) => void; isClicked: boolean }> = ({
+const FileCard: React.FC<{ file: File; onClick: (file: File) => void;}> = ({
   file,
   onClick,
-  isClicked,
 }) => {
   const classes = useStyles()
   let Icon = InsertDriveFileIcon
@@ -100,7 +90,6 @@ const FileCard: React.FC<{ file: File; onClick: (file: File) => void; isClicked:
 
   return (
     <Card
-      sx={{ backgroundColor: isClicked ? "#ffc5ff" : "" }}
       className={classes.root}
       onClick={() => {
         onClick(file)
@@ -178,7 +167,7 @@ const FilesDisplay: React.FC<{ location: string }> = (location) => {
             key={file.id}
             sx={{ display: "flex", justifyContent: "center", marginBottom: "10px" }}
           >
-            <FileCard file={file} onClick={() => handleFileClick(file)} isClicked />
+            <FileCard file={file} onClick={() => handleFileClick(file)} />
           </Grid>
         ))}
       </Grid>

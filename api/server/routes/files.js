@@ -4,7 +4,7 @@ const { getFiles, uploadFile, deleteFile, updateFile, downloadFile } = require("
 const { isAuth, isAdmin } = require("../middlewares/auth")
 
 // router.use(isAuth)
-router.route("/").get(getFiles).post(uploadFile).delete(deleteFile).put(updateFile)
-router.route("/:name").get(downloadFile)
+router.route("/").get(getFiles).post(uploadFile).put(updateFile)
+router.route("/:name").get(downloadFile).delete(deleteFile)
 
 module.exports = router

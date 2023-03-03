@@ -51,6 +51,7 @@ const DetailsSidebar: React.FC<DetailsSidebarProps> = ({ selectedContent, setSho
 
   const path = selectedContent?.path
   const pathArray = path?.split("/")
+
   const updatedPath = `${pathArray?.slice(2, pathArray.length - 1).join("/")}/`
 
   const size = Math.floor(selectedContent?.size) + "KB"
@@ -74,10 +75,10 @@ const DetailsSidebar: React.FC<DetailsSidebarProps> = ({ selectedContent, setSho
 
   console.log(path)
 
-  const apiDownloadUrl = `http://localhost:5000/api/files?target=${path}`
+  const apiUrl = `http://localhost:5000/api/files/${selectedContent?.name}?target=${path}`
 
   const handleDownload = async () => {
-    const url = new URL(apiDownloadUrl)
+    const url = new URL(apiUrl)
     try {
       await fetch(url, {
         method: "GET",
@@ -99,7 +100,7 @@ const DetailsSidebar: React.FC<DetailsSidebarProps> = ({ selectedContent, setSho
   }
 
   const handleDelete = () => {
-    const url = new URL(apiDownloadUrl)
+    const url = new URL(apiUrl)
     try {
       fetch(url, {
         method: "DELETE",

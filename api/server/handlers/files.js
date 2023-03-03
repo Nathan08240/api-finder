@@ -1,5 +1,4 @@
 const fs = require("fs")
-const path = require("path")
 const { getMulterStorage } = require("../utils/upload")
 const multer = require("multer")
 
@@ -41,8 +40,8 @@ const uploadFile = (req, res) => {
           message: "Directory doesn't exist",
         })
       } else {
-        res.status(400).send({
-          message: "Something wrong happened",
+        res.status(500).send({
+          message: "Something wrong happened" + err,
         })
       }
     }
@@ -52,20 +51,49 @@ const uploadFile = (req, res) => {
 
 const downloadFile = (req, res) => {
   const target = `.${req.query.target}`
+  // const type = getFileType(target)
+  // res.setHeader("Content-Type", type)
+  // res.sendFile(target)
+  // function getFileType(file) {
+  // const ext = path.extname(file); // extension du fichier
+  // switch (ext) {
+  //   case '.pdf':
+  //     return 'application/pdf';
+  //   case '.mp4':
+  //     return 'video/mp4';
+  //   case '.mp3':
+  //     return 'audio/mpeg';
+  //     case '.jpg':
+  //   case '.jpeg':
+  //     return 'image/jpeg';
+  //   case '.png':
+  //     return 'image/png';
+  //   case '.xls':
+  //     return 'application/vnd.ms-excel';
+  //   case '.doc':
+  //     return 'application/msword';
+  //   case '.ppt':
+  //     return 'application/vnd.ms-powerpoint';
+  //   default:
+  //     return 'application/octet-stream'; // type MIME par défaut
+  //   }
+  // }
+  const fileName = req.query.target.split("/").pop()
+  console.log(target)
   try {
     if (!fs.existsSync(target)) {
       res.status(400).send({
         message: "File doesn't exist",
       })
     } else {
-      res.download(target)
+      res.download(target, fileName)
       res.status(201).send({
         message: "File downloaded",
       })
     }
   } catch (err) {
     res.status(500).send({
-      message: "Something wrong happened",
+      message: "Something wrong happened" + err,
     })
   }
 }
@@ -81,11 +109,10 @@ const deleteFile = (req, res) => {
       res.status(201).send({
         message: "File deleted",
       })
-      res.send({ message: "File deleted" })
     }
   } catch (err) {
     res.status(500).send({
-      message: "Something wrong happened",
+      message: "Something wrong happened" + err,
     })
   }
 }
@@ -100,7 +127,7 @@ const updateFile = (req, res) => {
     })
   } catch (err) {
     res.status(500).send({
-      message: "Something wrong happened",
+      message: "Something wrong happened" + err,
     })
   }
 }
