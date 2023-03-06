@@ -100,6 +100,7 @@ const downloadFile = (req, res) => {
 
 const deleteFile = (req, res) => {
   const target = `.${req.query.target}`
+  console.log(target)
   try {
     if (!fs.existsSync(target)) {
       res.status(400).send({
@@ -116,6 +117,8 @@ const deleteFile = (req, res) => {
     })
   }
 }
+
+deleteFile()
 
 const updateFile = (req, res) => {
   const { target, newName } = req.body
