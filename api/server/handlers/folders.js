@@ -23,23 +23,10 @@ const getFolders = (req, res) => {
 
 const createFolder = (req, res) => {
   const { location, name } = req.body
+  console.log('Create folder', name, 'in', location)
   fs.mkdirSync('.' + location + '/' + name, { recursive: true })
   res.status(201).send('Folder created')
 }
-
-// const createFolder = (req, res) => {
-//   const { path } = req.body
-//   const newFolder = '.' + path
-
-//   if (!fs.existsSync(newFolder)) {
-//     fs.mkdirSync(newFolder)
-//     console.log('Folder created at: ', newFolder)
-//     res.status(200).send('Folder created successfully')
-//   } else {
-//     console.log('Folder already exists: ', newFolder)
-//     res.status(400).send('Folder already exists')
-//   }
-// }
 
 const deleteFolder = (req, res) => {
   const target = req.query.target

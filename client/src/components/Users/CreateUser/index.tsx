@@ -1,4 +1,4 @@
-import { useState, FormEvent } from 'react'
+import { useState, FormEvent, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   Container,
@@ -15,6 +15,12 @@ import {
 } from '@mui/material'
 
 const apiUrl = 'http://localhost:5000/api/users'
+const apiPromotionsUrl = 'http://localhost:5000/api/promotions'
+
+interface Promotion {
+  _id: string
+  name: string
+}
 
 const roles = [
   { value: 'support', label: 'Support' },
@@ -31,13 +37,32 @@ const CreateUser = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [role, setRole] = useState('')
-
+  const [promotion, setPromotion] = useState('')
+  const [promotions, setPromotions] = useState<Promotion[]>([])
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const fetchPromotions = async () => {
+      let headers = {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('authToken'),
+      }
+      await fetch(apiPromotionsUrl, { method: 'GET', headers: headers })
+        .then((res) => res.json())
+        .then((data) => {
+          setPromotions(data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+    fetchPromotions()
+  }, [])
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     const url = new URL(apiUrl)
-    const userData = { lastname, firstname, email, password, role }
+    const userData = { lastname, firstname, email, password, role, promotion }
     const headers = {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + localStorage.getItem('authToken'),
@@ -100,6 +125,25 @@ const CreateUser = () => {
                     {role.label}
                   </MenuItem>
                 ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12}>
+            <FormControl fullWidth>
+              <InputLabel htmlFor='promotion-select'>Promotion</InputLabel>
+              <Select
+                onChange={(e: SelectChangeEvent<string>) => setPromotion(e.target.value)}
+                inputProps={{
+                  name: 'promotion',
+                  id: 'promotion-select',
+                }}
+              >
+                {promotions &&
+                  promotions.map((promotion: Promotion) => (
+                    <MenuItem key={promotion._id} value={promotion._id}>
+                      {promotion.name}
+                    </MenuItem>
+                  ))}
               </Select>
             </FormControl>
           </Grid>

@@ -24,6 +24,7 @@
     "nodemon": "^2.0.20",
     "redis": "^4.5.1",
     "slugify": "^1.6.5",
+    "unidecode": "^0.1.8",
     "validator": "^13.7.0"
   },
   "resolutions": {

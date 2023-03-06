@@ -1,7 +1,6 @@
 const Promotions = require('../models/promotion')
 const mongoose = require('mongoose')
 const fs = require('fs')
-
 const createPromotion = async function (req, res) {
   try {
     const { referent } = req.body

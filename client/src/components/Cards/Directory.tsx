@@ -83,12 +83,11 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
     if (!localStorage.getItem('authToken')) return
     fetchDirectories(path).then((data) => {
       setDirectories(
-        data.directories.map((directory: any) => ({
+        data.directories.map((directory: Directory) => ({
           id: directory.id,
           path: directory.path,
           name: directory.name,
           type: directory.type,
-          size: directory.size,
           modifiedAt: directory.modifiedAt,
           children: directory.children,
         }))
@@ -110,19 +109,27 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
   return (
     <>
       <Grid container>
-        <Grid item xs={2}></Grid>
         <Grid item xs={10}>
           <BackFolder handleBackButton={handleBackButton} />
         </Grid>
-        <Grid item xs={2}></Grid>
+        <Grid item xs={2} />
         <Grid container>
           {directories.map((directory) => (
-            <Grid item xs={12} sm={6} md={4} lg={4} xl={2} key={directory.id}>
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={4}
+              lg={4}
+              xl={2}
+              key={directory.id}
+              sx={{ display: 'flex', justifyContent: 'center' }}
+            >
               <DirectoryCard directory={directory} onClick={() => handleDirectoryClick(directory)} />
             </Grid>
           ))}
         </Grid>
-        <Grid item xs={2}></Grid>
+        <Grid item xs={2} />
       </Grid>
     </>
   )

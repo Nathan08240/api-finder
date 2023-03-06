@@ -8,7 +8,6 @@ const CryptoJS = require('crypto-js')
 const client = require('../utils/redis')
 const { Schema } = mongoose
 const { sendEmail } = require('../utils/mailer')
-const Promotion = require('./promotion')
 
 const userSchema = new Schema(
   {
@@ -52,6 +51,10 @@ const userSchema = new Schema(
         }
       },
     },
+    promotion: {
+      type: Schema.Types.ObjectId,
+      ref: 'Promotion',
+    },
     is_confirmed: {
       type: Boolean,
       default: false,
@@ -61,7 +64,6 @@ const userSchema = new Schema(
 )
 
 userSchema.methods.createAuthToken = async function () {
-  // const promotion = await Promotion.findById(this.promotion)
   const fullname =
     this.firstname.charAt(0).toUpperCase() +
     this.firstname.slice(1) +
@@ -76,10 +78,6 @@ userSchema.methods.createAuthToken = async function () {
     fullname: fullname,
     lastname: this.lastname,
     firstname: this.firstname,
-    // promotion: {
-    //   name: promotion.name,
-    //   reference: promotion.reference,
-    // },
     is_confirmed: this.is_confirmed,
   }
   return createToken(payload, 60 * 60)
