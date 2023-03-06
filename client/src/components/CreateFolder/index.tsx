@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { ListItem, ListItemIcon, ListItemText } from '@mui/material'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
@@ -20,7 +20,7 @@ type CreateFolderProps = {
 const CreateFolder: React.FC<CreateFolderProps> = ({ activeTab, setActiveTab }) => {
   const [open, setOpen] = useState(false)
   const [folderName, setFolderName] = useState('')
-  const { user } = useContext(AuthContext) as any
+  const { user, counter, setCounter } = useContext(AuthContext) as any
   const path = window.localStorage.getItem('location')
   const location = path ? path : `/${user?.lastname}_${user?.firstname}`
 
@@ -28,6 +28,10 @@ const CreateFolder: React.FC<CreateFolderProps> = ({ activeTab, setActiveTab }) 
     'Content-Type': 'application/json',
     Authorization: 'Bearer ' + localStorage.getItem('authToken'),
   }
+
+  useEffect(() => {
+    console.log("counter : ", counter)
+  }, [counter])
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -47,7 +51,8 @@ const CreateFolder: React.FC<CreateFolderProps> = ({ activeTab, setActiveTab }) 
       })
       setOpen(false)
       setFolderName('')
-      window.location.reload()
+      // window.location.reload()
+      setCounter(counter + 1)
     } catch (err) {
       console.error(err)
     }

@@ -73,7 +73,7 @@ const UploadFile: React.FC<UploadFileProps> = ({ activeTab, setActiveTab, calcul
     console.log("filesArray : ", filesArray)
   }
 
-  const { user } = React.useContext(AuthContext) as any
+  const { user, counter, setCounter } = React.useContext(AuthContext) as any
   const target = `/${user.lastname}_${user.firstname}/`
   const apiUrl = `http://localhost:5000/api/files?target=${target}`
 
@@ -122,7 +122,14 @@ const UploadFile: React.FC<UploadFileProps> = ({ activeTab, setActiveTab, calcul
 
     handleClose()
     handleAlertOpen()
+
+    setTimeout(() => {
+      setCounter(counter + 1)
+      console.log("timeout 1.5s")
+    }, 1500)
+
     setFilesArray([])
+
   }
 
   const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
@@ -153,7 +160,7 @@ const UploadFile: React.FC<UploadFileProps> = ({ activeTab, setActiveTab, calcul
             setNotEnoughStorageAlert(true)
           }
         })}
-        {filesArray.map((file: any, index: any) => {})}
+        {filesArray.map((file: any, index: any) => { })}
         {filesArray.map((file: any, index: any) => {
           return (
             <ListItem key={index}>
@@ -161,10 +168,10 @@ const UploadFile: React.FC<UploadFileProps> = ({ activeTab, setActiveTab, calcul
                 primary={
                   file.name.length > 30
                     ? file.name.substring(0, 12) +
-                      "(...)" +
-                      file.name.substring(file.name.length - 12, file.name.length) +
-                      " " +
-                      getFileSizeMo(file.size)
+                    "(...)" +
+                    file.name.substring(file.name.length - 12, file.name.length) +
+                    " " +
+                    getFileSizeMo(file.size)
                     : file.name + " " + getFileSizeMo(file.size)
                 }
               />
