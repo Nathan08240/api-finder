@@ -1,13 +1,13 @@
-import { Container } from './style'
-import FilesDisplay from '../../components/Cards/File'
-import DirectoriesDisplay from '../../components/Cards/Directory'
-import { useContext } from 'react'
-import { AuthContext } from '../../App'
-import Grid from '@mui/material/Grid'
+import { Container } from "./style";
+import FilesDisplay from "../../components/Cards/File";
+import DirectoriesDisplay from "../../components/Cards/Directory";
+import { useContext } from "react";
+import { AuthContext } from "../../App";
+import Grid from "@mui/material/Grid";
 
 export const Home = () => {
   // @ts-ignore
-  const { location } = useContext(AuthContext) as string
+  const { location } = useContext(AuthContext) as string;
 
   return (
     <Container>
@@ -20,5 +20,5 @@ export const Home = () => {
         </Grid>
       </Grid>
     </Container>
-  )
-}
+  );
+};

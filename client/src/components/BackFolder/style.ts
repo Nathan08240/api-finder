@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const PathButton = styled.button`
   font-size: 1.5rem;
@@ -9,4 +9,4 @@ export const PathButton = styled.button`
   border: none;
   background: none;
   cursor: pointer;
-`
+`;

@@ -1,13 +1,13 @@
-const mongoose = require('mongoose')
-const validator = require('validator')
-const { hash, compare } = require('bcrypt')
-const { sign } = require('jsonwebtoken')
-const { createToken } = require('../utils/jwt')
-const jwt = require('jsonwebtoken')
-const CryptoJS = require('crypto-js')
-const client = require('../utils/redis')
-const { Schema } = mongoose
-const { sendEmail } = require('../utils/mailer')
+const mongoose = require("mongoose");
+const validator = require("validator");
+const { hash, compare } = require("bcrypt");
+const { sign } = require("jsonwebtoken");
+const { createToken } = require("../utils/jwt");
+const jwt = require("jsonwebtoken");
+const CryptoJS = require("crypto-js");
+const client = require("../utils/redis");
+const { Schema } = mongoose;
+const { sendEmail } = require("../utils/mailer");
 
 const userSchema = new Schema(
   {
@@ -25,9 +25,9 @@ const userSchema = new Schema(
     },
     role: {
       type: String,
-      enum: ['support', 'administation', 'pilot', 'speaker', 'student'],
+      enum: ["support", "administration", "pilot", "speaker", "student"],
       required: true,
-      default: 'student',
+      default: "student",
     },
     email: {
       type: String,
@@ -37,7 +37,7 @@ const userSchema = new Schema(
       unique: true,
       validate(value) {
         if (!validator.isEmail(value)) {
-          throw new Error('Email is invalid')
+          throw new Error("Email is invalid");
         }
       },
     },
@@ -47,13 +47,13 @@ const userSchema = new Schema(
       minlength: 7,
       validate(value) {
         if (!validator.isStrongPassword(value)) {
-          throw new Error('Password is invalid')
+          throw new Error("Password is invalid");
         }
       },
     },
     promotion: {
       type: Schema.Types.ObjectId,
-      ref: 'Promotion',
+      ref: "Promotion",
     },
     is_confirmed: {
       type: Boolean,
@@ -61,38 +61,42 @@ const userSchema = new Schema(
     },
   },
   { timestamps: true }
-)
+);
 
 userSchema.methods.createAuthToken = async function () {
   const fullname =
     this.firstname.charAt(0).toUpperCase() +
     this.firstname.slice(1) +
-    ' ' +
+    " " +
     this.lastname.charAt(0).toUpperCase() +
-    this.lastname.slice(1)
+    this.lastname.slice(1);
 
   const payload = {
     _id: this._id,
     role: this.role,
     email: this.email,
+    promotion: this.promotion,
     fullname: fullname,
     lastname: this.lastname,
     firstname: this.firstname,
     is_confirmed: this.is_confirmed,
-  }
-  return createToken(payload, 60 * 60)
-}
+  };
+  return createToken(payload, 60 * 60);
+};
 
 userSchema.methods.createToken = async function () {
-  const token = CryptoJS.AES.encrypt(this.email, process.env.CRYPTOJS_SECRET).toString()
-  await client.set('registerToken', token, 'EX', 60 * 15)
-}
+  const token = CryptoJS.AES.encrypt(
+    this.email,
+    process.env.CRYPTOJS_SECRET
+  ).toString();
+  await client.set("registerToken", token, "EX", 60 * 15);
+};
 
 userSchema.methods.createValidationEmail = async function (token) {
   try {
     await sendEmail({
       email: this.email,
-      subject: 'Welcome to the app',
+      subject: "Welcome to the app",
       message: `
                     <!DOCTYPE html>
 <html lang="fr">
@@ -153,31 +157,31 @@ userSchema.methods.createValidationEmail = async function (token) {
   </body>
 </html>
                 `,
-    })
+    });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
 userSchema.statics.findByCredentials = async (email, password) => {
-  const user = await User.findOne({ email })
+  const user = await User.findOne({ email });
   if (!user) {
-    throw new Error('Unable to login')
+    throw new Error("Unable to login");
   }
-  const isMatch = await compare(password, user.password)
+  const isMatch = await compare(password, user.password);
   if (!isMatch) {
-    throw new Error('Unable to login')
+    throw new Error("Unable to login");
   }
-  return user
-}
-userSchema.pre('save', async function (next) {
-  const user = this
-  if (user.isModified('password')) {
-    user.password = await hash(user.password, 10)
+  return user;
+};
+userSchema.pre("save", async function (next) {
+  const user = this;
+  if (user.isModified("password")) {
+    user.password = await hash(user.password, 10);
   }
-  next()
-})
+  next();
+});
 
-const User = mongoose.model('User', userSchema)
+const User = mongoose.model("User", userSchema);
 
-module.exports = User
+module.exports = User;
