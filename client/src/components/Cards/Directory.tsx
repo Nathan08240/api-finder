@@ -6,8 +6,6 @@ import BackFolder from "../BackFolder/BackFolder";
 import Grid from "@mui/material/Grid";
 
 import { AuthContext } from "../../App";
-import { ClassNames } from "@emotion/react";
-import { Padding } from "@mui/icons-material";
 
 const apiUrl = "http://localhost:5000/api/folders";
 
@@ -19,6 +17,7 @@ interface Directory {
   modifiedAt: Date;
   children?: File[] | Directory[];
 }
+
 
 const useStyles = makeStyles({
   root: {
@@ -33,6 +32,7 @@ const useStyles = makeStyles({
     justifyContent: "start",
     alignItems: "center",
     wordBreak: "break-word",
+    padding: '10px'
   },
 });
 
@@ -45,13 +45,15 @@ const DirectoryCard: React.FC<{
 
   return (
     <Card className={classes.root} onClick={() => onClick(directory)}>
-      <CardContent className={classes.CardContainer} sx={{padding: '5px 10px'}}>
+      <CardContent sx={{ p: 0, '&:last-child': { pb: 0 }}}>
+        <div className={classes.CardContainer}>
         <Typography variant="body2" color="textSecondary" component="p">
           <Icon fontSize="large" />
         </Typography>
         <Typography variant="h6" component="h2" ml={1}>
           {directory.name}
         </Typography>
+        </div>
       </CardContent>
     </Card>
   );
@@ -111,7 +113,6 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
     }
   };
 
-
   return (
     <>
       <Grid container>
@@ -131,7 +132,11 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
                   lg={4}
                   xl={2}
                   key={directory.id}
-                  sx={{ display: "flex", justifyContent: "center", padding: '0px' }}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    padding: "0px",
+                  }}
                 >
                   <DirectoryCard
                     directory={directory}
@@ -154,7 +159,11 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
                   lg={4}
                   xl={2}
                   key={directory.id}
-                  sx={{ display: "flex", justifyContent: "center", padding: '0px' }}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    padding: "0px",
+                  }}
                 >
                   <DirectoryCard
                     directory={directory}
@@ -168,22 +177,26 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
           (user?.role === "pilot" && (
             <Grid container>
               {directories.map((directory) => (
-                    <Grid
-                      item
-                      xs={12}
-                      sm={6}
-                      md={4}
-                      lg={4}
-                      xl={2}
-                      key={directory.id}
-                      sx={{ display: "flex", justifyContent: "center", padding: '0px' }}
-                    >
-                      <DirectoryCard
-                        directory={directory}
-                        onClick={() => handleDirectoryClick(directory)}
-                      />
-                    </Grid>
-                  ))}
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  lg={4}
+                  xl={2}
+                  key={directory.id}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    padding: "0px",
+                  }}
+                >
+                  <DirectoryCard
+                    directory={directory}
+                    onClick={() => handleDirectoryClick(directory)}
+                  />
+                </Grid>
+              ))}
             </Grid>
           ))}
         <Grid item xs={2} />
