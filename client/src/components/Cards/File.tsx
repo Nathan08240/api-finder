@@ -184,6 +184,7 @@ const FilesDisplay: React.FC<{ location: string }> = (location) => {
           <Sidebar
             // @ts-ignore
             selectedContent={showFileSidebar}
+            showSidebar={showSidebar}
             setShowSidebar={setShowSidebar}
           />
         )}

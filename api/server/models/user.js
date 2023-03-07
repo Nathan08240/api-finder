@@ -51,10 +51,10 @@ const userSchema = new Schema(
         }
       },
     },
-    promotion: {
+    promotion: [{
       type: Schema.Types.ObjectId,
       ref: "Promotion",
-    },
+    }],
     is_confirmed: {
       type: Boolean,
       default: false,

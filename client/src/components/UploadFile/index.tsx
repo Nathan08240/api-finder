@@ -92,7 +92,9 @@ const UploadFile: React.FC<UploadFileProps> = ({
     await setFilesArray(Array.from(e.target.files));
   };
 
-  const { user, promotion, counter, setCounter } = React.useContext(AuthContext) as any;
+  const { user, promotion, counter, setCounter } = React.useContext(
+    AuthContext
+  ) as any;
   // const target = `/${user.lastname}_${user.firstname}/`
   // const apiUrl = `http://localhost:5000/api/files?target=${target}`
 
@@ -138,8 +140,8 @@ const UploadFile: React.FC<UploadFileProps> = ({
     handleClose();
     handleAlertOpen();
     setTimeout(() => {
-      setCounter(counter +1)
-    }, 1500)
+      setCounter(counter + 1);
+    }, 1500);
     setFilesArray([]);
   };
 

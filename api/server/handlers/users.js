@@ -7,14 +7,17 @@ const createUser = async function (req, res) {
   try {
     const user = new Users(req.body);
     await user.save();
-    const promotion = await Promotions.findById(user.promotion);
+    const promotion =  await Promotions.findOne({ promotion: user.promotion[0] })
+    console.log(promotion)
     if (!promotion) {
       return res.status(404).send();
     }
-    fs.mkdirSync(
-      `./BDD/${promotion.name}/${user.lastname}_${user.firstname}`,
-      { recursive: true }
-    );
+    if (user?.role === 'student') {
+      fs.mkdirSync(
+        `./BDD/${promotion.name}/${user.lastname}_${user.firstname}`,
+        { recursive: true }
+      );
+    }
     user.createToken();
     const token = await client.get("registerToken");
     user.createValidationEmail(token);

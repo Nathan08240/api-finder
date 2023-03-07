@@ -11,7 +11,7 @@ interface User {
   firstname: string;
   email: string;
   role: string;
-  promotion: string;
+  promotion: string[];
   name: string;
 }
 
@@ -34,13 +34,10 @@ const UserDetails = () => {
     firstname: "",
     email: "",
     role: "",
-    promotion: "",
+    promotion: [],
     name: "",
   });
-  const [promotionsData, setPromotionsData] = useState<Promotion>({
-    _id: "",
-    name: "",
-  });
+  const [promotionsData, setPromotionsData] = useState<Promotion[]>([]);
 
   useEffect(() => {
     fetch(url, { method: "GET", headers: headers })
@@ -57,23 +54,24 @@ const UserDetails = () => {
 
   useEffect(() => {
     if (userData.promotion) {
-      const promotionUrl = new URL(apiPromotionsUrl + "/" + userData.promotion);
-      fetch(promotionUrl, { method: "GET", headers: headers })
+      const promotionsUrl = new URL(apiPromotionsUrl);
+      promotionsUrl.searchParams.append("_id", userData.promotion.join(","));
+      fetch(promotionsUrl.toString(), { method: "GET", headers: headers })
         .then((data) => {
           return data.json();
         })
         .then((resp) => {
           setPromotionsData(resp);
-          setUserData((prevState) => ({
-            ...prevState,
-            name: resp.name,
-          }));
         })
         .catch((err) => {
           console.log(err);
         });
     }
   }, [userData.promotion]);
+
+  const promotionNames = promotionsData
+    .map((promotion) => promotion.name)
+    .join(", ");
 
   return (
     <Container>
@@ -119,7 +117,20 @@ const UserDetails = () => {
             style={{ textAlign: "center", margin: "10px 0" }}
             variant="h6"
           >
-            Promotion: {userData.name}
+            Promotion:{" "}
+            {userData.promotion.length > 0
+              ? userData.promotion.map((promoId, index) => {
+                  const promotion = promotionsData.find(
+                    (promo) => promo._id === promoId
+                  );
+                  return (
+                    <span key={index}>
+                      {promotion ? promotion.name : "ID Promotion Inconnu"}
+                      {index < userData.promotion.length - 1 ? ", " : ""}
+                    </span>
+                  );
+                })
+              : "Aucune promotion"}
           </Typography>
         </div>
       )}

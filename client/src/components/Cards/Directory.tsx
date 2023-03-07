@@ -101,14 +101,15 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
   };
 
   const handleBackButton = () => {
-    if (user?.role !== 'student') {
-      if (path === '/BDD') return;
+    if (user?.role !== "student") {
+      if (path === "/BDD") return;
       setPath(path.substring(0, path.lastIndexOf("/")));
       setLocation(path.substring(0, path.lastIndexOf("/")));
-    } else if (user?.role === 'student') {
-      if(path === `/BDD/${promotion}`) return;
+    } else if (user?.role === "student") {
+      if (path === `/BDD/${promotion}`) return;
       setPath(path.substring(0, path.lastIndexOf("/")));
-      setLocation(path.substring(0, path.lastIndexOf("/")));}
+      setLocation(path.substring(0, path.lastIndexOf("/")));
+    }
   };
 
   return (
@@ -142,25 +143,49 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
             )}
           </Grid>
         )}
-        {user?.role === 'administration' || user?.role === 'support' && (
+        {user?.role === "administration" ||
+          (user?.role === "support" && (
+            <Grid container>
+              {directories.map((directory) => (
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  lg={4}
+                  xl={2}
+                  key={directory.id}
+                  sx={{ display: "flex", justifyContent: "center" }}
+                >
+                  <DirectoryCard
+                    directory={directory}
+                    onClick={() => handleDirectoryClick(directory)}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          ))}
+        {user?.role === "speaker" && (
           <Grid container>
-            {directories.map((directory) => (
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                md={4}
-                lg={4}
-                xl={2}
-                key={directory.id}
-                sx={{ display: "flex", justifyContent: "center" }}
-              >
-                <DirectoryCard
-                  directory={directory}
-                  onClick={() => handleDirectoryClick(directory)}
-                />
-              </Grid>
-            ))}
+            {directories.map((directory) =>
+              user?.role === "speaker" && directory.name === `${promotion}` ? (
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  lg={4}
+                  xl={2}
+                  key={directory.id}
+                  sx={{ display: "flex", justifyContent: "center" }}
+                >
+                  <DirectoryCard
+                    directory={directory}
+                    onClick={() => handleDirectoryClick(directory)}
+                  />
+                </Grid>
+              ) : null
+            )}
           </Grid>
         )}
         <Grid item xs={2} />

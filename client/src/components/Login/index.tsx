@@ -89,18 +89,18 @@ export const Login = () => {
       const user: any = jwtDecode(token);
       setUser(user);
       setToken(token);
-      const promotion = promotionData.find(
-        (promotion) => promotion._id === user.promotion
-      );
-      
-      setPromotion(promotion?.name);
-  
-      if (user?.role === 'student') {
-        setLocation(`/BDD/${promotion?.name}/${user.lastname}_${user.firstname}`);
+      const promotions = user.promotion.map((promotion) =>
+        promotionData.find(promo => promo._id === promotion)?.name
+        );
+      setPromotion(promotions);
+
+      if (user?.role === "student") {
+        setLocation(
+          `/BDD/${promotions[0]}/${user.lastname}_${user.firstname}`
+        );
       } else {
-        setLocation('/BDD')
+        setLocation("/BDD");
       }
-      
     } catch (error) {
       console.error(error);
     }
