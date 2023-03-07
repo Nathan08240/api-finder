@@ -1,5 +1,5 @@
-import { useEffect, useState, FormEvent } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useEffect, useState, useContext, FormEvent } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   Container,
   Typography,
@@ -12,108 +12,123 @@ import {
   Button,
   Box,
   Grid,
-} from '@mui/material'
+} from "@mui/material";
+import { AuthContext } from "../../../App";
 
-const apiUrl = 'http://localhost:5000/api/users'
-const apiPromotionsUrl = 'http://localhost:5000/api/promotions'
+const apiUrl = "http://localhost:5000/api/users";
+const apiPromotionsUrl = "http://localhost:5000/api/promotions";
 
 interface Promotion {
-  _id: string
-  name: string
+  _id: string;
+  name: string;
 }
 
 const roles = [
-  { value: 'support', label: 'Support' },
-  { value: 'administration', label: 'Administration' },
-  { value: 'pilot', label: 'Pilote' },
-  { value: 'speaker', label: 'Intervenant' },
-  { value: 'student', label: 'Etudiant' },
-]
+  { value: "support", label: "Support" },
+  { value: "administration", label: "Administration" },
+  { value: "pilot", label: "Pilote" },
+  { value: "speaker", label: "Intervenant" },
+  { value: "student", label: "Etudiant" },
+];
 
 const EditUser = () => {
-  const [id, setId] = useState('')
-  const [lastname, setLastname] = useState('')
-  const [firstname, setFirstname] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [role, setRole] = useState('')
-  const [promotion, setPromotion] = useState('')
-  const [promotions, setPromotions] = useState<Promotion[]>([])
-  const navigate = useNavigate()
-  const { _id } = useParams()
-  const url = new URL(apiUrl + '/' + _id)
+  const { user } = useContext(AuthContext) as any;
+  const [id, setId] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("");
+  const [promotion, setPromotion] = useState<string | undefined>("");
+  const [promotions, setPromotions] = useState<Promotion[]>([]);
+  const navigate = useNavigate();
+  const { _id } = useParams();
+  const url = new URL(apiUrl + "/" + _id);
   let headers = {
-    'Content-Type': 'application/json',
-    Authorization: 'Bearer ' + localStorage.getItem('authToken'),
-  }
+    "Content-Type": "application/json",
+    Authorization: "Bearer " + localStorage.getItem("authToken"),
+  };
 
   useEffect(() => {
-    fetch(url, { method: 'GET', headers: headers })
+    fetch(url, { method: "GET", headers: headers })
       .then((data) => {
-        return data.json()
+        return data.json();
       })
       .then((resp) => {
-        setId(resp._id)
-        setLastname(resp.lastname)
-        setFirstname(resp.firstname)
-        setEmail(resp.email)
-        setPassword(resp.password)
-        setRole(resp.role)
+        setId(resp._id);
+        setLastname(resp.lastname);
+        setFirstname(resp.firstname);
+        setEmail(resp.email);
+        setPassword(resp.password);
+        setRole(resp.role);
+        user.role = resp.role;
       })
       .catch((err) => {
-        console.log(err)
-      })
-    fetch(apiPromotionsUrl, { method: 'GET', headers: headers })
+        console.log(err);
+      });
+    fetch(apiPromotionsUrl, { method: "GET", headers: headers })
       .then((data) => {
-        return data.json()
+        return data.json();
       })
       .then((resp) => {
-        setPromotions(resp)
+        setPromotions(resp);
       })
       .catch((err) => {
-        console.log(err)
-      })
-  }, [])
+        console.log(err);
+      });
+  }, []);
+
+  // setPromotion(promotions.find((promotion) => promotion._id === user.promotion))
 
   const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault()
-    const url = new URL(apiUrl + '/' + _id)
-    const userData = { lastname, firstname, email, password, role, promotion }
+    e.preventDefault();
+    const url = new URL(apiUrl + "/" + _id);
+    const userData = { lastname, firstname, email, password, role, promotion };
     let headers = {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + localStorage.getItem('authToken'),
-    }
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("authToken"),
+    };
 
     await fetch(url, {
-      method: 'PUT',
+      method: "PUT",
       headers: headers,
       body: JSON.stringify(userData),
     })
       .then((res) => {
-        alert('Utilisateur modifié avec succès')
-        navigate('/users')
+        alert("Utilisateur modifié avec succès");
+
+        navigate("/users");
       })
       .catch((err) => {
-        console.log(err.message)
-      })
-  }
+        console.log(err.message);
+      });
+  };
 
   return (
     <Container>
-      <Typography style={{ textAlign: 'center', margin: '10px 0' }} variant='h4'>
+      <Typography
+        style={{ textAlign: "center", margin: "10px 0" }}
+        variant="h4"
+      >
         Modifier l'utilisateur
       </Typography>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <TextField disabled fullWidth name='_id' value={id} onChange={(e) => setId(e.target.value)} />
+            <TextField
+              disabled
+              fullWidth
+              name="_id"
+              value={id}
+              onChange={(e) => setId(e.target.value)}
+            />
           </Grid>
           <Grid item xs={12}>
             <TextField
               autoFocus
               fullWidth
-              label='Nom'
-              name='lastname'
+              label="Nom"
+              name="lastname"
               value={lastname}
               onChange={(e) => setLastname(e.target.value)}
             />
@@ -121,35 +136,43 @@ const EditUser = () => {
           <Grid item xs={12}>
             <TextField
               fullWidth
-              label='Prénom'
-              name='firstname'
+              label="Prénom"
+              name="firstname"
               value={firstname}
               onChange={(e) => setFirstname(e.target.value)}
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField fullWidth label='Email' name='email' value={email} onChange={(e) => setEmail(e.target.value)} />
+            <TextField
+              fullWidth
+              label="Email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </Grid>
           <Grid item xs={12}>
             <TextField
               hidden
               fullWidth
-              label='Mot de passe'
-              type='password'
-              name='password'
+              label="Mot de passe"
+              type="password"
+              name="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </Grid>
           <Grid item xs={12}>
             <FormControl fullWidth>
-              <InputLabel htmlFor='role-select'>Rôle</InputLabel>
+              <InputLabel htmlFor="role-select">Rôle</InputLabel>
               <Select
                 value={role}
-                onChange={(e: SelectChangeEvent<string>) => setRole(e.target.value)}
+                onChange={(e: SelectChangeEvent<string>) =>
+                  setRole(e.target.value)
+                }
                 inputProps={{
-                  name: 'role',
-                  id: 'role-select',
+                  name: "role",
+                  id: "role-select",
                 }}
               >
                 {roles.map((role, index) => (
@@ -162,13 +185,15 @@ const EditUser = () => {
           </Grid>
           <Grid item xs={12}>
             <FormControl fullWidth>
-              <InputLabel htmlFor='promotion-select'>Promotion</InputLabel>
+              <InputLabel htmlFor="promotion-select">Promotion</InputLabel>
               <Select
                 value={promotion}
-                onChange={(e: SelectChangeEvent<string>) => setPromotion(e.target.value)}
+                onChange={(e: SelectChangeEvent<string>) =>
+                  setPromotion(e.target.value)
+                }
                 inputProps={{
-                  name: 'promotion',
-                  id: 'promotion-select',
+                  name: "promotion",
+                  id: "promotion-select",
                 }}
               >
                 {promotions &&
@@ -181,13 +206,20 @@ const EditUser = () => {
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-            <Box mt={2} style={{ display: 'flex', justifyContent: 'end' }}>
-              <Link to='/users' style={{ textDecoration: 'none', color: '#000', marginRight: '10px' }}>
-                <Button variant='contained' color='inherit'>
+            <Box mt={2} style={{ display: "flex", justifyContent: "end" }}>
+              <Link
+                to="/users"
+                style={{
+                  textDecoration: "none",
+                  color: "#000",
+                  marginRight: "10px",
+                }}
+              >
+                <Button variant="contained" color="inherit">
                   Retour
                 </Button>
               </Link>
-              <Button variant='contained' color='primary' type='submit'>
+              <Button variant="contained" color="primary" type="submit">
                 Modifier
               </Button>
             </Box>
@@ -195,7 +227,7 @@ const EditUser = () => {
         </Grid>
       </form>
     </Container>
-  )
-}
+  );
+};
 
-export default EditUser
+export default EditUser;

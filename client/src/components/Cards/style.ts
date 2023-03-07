@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
@@ -9,7 +9,7 @@ export const Container = styled.div`
   padding: 20px;
   position: relative;
   overflow: hidden;
-`
+`;
 
 export const CardDirectory = styled.div`
   display: flex;
@@ -17,4 +17,4 @@ export const CardDirectory = styled.div`
   align-items: center;
   width: 100%;
   margin-bottom: 20px;
-`
+`;

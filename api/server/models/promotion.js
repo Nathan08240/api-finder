@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
-const { Schema } = mongoose
-const unidecode = require('unidecode')
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
+const unidecode = require("unidecode");
 
 const promotionSchema = new Schema(
   {
@@ -19,18 +19,18 @@ const promotionSchema = new Schema(
     },
     referent: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
       required: true,
     },
   },
   { timestamps: true }
-)
+);
 
-promotionSchema.pre('save', async function (next) {
-  this.name = unidecode(this.name.replace(/ /g, '_'))
-  next()
-})
+promotionSchema.pre("save", async function (next) {
+  this.name = unidecode(this.name.replace(/ /g, "_"));
+  next();
+});
 
-const Promotion = mongoose.model('Promotion', promotionSchema)
+const Promotion = mongoose.model("Promotion", promotionSchema);
 
-module.exports = Promotion
+module.exports = Promotion;

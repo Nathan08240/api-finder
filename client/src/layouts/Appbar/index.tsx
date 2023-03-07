@@ -1,12 +1,19 @@
-import React, { useState } from "react"
-import { AppBar, Button, Toolbar, Typography } from "@mui/material"
-import { ArrowBack, Delete, DriveFileMoveOutlined, FileDownload, MoreVertRounded, Update } from "@mui/icons-material"
-import SearchIcon from "@mui/icons-material/Search"
-import MenuIcon from "@mui/icons-material/Menu"
-import { Sidebar } from "../Sidebar"
-import { Outlet } from "react-router-dom"
-import { alpha, styled } from "@mui/material/styles"
-import InputBase from "@mui/material/InputBase"
+import React, { useState } from "react";
+import { AppBar, Button, Toolbar, Typography } from "@mui/material";
+import {
+  ArrowBack,
+  Delete,
+  DriveFileMoveOutlined,
+  FileDownload,
+  MoreVertRounded,
+  Update,
+} from "@mui/icons-material";
+import SearchIcon from "@mui/icons-material/Search";
+import MenuIcon from "@mui/icons-material/Menu";
+import { Sidebar } from "../Sidebar";
+import { Outlet } from "react-router-dom";
+import { alpha, styled } from "@mui/material/styles";
+import InputBase from "@mui/material/InputBase";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -22,7 +29,7 @@ const Search = styled("div")(({ theme }) => ({
     marginLeft: theme.spacing(3),
     width: "auto",
   },
-}))
+}));
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
@@ -32,7 +39,7 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-}))
+}));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
@@ -46,38 +53,45 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
       width: "20ch",
     },
   },
-}))
+}));
 
 export const AppBarHead = () => {
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(true);
 
   const handleDrawerOpen = () => {
-    setOpen(true)
-  }
+    setOpen(true);
+  };
 
   const handleDrawerClose = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-  const menuOpen = Boolean(anchorEl)
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const menuOpen = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
+    setAnchorEl(event.currentTarget);
+  };
   const handleClose = () => {
-    setAnchorEl(null)
-  }
+    setAnchorEl(null);
+  };
 
   return (
     <>
-      <AppBar position='static'>
+      <AppBar position="static">
         <Toolbar>
-          <Typography variant='h6' component='div' sx={{ flexGrow: 1, textAlign: "center" }}></Typography>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1, textAlign: "center" }}
+          ></Typography>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
-            <StyledInputBase placeholder='Search…' inputProps={{ "aria-label": "search" }} />
+            <StyledInputBase
+              placeholder="Search…"
+              inputProps={{ "aria-label": "search" }}
+            />
           </Search>
           <Button
             sx={{
@@ -85,32 +99,44 @@ export const AppBarHead = () => {
               left: open ? 0 : "240px",
               transition: "left 0.2s ease-out",
             }}
-            color='inherit'
+            color="inherit"
             onClick={open ? handleDrawerClose : handleDrawerOpen}
           >
             {!open ? <ArrowBack /> : <MenuIcon />}
           </Button>
+          {/* <Button color="inherit">
+            <FileDownload />
+          </Button> */}
           <Button
-            color='inherit'
+            color="inherit"
             onClick={() => {
-              alert("Move folder/file")
+              alert("Move folder/file");
             }}
             disabled={true}
           >
             <DriveFileMoveOutlined />
           </Button>
-          <Button // à voir ce qu'on fait de ce bouton, si on le garde, etc
-            color='inherit'
+          {/* <Button
+            color="inherit"
             onClick={() => {
-              alert("Rename folder/file")
+              alert("Delete");
+            }}
+            disabled={true}
+          >
+            <Delete />
+          </Button> */}
+          <Button // à voir ce qu'on fait de ce bouton, si on le garde, etc
+            color="inherit"
+            onClick={() => {
+              alert("Rename folder/file");
             }}
           >
             <Update />
           </Button>
           <Button
-            color='inherit'
+            color="inherit"
             onClick={() => {
-              alert("Options")
+              alert("Options");
             }}
           >
             <MoreVertRounded />
@@ -118,9 +144,9 @@ export const AppBarHead = () => {
         </Toolbar>
         <Sidebar open={open} />
       </AppBar>
-      <div id='detail'>
+      <div id="detail">
         <Outlet />
       </div>
     </>
-  )
-}
+  );
+};

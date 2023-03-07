@@ -59,8 +59,6 @@ const CreatePromotion = () => {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + localStorage.getItem('authToken'),
     }
-
-    console.log(promotionData)
     await fetch(url, {
       method: 'POST',
       headers: headers,

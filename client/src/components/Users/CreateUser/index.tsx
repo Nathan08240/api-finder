@@ -1,5 +1,5 @@
-import { useState, FormEvent, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useState, FormEvent, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Container,
   Typography,
@@ -12,112 +12,140 @@ import {
   Button,
   Box,
   Grid,
-} from '@mui/material'
+} from "@mui/material";
 
-const apiUrl = 'http://localhost:5000/api/users'
-const apiPromotionsUrl = 'http://localhost:5000/api/promotions'
+const apiUrl = "http://localhost:5000/api/users";
+const apiPromotionsUrl = "http://localhost:5000/api/promotions";
 
 interface Promotion {
-  _id: string
-  name: string
+  _id: string;
+  name: string;
 }
 
 const roles = [
-  { value: 'support', label: 'Support' },
-  { value: 'administration', label: 'Administration' },
-  { value: 'pilot', label: 'Pilote' },
-  { value: 'speaker', label: 'Intervenant' },
-  { value: 'student', label: 'Etudiant' },
-]
+  { value: "support", label: "Support" },
+  { value: "administration", label: "Administration" },
+  { value: "pilot", label: "Pilote" },
+  { value: "speaker", label: "Intervenant" },
+  { value: "student", label: "Etudiant" },
+];
 
 const CreateUser = () => {
-  const [id, setId] = useState('')
-  const [lastname, setLastname] = useState('')
-  const [firstname, setFirstname] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [role, setRole] = useState('')
-  const [promotion, setPromotion] = useState('')
-  const [promotions, setPromotions] = useState<Promotion[]>([])
-  const navigate = useNavigate()
+  const [id, setId] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("");
+  const [promotion, setPromotion] = useState("");
+  const [promotions, setPromotions] = useState<Promotion[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPromotions = async () => {
       let headers = {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('authToken'),
-      }
-      await fetch(apiPromotionsUrl, { method: 'GET', headers: headers })
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("authToken"),
+      };
+      await fetch(apiPromotionsUrl, { method: "GET", headers: headers })
         .then((res) => res.json())
         .then((data) => {
-          setPromotions(data)
+          setPromotions(data);
         })
         .catch((err) => {
-          console.log(err)
-        })
-    }
-    fetchPromotions()
-  }, [])
+          console.log(err);
+        });
+    };
+    fetchPromotions();
+  }, []);
 
   const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault()
-    const url = new URL(apiUrl)
-    const userData = { lastname, firstname, email, password, role, promotion }
+    e.preventDefault();
+    const url = new URL(apiUrl);
+    const userData = { lastname, firstname, email, password, role, promotion };
     const headers = {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + localStorage.getItem('authToken'),
-    }
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("authToken"),
+    };
 
     await fetch(url, {
-      method: 'POST',
+      method: "POST",
       headers: headers,
       body: JSON.stringify(userData),
     })
       .then((res) => {
-        alert('Utilisateur créé avec succès')
-        navigate('/users')
+        alert("Utilisateur créé avec succès");
+        navigate("/users");
       })
       .catch((err) => {
-        console.log(err.message)
-      })
-  }
+        console.log(err.message);
+      });
+  };
 
   return (
     <Container>
-      <Typography style={{ textAlign: 'center', margin: '10px 0' }} variant='h4'>
+      <Typography
+        style={{ textAlign: "center", margin: "10px 0" }}
+        variant="h4"
+      >
         Ajouter un utilisateur
       </Typography>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <TextField disabled autoFocus fullWidth label='Id' name='_id' onChange={(e) => setId(e.target.value)} />
+            <TextField
+              disabled
+              autoFocus
+              fullWidth
+              label="Id"
+              name="_id"
+              onChange={(e) => setId(e.target.value)}
+            />
           </Grid>
           <Grid item xs={12}>
-            <TextField autoFocus fullWidth label='Nom' name='lastname' onChange={(e) => setLastname(e.target.value)} />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField fullWidth label='Prénom' name='firstname' onChange={(e) => setFirstname(e.target.value)} />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField fullWidth label='Email' name='email' onChange={(e) => setEmail(e.target.value)} />
+            <TextField
+              autoFocus
+              fullWidth
+              label="Nom"
+              name="lastname"
+              onChange={(e) => setLastname(e.target.value)}
+            />
           </Grid>
           <Grid item xs={12}>
             <TextField
               fullWidth
-              label='Mot de passe'
-              type='password'
-              name='password'
+              label="Prénom"
+              name="firstname"
+              onChange={(e) => setFirstname(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="Email"
+              name="email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="Mot de passe"
+              type="password"
+              name="password"
               onChange={(e) => setPassword(e.target.value)}
             />
           </Grid>
           <Grid item xs={12}>
             <FormControl fullWidth>
-              <InputLabel htmlFor='role-select'>Rôle</InputLabel>
+              <InputLabel htmlFor="role-select">Rôle</InputLabel>
               <Select
-                onChange={(e: SelectChangeEvent<string>) => setRole(e.target.value)}
+                onChange={(e: SelectChangeEvent<string>) =>
+                  setRole(e.target.value)
+                }
                 inputProps={{
-                  name: 'role',
-                  id: 'role-select',
+                  name: "role",
+                  id: "role-select",
                 }}
               >
                 {roles.map((role, index) => (
@@ -130,12 +158,14 @@ const CreateUser = () => {
           </Grid>
           <Grid item xs={12}>
             <FormControl fullWidth>
-              <InputLabel htmlFor='promotion-select'>Promotion</InputLabel>
+              <InputLabel htmlFor="promotion-select">Promotion</InputLabel>
               <Select
-                onChange={(e: SelectChangeEvent<string>) => setPromotion(e.target.value)}
+                onChange={(e: SelectChangeEvent<string>) =>
+                  setPromotion(e.target.value)
+                }
                 inputProps={{
-                  name: 'promotion',
-                  id: 'promotion-select',
+                  name: "promotion",
+                  id: "promotion-select",
                 }}
               >
                 {promotions &&
@@ -148,13 +178,20 @@ const CreateUser = () => {
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-            <Box mt={2} style={{ display: 'flex', justifyContent: 'end' }}>
-              <Link to='/users' style={{ textDecoration: 'none', color: '#000', marginRight: '10px' }}>
-                <Button variant='contained' color='inherit'>
+            <Box mt={2} style={{ display: "flex", justifyContent: "end" }}>
+              <Link
+                to="/users"
+                style={{
+                  textDecoration: "none",
+                  color: "#000",
+                  marginRight: "10px",
+                }}
+              >
+                <Button variant="contained" color="inherit">
                   Retour
                 </Button>
               </Link>
-              <Button variant='contained' color='primary' type='submit'>
+              <Button variant="contained" color="primary" type="submit">
                 Ajouter
               </Button>
             </Box>
@@ -162,7 +199,7 @@ const CreateUser = () => {
         </Grid>
       </form>
     </Container>
-  )
-}
+  );
+};
 
-export default CreateUser
+export default CreateUser;

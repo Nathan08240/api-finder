@@ -1,19 +1,19 @@
-import { routerType } from '../types/router.types'
-import { Promotions } from './Promotions'
-import { Home } from './Home'
-import { Users } from './Users'
-import { AppBarHead } from '../layouts/Appbar'
-import ErrorPage from './Error'
-import CreateUser from '../components/Users/CreateUser'
-import EditUser from '../components/Users/EditUser'
-import UserDetails from '../components/Users/UserDetails'
-import CreatePromotion from '../components/Promotions/CreatePromotion'
-import EditPromotion from '../components/Promotions/EditPromotion'
-import PromotionDetails from '../components/Promotions/PromotionDetails'
+import { routerType } from "../types/router.types";
+import { Promotions } from "./Promotions";
+import { Home } from "./Home";
+import { Users } from "./Users";
+import { AppBarHead } from "../layouts/Appbar";
+import ErrorPage from "./Error";
+import CreateUser from "../components/Users/CreateUser";
+import EditUser from "../components/Users/EditUser";
+import UserDetails from "../components/Users/UserDetails";
+import CreatePromotion from "../components/Promotions/CreatePromotion";
+import EditPromotion from "../components/Promotions/EditPromotion";
+import PromotionDetails from "../components/Promotions/PromotionDetails";
 
 const pagesData: routerType[] = [
   {
-    path: '',
+    path: "",
     element: (
       <>
         <AppBarHead />
@@ -21,10 +21,10 @@ const pagesData: routerType[] = [
       </>
     ),
     errorElement: <ErrorPage />,
-    title: 'Home',
+    title: "Home",
   },
   {
-    path: 'users',
+    path: "users",
     element: (
       <>
         <AppBarHead />
@@ -32,10 +32,10 @@ const pagesData: routerType[] = [
       </>
     ),
     errorElement: <ErrorPage />,
-    title: 'Users',
+    title: "Users",
   },
   {
-    path: 'users/create',
+    path: "users/create",
     element: (
       <>
         <AppBarHead />
@@ -43,10 +43,10 @@ const pagesData: routerType[] = [
       </>
     ),
     errorElement: <ErrorPage />,
-    title: 'create user',
+    title: "create user",
   },
   {
-    path: 'users/edit/:_id',
+    path: "users/edit/:_id",
     element: (
       <>
         <AppBarHead />
@@ -54,10 +54,10 @@ const pagesData: routerType[] = [
       </>
     ),
     errorElement: <ErrorPage />,
-    title: 'Edit user',
+    title: "Edit user",
   },
   {
-    path: 'users/details/:_id',
+    path: "users/details/:_id",
     element: (
       <>
         <AppBarHead />
@@ -65,11 +65,11 @@ const pagesData: routerType[] = [
       </>
     ),
     errorElement: <ErrorPage />,
-    title: 'User details',
+    title: "User details",
   },
 
   {
-    path: 'promotions',
+    path: "promotions",
     element: (
       <>
         <AppBarHead />
@@ -77,10 +77,10 @@ const pagesData: routerType[] = [
       </>
     ),
     errorElement: <ErrorPage />,
-    title: 'Promotions',
+    title: "Promotions",
   },
   {
-    path: 'promotions/create',
+    path: "promotions/create",
     element: (
       <>
         <AppBarHead />
@@ -88,10 +88,10 @@ const pagesData: routerType[] = [
       </>
     ),
     errorElement: <ErrorPage />,
-    title: 'Create promotion',
+    title: "Create promotion",
   },
   {
-    path: 'promotions/details/:_id',
+    path: "promotions/details/:_id",
     element: (
       <>
         <AppBarHead />
@@ -99,10 +99,10 @@ const pagesData: routerType[] = [
       </>
     ),
     errorElement: <ErrorPage />,
-    title: 'Promotion details',
+    title: "Promotion details",
   },
   {
-    path: 'promotions/edit/:_id',
+    path: "promotions/edit/:_id",
     element: (
       <>
         <AppBarHead />
@@ -110,8 +110,8 @@ const pagesData: routerType[] = [
       </>
     ),
     errorElement: <ErrorPage />,
-    title: 'Edit promotion',
+    title: "Edit promotion",
   },
-]
+];
 
-export default pagesData
+export default pagesData;

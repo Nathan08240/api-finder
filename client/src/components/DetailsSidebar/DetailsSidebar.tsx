@@ -1,22 +1,23 @@
-import React from "react"
-import { Table, TableBody, TableCell, TableRow } from "@mui/material"
-import Modal from "@mui/material/Modal"
-import CloseIcon from "@mui/icons-material/Close"
-import DownloadIcon from "@mui/icons-material/Download"
-import DeleteIcon from "@mui/icons-material/Delete"
-import Box from "@mui/material/Box"
-import { makeStyles } from "@mui/styles"
+import React from "react";
+import { IconButton, Table, TableBody, TableCell, TableRow } from "@mui/material";
+import Modal from "@mui/material/Modal";
+import CloseIcon from "@mui/icons-material/Close";
+import DownloadIcon from "@mui/icons-material/Download";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Box from "@mui/material/Box";
+import { AuthContext } from "../../App";
+import { makeStyles } from "@mui/styles";
 
 interface DetailsSidebarProps {
   selectedContent: {
-    name: string
-    size: number
-    type: string
-    path: string
-    extension?: string
-    modifiedAt: string
-  }
-  setShowSidebar: (show: boolean) => void
+    name: string;
+    size: number;
+    type: string;
+    path: string;
+    extension?: string;
+    modifiedAt: string;
+  };
+  setShowSidebar: (show: boolean) => void;
 }
 
 const useStyles = makeStyles({
@@ -39,22 +40,26 @@ const useStyles = makeStyles({
       border: "none",
     },
   },
-})
+});
 
-const DetailsSidebar: React.FC<DetailsSidebarProps> = ({ selectedContent, setShowSidebar }) => {
-  const classes = useStyles()
+const DetailsSidebar: React.FC<DetailsSidebarProps> = ({
+  selectedContent,
+  setShowSidebar,
+}) => {
+  const classes = useStyles();
+  const { counter, setCounter, user, location, promotion } = React.useContext(AuthContext) as any;
 
   const headers = {
     "Content-Type": "application/json",
     Authorization: "Bearer " + localStorage.getItem("authToken"),
-  }
+  };
 
-  const path = selectedContent?.path
-  const pathArray = path?.split("/")
+  const path = selectedContent?.path;
+  const pathArray = path?.split("/");
 
-  const updatedPath = `${pathArray?.slice(2, pathArray.length - 1).join("/")}/`
+  const updatedPath = `${pathArray?.slice(2, pathArray.length - 1).join("/")}/`;
 
-  const size = Math.floor(selectedContent?.size) + "KB"
+  const size = Math.floor(selectedContent?.size) + "KB";
 
   const details = [
     { label: "Format", value: selectedContent?.extension?.toUpperCase() },
@@ -71,49 +76,43 @@ const DetailsSidebar: React.FC<DetailsSidebarProps> = ({ selectedContent, setSho
       label: "Emplacement",
       value: updatedPath,
     },
-  ]
+  ];
 
-  console.log(path)
-
-  const apiUrl = `http://localhost:5000/api/files/${selectedContent?.name}?target=${path}`
+  const apiUrl = `http://localhost:5000/api/files?target=${path}`;
+  const apiDownloadUrl = `http://localhost:5000/api/files/download?target=${path}`;
 
   const handleDownload = async () => {
-    const url = new URL(apiUrl)
     try {
-      await fetch(url, {
+      await fetch(apiDownloadUrl, {
         method: "GET",
         headers: headers,
       })
-        .then((res) => res.blob())
-        .then((blob) => {
-          const url = window.URL.createObjectURL(new Blob([blob]))
-          const link = document.createElement("a")
-          link.href = url
-          link.setAttribute("download", selectedContent?.name)
-          document.body.appendChild(link)
-          link.click()
-          link.parentNode?.removeChild(link)
-        })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+        });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
-  const handleDelete = () => {
-    const url = new URL(apiUrl)
+  const handleDelete = async () => {
     try {
-      fetch(url, {
+      await fetch(apiUrl, {
         method: "DELETE",
         headers: headers,
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data)
-        })
+          console.log(data);
+
+        });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+    setShowSidebar(false)
+    setCounter(counter + 1)
+  };
 
   const style = {
     position: "absolute" as "absolute",
@@ -125,17 +124,24 @@ const DetailsSidebar: React.FC<DetailsSidebarProps> = ({ selectedContent, setSho
     borderRadius: 2,
     boxShadow: 24,
     p: 2,
-  }
+  };
 
   return (
     <Modal open={setShowSidebar}>
       <Box sx={style}>
         <div className={classes.buttonContainer}>
           <div>
-            <DownloadIcon onClick={handleDownload} className={classes.button} />
-            <DeleteIcon onClick={handleDelete} className={classes.button} />
+            <IconButton onClick={handleDownload} className={classes.button}>
+            <DownloadIcon />
+            </IconButton >
+            <IconButton disabled={(location === '/' + promotion && user?.role === 'support') ?? true} onClick={handleDelete} className={classes.button}>
+            <DeleteIcon />
+            </IconButton>
+            
           </div>
-          <CloseIcon onClick={() => setShowSidebar(false)} className={classes.button} />
+          <IconButton onClick={() => setShowSidebar(false)} className={classes.button}>
+          <CloseIcon/>
+          </IconButton>
         </div>
         <div className={classes.fileName}>{selectedContent?.name}</div>
         <Table className={classes.table}>
@@ -150,7 +156,7 @@ const DetailsSidebar: React.FC<DetailsSidebarProps> = ({ selectedContent, setSho
         </Table>
       </Box>
     </Modal>
-  )
-}
+  );
+};
 
-export default DetailsSidebar
+export default DetailsSidebar;
