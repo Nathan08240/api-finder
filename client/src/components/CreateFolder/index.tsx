@@ -25,7 +25,7 @@ const CreateFolder: React.FC<CreateFolderProps> = ({
   const [folderName, setFolderName] = useState("");
   const { user, counter, setCounter } = useContext(AuthContext) as any;
   const path = window.localStorage.getItem("location");
-  const location = path ? path : `/${user?.lastname}_${user?.firstname}`;
+  const location = path
 
   let headers = {
     "Content-Type": "application/json",
@@ -50,12 +50,10 @@ const CreateFolder: React.FC<CreateFolderProps> = ({
       });
       setOpen(false);
       setFolderName("");
-      window.location.reload();
+      setCounter(counter + 1);
     } catch (err) {
       console.error(err);
     }
-    setCounter(counter + 1);
-    setOpen(false);
   };
 
   return (

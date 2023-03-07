@@ -2,6 +2,7 @@ const fs = require("fs");
 
 const getFolders = (req, res) => {
   const { path } = req.query;
+  console.log(path)
   const folders = [];
   fs.readdirSync("." + path, { withFileTypes: true }).forEach(function (
     folder,

@@ -16,11 +16,17 @@ export default function App() {
       ? JSON.parse(localStorage.getItem("user")!)
       : null
   );
-  const [promotion, setPromotion] = useState<null | string>(
-    localStorage.getItem("promotion")
-      ? localStorage.getItem("promotion")!
-      : null
-  );
+  const [promotion, setPromotion] = useState<string[] | null>(null);
+
+  useEffect(() => {
+    const promotionFromLocalStorage = JSON.parse(
+      localStorage.getItem("promotion") ?? "null"
+    );
+    if (promotionFromLocalStorage !== null) {
+      setPromotion(promotionFromLocalStorage);
+    }
+  }, []);
+
   const [counter, setCounter] = useState(0);
   let defaultLocation = "/BDD";
   if (user?.role === "student") {
@@ -50,7 +56,7 @@ export default function App() {
       ? localStorage.setItem("location", location)
       : localStorage.removeItem("location");
     promotion
-      ? localStorage.setItem("promotion", promotion)
+      ? localStorage.setItem("promotion", JSON.stringify(promotion))
       : localStorage.removeItem("promotion");
   }, [token, user, location, promotion]);
 

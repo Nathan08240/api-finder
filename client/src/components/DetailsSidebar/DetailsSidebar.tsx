@@ -145,7 +145,7 @@ const DetailsSidebar: React.FC<DetailsSidebarProps> = ({
             </IconButton>
             <IconButton
               disabled={
-                (location === "/BDD/" + promotion &&
+                (location === "/BDD/" + promotion[0] &&
                   user?.role === "student") ??
                 true
               }
