@@ -93,7 +93,9 @@ export const Login = () => {
                     {...register('password', { required: true })}
                   />
                 </FormControl>
-                <ButtonSubmit type='submit' variant='contained'>
+                <ButtonSubmit type='submit' variant='contained' style={{
+                    marginBottom: '20px'
+                }}>
                   Se connecter
                 </ButtonSubmit>
               </Form>

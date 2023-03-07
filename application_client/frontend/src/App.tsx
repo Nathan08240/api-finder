@@ -13,10 +13,16 @@ export default function App() {
     token && localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null
   )
   const [location, setLocation] = useState<null | string>(`/${user?.lastname}_${user?.firstname}`)
+  const [counter, setCounter] = useState(0)
+  const [storagePath, setStoragePath] = useState<null | string>(localStorage.getItem('storagePath') ?? null)
   AuthContext = createContext({
+    storagePath,
     location,
     token,
     user,
+    counter,
+    setStoragePath,
+    setCounter,
     setLocation,
     setUser,
     setToken,
@@ -27,10 +33,11 @@ export default function App() {
     token ? localStorage.setItem('user', JSON.stringify(user)) : localStorage.removeItem('user')
     user?.exp < Date.now() / 1000 ? (setUser(null), setToken(null)) : null
     location ? localStorage.setItem('location', location) : localStorage.removeItem('location')
-  }, [token, user, location])
+    storagePath ? localStorage.setItem('storagePath', storagePath) : localStorage.removeItem('storagePath')
+  }, [token, user, location, storagePath, counter])
 
   return (
-    <AuthContext.Provider value={{ location, user, token, setLocation, setToken, setUser }}>
+    <AuthContext.Provider value={{ storagePath, location, user, token, counter, setStoragePath, setLocation, setToken, setUser, setCounter }}>
       <ThemeProvider theme={theme}>
         <BrowserRouter>{!user?.is_confirmed ? <Login /> : <Router />}</BrowserRouter>
       </ThemeProvider>

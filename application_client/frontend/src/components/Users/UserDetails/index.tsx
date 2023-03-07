@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { Button, Container, Typography } from '@mui/material'
 
 const apiUrl = 'http://localhost:5000/api/users'
+const apiPromotionsUrl = 'http://localhost:5000/api/promotions'
 
 interface User {
   _id: string
@@ -10,6 +11,13 @@ interface User {
   firstname: string
   email: string
   role: string
+  promotion: string
+  name: string
+}
+
+interface Promotion {
+  _id: string
+  name: string
 }
 
 const UserDetails = () => {
@@ -26,6 +34,12 @@ const UserDetails = () => {
     firstname: '',
     email: '',
     role: '',
+    promotion: '',
+    name: '',
+  })
+  const [promotionsData, setPromotionsData] = useState<Promotion>({
+    _id: '',
+    name: '',
   })
 
   useEffect(() => {
@@ -40,6 +54,26 @@ const UserDetails = () => {
         console.log(err)
       })
   }, [])
+
+  useEffect(() => {
+    if (userData.promotion) {
+      const promotionUrl = new URL(apiPromotionsUrl + '/' + userData.promotion)
+      fetch(promotionUrl, { method: 'GET', headers: headers })
+        .then((data) => {
+          return data.json()
+        })
+        .then((resp) => {
+          setPromotionsData(resp)
+          setUserData((prevState) => ({
+            ...prevState,
+            name: resp.name,
+          }))
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+  }, [userData.promotion])
 
   return (
     <Container>
@@ -62,6 +96,9 @@ const UserDetails = () => {
           </Typography>
           <Typography style={{ textAlign: 'center', margin: '10px 0' }} variant='h6'>
             Role: {userData.role}
+          </Typography>
+          <Typography style={{ textAlign: 'center', margin: '10px 0' }} variant='h6'>
+            Promotion: {userData.name}
           </Typography>
         </div>
       )}

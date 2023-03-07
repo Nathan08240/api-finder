@@ -10,16 +10,14 @@ export const LoginWrapper = styled.div`
 `
 
 export const LoginBox = styled(Card)`
-  width: 500px;
-  height: 500px;
+  width: 100vw;
+  height: 100VH;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-  @media screen and (max-width: 600px) {
-    width: 350px;
-  }
+
 `
 
 export const Form = styled.form`

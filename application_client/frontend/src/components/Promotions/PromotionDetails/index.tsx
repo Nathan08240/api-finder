@@ -3,12 +3,21 @@ import { Link, useParams } from 'react-router-dom'
 import { Button, Container, Typography } from '@mui/material'
 
 const apiUrl = 'http://localhost:5000/api/promotions'
+const apiUsersUrl = 'http://localhost:5000/api/users'
 
 interface Promotion {
   _id: string
   name: string
   reference: string
-  // referent: string
+  referent: string
+  referentName: string
+  referentLastname: string
+}
+
+interface User {
+  _id: string
+  firstname: string
+  lastname: string
 }
 
 const PromotionDetails = () => {
@@ -23,7 +32,14 @@ const PromotionDetails = () => {
     _id: '',
     name: '',
     reference: '',
-    // referent: '',
+    referent: '',
+    referentName: '',
+    referentLastname: '',
+  })
+  const [referentData, setReferentData] = useState<User>({
+    _id: '',
+    firstname: '',
+    lastname: '',
   })
 
   useEffect(() => {
@@ -38,6 +54,27 @@ const PromotionDetails = () => {
         console.log(err)
       })
   }, [])
+
+  useEffect(() => {
+    if (promotionData.referent) {
+      const referentUrl = new URL(apiUsersUrl + '/' + promotionData.referent)
+      fetch(referentUrl, { method: 'GET', headers: headers })
+        .then((data) => {
+          return data.json()
+        })
+        .then((resp) => {
+          setReferentData(resp)
+          setPromotionData((prevState) => ({
+            ...prevState,
+            referentName: resp.firstname,
+            referentLastname: resp.lastname,
+          }))
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+  }, [promotionData.referent])
 
   return (
     <Container>
@@ -55,9 +92,9 @@ const PromotionDetails = () => {
           <Typography style={{ textAlign: 'center', margin: '10px 0' }} variant='h6'>
             Nom: {promotionData.name}
           </Typography>
-          {/* <Typography style={{ textAlign: 'center', margin: '10px 0' }} variant='h6'>
-            Référent: {promotionData.referent}
-          </Typography> */}
+          <Typography style={{ textAlign: 'center', margin: '10px 0' }} variant='h6'>
+            Référent: {promotionData.referentName} {promotionData.referentLastname}
+          </Typography>
         </div>
       )}
       <Link
