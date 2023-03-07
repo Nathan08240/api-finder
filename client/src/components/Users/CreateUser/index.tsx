@@ -57,8 +57,6 @@ const CreateUser = () => {
     const {
       target: { value },
     } = event;
-    console.log(value);
-    console.log(event);
     setPromotion(typeof value === "string" ? value.split(",") : value);
   };
 

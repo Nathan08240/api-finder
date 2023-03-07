@@ -65,8 +65,6 @@ const EditUser = () => {
     const {
       target: { value },
     } = event;
-    console.log(value);
-    console.log(event);
     setPromotion(typeof value === "string" ? value.split(",") : value);
   };
 
@@ -98,8 +96,6 @@ const EditUser = () => {
         console.log(err);
       });
   }, []);
-
-  // setPromotion(promotions.find((promotion) => promotion._id === user.promotion))
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();

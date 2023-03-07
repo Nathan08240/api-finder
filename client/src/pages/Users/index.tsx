@@ -99,8 +99,6 @@ export const Users = () => {
       });
   }, []);
 
-  console.log(usersData);
-
   return (
     <Container>
       <Typography
