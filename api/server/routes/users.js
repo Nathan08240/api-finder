@@ -9,8 +9,8 @@ const {
 } = require("../handlers/users");
 const { isAuth, isAdmin } = require("../middlewares/auth");
 
-router.use(isAuth);
-router.route("/").get(isAdmin, getUsers).post(isAdmin, createUser);
+// router.use(isAuth);
+router.route("/").get(getUsers).post(createUser);
 
 router
   .route("/:id")

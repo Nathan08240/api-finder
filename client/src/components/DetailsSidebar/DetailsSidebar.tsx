@@ -40,6 +40,7 @@ const useStyles = makeStyles({
     fontSize: "2rem",
     textAlign: "center",
     margin: "20px 10px",
+    wordBreak: 'break-word',
   },
   table: {
     border: "none",
@@ -47,6 +48,9 @@ const useStyles = makeStyles({
       border: "none",
     },
   },
+  text: {
+    wordBreak: 'break-word',
+  }
 });
 
 const DetailsSidebar: React.FC<DetailsSidebarProps> = ({
@@ -168,7 +172,7 @@ const DetailsSidebar: React.FC<DetailsSidebarProps> = ({
             {details.map(({ label, value }) => (
               <TableRow key={label}>
                 <TableCell>{label}:</TableCell>
-                <TableCell>{value}</TableCell>
+                <TableCell className={classes.text}>{value}</TableCell>
               </TableRow>
             ))}
           </TableBody>
