@@ -79,7 +79,6 @@ const downloadFile = (req, res) => {
 
 const deleteFile = (req, res) => {
   const target = `.${req.query.target}`;
-  console.log(target);
   try {
     if (!fs.existsSync(target)) {
       return res.status(400).send({

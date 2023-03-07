@@ -23,7 +23,6 @@ const login = async (req, res) => {
       data: { email: user.email, role: user.role },
       token,
     });
-    console.log("User logged in");
   } catch (error) {
     console.log(error);
     res.status(400).send({ error: error.message });

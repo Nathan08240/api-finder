@@ -2,7 +2,6 @@ const fs = require("fs");
 
 const getFolders = (req, res) => {
   const { path } = req.query;
-  console.log("List of folders");
   const folders = [];
   fs.readdirSync("." + path, { withFileTypes: true }).forEach(function (
     folder,
@@ -11,7 +10,6 @@ const getFolders = (req, res) => {
     if (folder.isDirectory()) {
       const folderPath = "." + path + "/" + folder.name;
       const stats = fs.statSync(folderPath);
-      console.log(path)
       folders.push({
         id: index,
         path: `${path}/${folder.name}`,
@@ -27,7 +25,6 @@ const getFolders = (req, res) => {
 
 const createFolder = (req, res) => {
   const { location, name } = req.body;
-  console.log("Create folder", name, "in", location);
   fs.mkdirSync("." + location + "/" + name, { recursive: true });
   res.status(201).send("Folder created");
 };
