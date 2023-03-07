@@ -69,9 +69,7 @@ const UploadFile: React.FC<UploadFileProps> = ({
     }
 
     const handleInput = async (e: any) => {
-        console.log("e.target.files : ", e.target.files)
         await setFilesArray(Array.from(e.target.files));
-        console.log("filesArray : ", filesArray)
     };
 
     const { user } = React.useContext(AuthContext) as any
@@ -91,18 +89,15 @@ const UploadFile: React.FC<UploadFileProps> = ({
 
     const retirerFichier = (index: any) => {
         setFilesArray(filesArray.filter((file: any, i: any) => i !== index));
-        console.log("filesArray : ", filesArray)
     }
 
     const importerFichier = async () => {
         var myHeaders = new Headers();
         myHeaders.append("Authorization", headers.Authorization);
-        console.log("myHeaders : ", myHeaders);
 
         var formdata = new FormData();
 
         if (filesArray?.length == 1) {
-            console.log("filesArray : ", filesArray)
             formdata.append("file", filesArray[0], filesArray[0].name);
         }
         if (filesArray?.length > 1) {
@@ -140,7 +135,6 @@ const UploadFile: React.FC<UploadFileProps> = ({
     const DisplayList: React.FunctionComponent<{}> = () => {
         return (
             <>
-                {console.log("filesArray : ", filesArray)}
                 {filesArray.map((file: any, index: any) => {
                     if (file.size > 5000000) {
                         retirerFichier(index);

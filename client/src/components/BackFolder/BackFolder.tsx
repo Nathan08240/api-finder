@@ -28,7 +28,6 @@ const BackFolder: React.FC<BackFolderProps> = ({ handleBackButton }) => {
 
     if (locationFromLocalStorage) {
       const pathParts = locationFromLocalStorage.split("/");
-      console.log(pathParts);
       setLocation(pathParts.slice(1));
     }
   }, []);
