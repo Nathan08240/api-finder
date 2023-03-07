@@ -7,6 +7,7 @@ import Grid from "@mui/material/Grid";
 
 import { AuthContext } from "../../App";
 import { ClassNames } from "@emotion/react";
+import { Padding } from "@mui/icons-material";
 
 const apiUrl = "http://localhost:5000/api/folders";
 
@@ -21,11 +22,9 @@ interface Directory {
 
 const useStyles = makeStyles({
   root: {
-    minWidth: 200,
-    display: "inline-block",
+    width: 280,
     cursor: "pointer",
     borderRadius: "10px",
-    padding: "0",
     marginBottom: "20px",
     border: "1px solid #a6a6a6",
   },
@@ -33,7 +32,7 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "start",
     alignItems: "center",
-    padding: "5px 10px",
+    wordBreak: "break-word",
   },
 });
 
@@ -46,11 +45,11 @@ const DirectoryCard: React.FC<{
 
   return (
     <Card className={classes.root} onClick={() => onClick(directory)}>
-      <CardContent className={classes.CardContainer}>
+      <CardContent className={classes.CardContainer} sx={{padding: '5px 10px'}}>
         <Typography variant="body2" color="textSecondary" component="p">
           <Icon fontSize="large" />
         </Typography>
-        <Typography variant="h6" component="h2">
+        <Typography variant="h6" component="h2" ml={1}>
           {directory.name}
         </Typography>
       </CardContent>
@@ -106,11 +105,12 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
       setPath(path.substring(0, path.lastIndexOf("/")));
       setLocation(path.substring(0, path.lastIndexOf("/")));
     } else if (user?.role === "student") {
-      if (path === `/BDD/${promotion}`) return;
+      if (path === `/BDD/${promotion[0]}`) return;
       setPath(path.substring(0, path.lastIndexOf("/")));
       setLocation(path.substring(0, path.lastIndexOf("/")));
     }
   };
+
 
   return (
     <>
@@ -122,7 +122,6 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
         {user?.role === "student" && (
           <Grid container>
             {directories.map((directory) =>
-              user?.role === "student" &&
               directory.name === `${user?.lastname}_${user?.firstname}` ? (
                 <Grid
                   item
@@ -132,7 +131,7 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
                   lg={4}
                   xl={2}
                   key={directory.id}
-                  sx={{ display: "flex", justifyContent: "center" }}
+                  sx={{ display: "flex", justifyContent: "center", padding: '0px' }}
                 >
                   <DirectoryCard
                     directory={directory}
@@ -155,7 +154,7 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
                   lg={4}
                   xl={2}
                   key={directory.id}
-                  sx={{ display: "flex", justifyContent: "center" }}
+                  sx={{ display: "flex", justifyContent: "center", padding: '0px' }}
                 >
                   <DirectoryCard
                     directory={directory}
@@ -165,29 +164,28 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
               ))}
             </Grid>
           ))}
-        {user?.role === "speaker" && (
-          <Grid container>
-            {directories.map((directory) =>
-              user?.role === "speaker" && directory.name === `${promotion}` ? (
-                <Grid
-                  item
-                  xs={12}
-                  sm={6}
-                  md={4}
-                  lg={4}
-                  xl={2}
-                  key={directory.id}
-                  sx={{ display: "flex", justifyContent: "center" }}
-                >
-                  <DirectoryCard
-                    directory={directory}
-                    onClick={() => handleDirectoryClick(directory)}
-                  />
-                </Grid>
-              ) : null
-            )}
-          </Grid>
-        )}
+        {user?.role === "speaker" ||
+          (user?.role === "pilot" && (
+            <Grid container>
+              {directories.map((directory) => (
+                    <Grid
+                      item
+                      xs={12}
+                      sm={6}
+                      md={4}
+                      lg={4}
+                      xl={2}
+                      key={directory.id}
+                      sx={{ display: "flex", justifyContent: "center", padding: '0px' }}
+                    >
+                      <DirectoryCard
+                        directory={directory}
+                        onClick={() => handleDirectoryClick(directory)}
+                      />
+                    </Grid>
+                  ))}
+            </Grid>
+          ))}
         <Grid item xs={2} />
       </Grid>
     </>

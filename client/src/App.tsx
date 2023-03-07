@@ -16,32 +16,29 @@ export default function App() {
       ? JSON.parse(localStorage.getItem("user")!)
       : null
   );
-  const [promotion, setPromotion] = useState<string[] | null>(null);
-
-  useEffect(() => {
-    const promotionFromLocalStorage = JSON.parse(
-      localStorage.getItem("promotion") ?? "null"
-    );
-    if (promotionFromLocalStorage !== null) {
-      setPromotion(promotionFromLocalStorage);
-    }
-  }, []);
-
+  const promotionFromLocalStorage = localStorage.getItem("promotion");
+  const parsedPromotion = promotionFromLocalStorage ? JSON.parse(promotionFromLocalStorage) : null;
+  const [promotion, setPromotion] = useState<null | string[]>(parsedPromotion);
   const [counter, setCounter] = useState(0);
+  
   let defaultLocation = "/BDD";
   if (user?.role === "student") {
-    defaultLocation = `/BDD/${promotion}/${user?.lastname}_${user?.firstname}`;
+    if (promotion)
+    defaultLocation = `/BDD/${promotion[0]}/${user?.lastname}_${user?.firstname}`;
   }
-  const [location, setLocation] = useState<null | string>(defaultLocation);
+  const [location, setLocation] = useState<string>(defaultLocation);
+
   AuthContext = createContext({
     location,
     token,
     user,
+    counter,
     promotion,
     setLocation,
     setUser,
     setToken,
     setPromotion,
+    setCounter,
   });
 
   useEffect(() => {

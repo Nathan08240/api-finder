@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import {
   IconButton,
   Table,
@@ -55,7 +55,7 @@ const DetailsSidebar: React.FC<DetailsSidebarProps> = ({
   showSidebar,
 }) => {
   const classes = useStyles();
-  const { counter, setCounter, user, location, promotion } = React.useContext(
+  const { counter, setCounter, user, location, promotion } = useContext(
     AuthContext
   ) as any;
 

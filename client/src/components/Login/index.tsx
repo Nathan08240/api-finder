@@ -27,7 +27,7 @@ interface Promotion {
 }
 
 export const Login = () => {
-  const { setUser, setToken, setLocation, setPromotion } = useContext(
+  const { promotion, setUser, setToken, setLocation, setPromotion  } = useContext(
     AuthContext
   ) as any;
   // const [userData, setUserData] = useState<User[]>([]);
@@ -88,15 +88,16 @@ export const Login = () => {
       const token = res.token;
       const user: any = jwtDecode(token);
       setUser(user);
+      console.log(user)
       setToken(token);
-      const promotions = user.promotion.map((promotion) =>
-        promotionData.find(promo => promo._id === promotion)?.name
+      const promotionMap = user.promotion.map((promotionMap: string) =>
+        promotionData.find(promo => promo._id === promotionMap)?.name
         );
-      setPromotion(promotions);
+      setPromotion(promotionMap);
 
       if (user?.role === "student") {
         setLocation(
-          `/BDD/${promotions[0]}/${user.lastname}_${user.firstname}`
+          `/BDD/${promotion[0]}/${user.lastname}_${user.firstname}`
         );
       } else {
         setLocation("/BDD");

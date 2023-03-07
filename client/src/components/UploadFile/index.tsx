@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -92,7 +92,7 @@ const UploadFile: React.FC<UploadFileProps> = ({
     await setFilesArray(Array.from(e.target.files));
   };
 
-  const { user, promotion, counter, setCounter } = React.useContext(
+  const { user, promotion, counter, setCounter } = useContext(
     AuthContext
   ) as any;
   // const target = `/${user.lastname}_${user.firstname}/`
