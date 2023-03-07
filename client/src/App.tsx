@@ -21,10 +21,10 @@ export default function App() {
       ? localStorage.getItem("promotion")!
       : null
   );
-  const [counter, setCounter] = useState(0)
-  let defaultLocation = '/BDD'
-  if (user?.role === 'student') {
-    defaultLocation = `/BDD/${promotion}/${user?.lastname}_${user?.firstname}`
+  const [counter, setCounter] = useState(0);
+  let defaultLocation = "/BDD";
+  if (user?.role === "student") {
+    defaultLocation = `/BDD/${promotion}/${user?.lastname}_${user?.firstname}`;
   }
   const [location, setLocation] = useState<null | string>(defaultLocation);
   AuthContext = createContext({
@@ -66,7 +66,7 @@ export default function App() {
         setToken,
         setPromotion,
         setUser,
-        setCounter
+        setCounter,
       }}
     >
       <ThemeProvider theme={theme}>

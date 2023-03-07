@@ -22,7 +22,7 @@ interface User {
   firstname: string;
   email: string;
   role: string;
-  promotion: string;
+  promotion: string[];
 }
 
 interface Promotion {
@@ -99,6 +99,8 @@ export const Users = () => {
       });
   }, []);
 
+  console.log(usersData);
+
   return (
     <Container>
       <Typography
@@ -126,8 +128,8 @@ export const Users = () => {
         <TableBody>
           {usersData &&
             usersData.map((user: User) => {
-              const promotion = promotionsData.find(
-                (promotion) => promotion._id === user.promotion
+              const promotion = promotionsData.filter((promotion) =>
+                user.promotion.includes(promotion._id)
               );
               return (
                 <TableRow key={user._id}>
@@ -136,7 +138,17 @@ export const Users = () => {
                   <TableCell align="center">{user.email}</TableCell>
                   <TableCell align="center">{user.role}</TableCell>
                   <TableCell align="center">
-                    {promotion ? promotion.name : "Aucune promotion"}
+                    {user.promotion.length > 0
+                      ? user.promotion.map((promoId, index) => {
+                          const promotion = promotionsData.find(
+                            (promotion) => promotion._id === promoId
+                          );
+                          return promotion
+                            ? promotion.name +
+                                (index < user.promotion.length - 1 ? ", " : "")
+                            : "";
+                        })
+                      : "Aucune promotion"}
                   </TableCell>
                   <TableCell align="center">
                     <Button

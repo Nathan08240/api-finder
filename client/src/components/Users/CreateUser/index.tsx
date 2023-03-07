@@ -8,11 +8,12 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  SelectChangeEvent,
   Button,
   Box,
   Grid,
+  OutlinedInput,
 } from "@mui/material";
+import { SelectChangeEvent } from "@mui/material/Select";
 
 const apiUrl = "http://localhost:5000/api/users";
 const apiPromotionsUrl = "http://localhost:5000/api/promotions";
@@ -21,6 +22,17 @@ interface Promotion {
   _id: string;
   name: string;
 }
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
 const roles = [
   { value: "support", label: "Support" },
@@ -37,9 +49,18 @@ const CreateUser = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
-  const [promotion, setPromotion] = useState("");
+  const [promotion, setPromotion] = useState<string[]>([]);
   const [promotions, setPromotions] = useState<Promotion[]>([]);
   const navigate = useNavigate();
+
+  const handleChange = (event: SelectChangeEvent<typeof promotion>) => {
+    const {
+      target: { value },
+    } = event;
+    console.log(value);
+    console.log(event);
+    setPromotion(typeof value === "string" ? value.split(",") : value);
+  };
 
   useEffect(() => {
     const fetchPromotions = async () => {
@@ -158,15 +179,15 @@ const CreateUser = () => {
           </Grid>
           <Grid item xs={12}>
             <FormControl fullWidth>
-              <InputLabel htmlFor="promotion-select">Promotion</InputLabel>
+              <InputLabel id="demo-multiple-name-label">Promotion</InputLabel>
               <Select
-                onChange={(e: SelectChangeEvent<string>) =>
-                  setPromotion(e.target.value)
-                }
-                inputProps={{
-                  name: "promotion",
-                  id: "promotion-select",
-                }}
+                labelId="demo-multiple-name-label"
+                id="demo-multiple-name"
+                multiple
+                value={promotion}
+                onChange={handleChange}
+                input={<OutlinedInput label="Promotion" />}
+                MenuProps={MenuProps}
               >
                 {promotions &&
                   promotions.map((promotion: Promotion) => (

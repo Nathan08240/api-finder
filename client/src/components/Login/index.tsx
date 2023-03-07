@@ -92,15 +92,16 @@ export const Login = () => {
       const promotion = promotionData.find(
         (promotion) => promotion._id === user.promotion
       );
-      
+
       setPromotion(promotion?.name);
-  
-      if (user?.role === 'student') {
-        setLocation(`/BDD/${promotion?.name}/${user.lastname}_${user.firstname}`);
+
+      if (user?.role === "student") {
+        setLocation(
+          `/BDD/${promotion?.name}/${user.lastname}_${user.firstname}`
+        );
       } else {
-        setLocation('/BDD')
+        setLocation("/BDD");
       }
-      
     } catch (error) {
       console.error(error);
     }

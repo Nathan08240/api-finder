@@ -54,8 +54,8 @@ const CreateFolder: React.FC<CreateFolderProps> = ({
     } catch (err) {
       console.error(err);
     }
-    setCounter(counter + 1)
-    setOpen(false)
+    setCounter(counter + 1);
+    setOpen(false);
   };
 
   return (
