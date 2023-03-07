@@ -17,7 +17,7 @@ export default function ConfirmLogout() {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const { setUser, setToken, setLocation } = useContext(AuthContext) as any;
+  const { setUser, setToken, setLocation, setPromotion } = useContext(AuthContext) as any;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -32,6 +32,7 @@ export default function ConfirmLogout() {
     setUser(null);
     setToken(null);
     setLocation(null);
+    setPromotion(null);
   };
 
   return (

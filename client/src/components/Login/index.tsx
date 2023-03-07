@@ -89,7 +89,7 @@ export const Login = () => {
       const user: any = jwtDecode(token);
       setUser(user);
       setToken(token);
-      const promotions = user.promotion.map((promotion) =>
+      const promotions = user.promotion.map((promotion : string) =>
         promotionData.find(promo => promo._id === promotion)?.name
         );
       setPromotion(promotions);
