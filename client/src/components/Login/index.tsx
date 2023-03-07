@@ -30,7 +30,7 @@ export const Login = () => {
   const { setUser, setToken, setLocation, setPromotion } = useContext(
     AuthContext
   ) as any;
-  const [userData, setUserData] = useState<User[]>([]);
+  // const [userData, setUserData] = useState<User[]>([]);
   const [promotionData, setPromotionData] = useState<Promotion[]>([]);
   const { register, handleSubmit } = useForm<Inputs>();
 
@@ -43,21 +43,21 @@ export const Login = () => {
   const urlPromotions = new URL(apiPromotionsUrl);
 
   useEffect(() => {
-    fetch(urlUsers, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((data) => {
-        return data.json();
-      })
-      .then((resp) => {
-        setUserData(resp);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // fetch(urlUsers, {
+    //   method: "GET",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // })
+    //   .then((data) => {
+    //     return data.json();
+    //   })
+    //   .then((resp) => {
+    //     setUserData(resp);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
     fetch(urlPromotions, {
       method: "GET",
       headers: {
@@ -92,10 +92,15 @@ export const Login = () => {
       const promotion = promotionData.find(
         (promotion) => promotion._id === user.promotion
       );
+      
       setPromotion(promotion?.name);
-      // @ts-ignore
-      // a revoir
-      setLocation(`/${promotion.name}/${user.lastname}_${user.firstname}`);
+  
+      if (user?.role === 'student') {
+        setLocation(`/BDD/${promotion?.name}/${user.lastname}_${user.firstname}`);
+      } else {
+        setLocation('/BDD')
+      }
+      
     } catch (error) {
       console.error(error);
     }

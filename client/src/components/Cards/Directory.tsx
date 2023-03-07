@@ -74,8 +74,6 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
     };
 
     const url = new URL(apiUrl);
-    console.log(url);
-    
     url.searchParams.set("path", path);
     const result = await fetch(url.href, { method: "GET", headers: headers });
     return await result.json();
