@@ -23,7 +23,7 @@ const CreateFolder: React.FC<CreateFolderProps> = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [folderName, setFolderName] = useState("");
-  const { user } = useContext(AuthContext) as any;
+  const { user, counter, setCounter } = useContext(AuthContext) as any;
   const path = window.localStorage.getItem("location");
   const location = path ? path : `/${user?.lastname}_${user?.firstname}`;
 
@@ -54,6 +54,8 @@ const CreateFolder: React.FC<CreateFolderProps> = ({
     } catch (err) {
       console.error(err);
     }
+    setCounter(counter + 1)
+    setOpen(false)
   };
 
   return (

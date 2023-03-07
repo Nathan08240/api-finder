@@ -12,7 +12,7 @@ const createUser = async function (req, res) {
       return res.status(404).send();
     }
     fs.mkdirSync(
-      `../BDD/${promotion.name}/${user.lastname}_${user.firstname}`,
+      `./BDD/${promotion.name}/${user.lastname}_${user.firstname}`,
       { recursive: true }
     );
     user.createToken();

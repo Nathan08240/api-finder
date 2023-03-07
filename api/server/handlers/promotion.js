@@ -9,7 +9,7 @@ const createPromotion = async function (req, res) {
       referent: mongoose.Types.ObjectId(referent),
     });
     await promotion.save();
-    fs.mkdirSync(`../BDD/${promotion.name}`, { recursive: true });
+    fs.mkdirSync(`./BDD/${promotion.name}`, { recursive: true });
     res.status(201).send(promotion);
   } catch (error) {
     console.log(error);

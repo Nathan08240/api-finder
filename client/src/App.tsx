@@ -21,9 +21,12 @@ export default function App() {
       ? localStorage.getItem("promotion")!
       : null
   );
-  const [location, setLocation] = useState<null | string>(
-    `/${promotion}/${user?.lastname}_${user?.firstname}`
-  );
+  const [counter, setCounter] = useState(0)
+  let defaultLocation = '/BDD'
+  if (user?.role === 'student') {
+    defaultLocation = `/BDD/${promotion}/${user?.lastname}_${user?.firstname}`
+  }
+  const [location, setLocation] = useState<null | string>(defaultLocation);
   AuthContext = createContext({
     location,
     token,
@@ -54,6 +57,7 @@ export default function App() {
   return (
     <AuthContext.Provider
       value={{
+        counter,
         location,
         user,
         promotion,
@@ -62,6 +66,7 @@ export default function App() {
         setToken,
         setPromotion,
         setUser,
+        setCounter
       }}
     >
       <ThemeProvider theme={theme}>

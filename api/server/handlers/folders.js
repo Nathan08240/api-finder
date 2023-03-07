@@ -4,13 +4,14 @@ const getFolders = (req, res) => {
   const { path } = req.query;
   console.log("List of folders");
   const folders = [];
-  fs.readdirSync("./BDD" + path, { withFileTypes: true }).forEach(function (
+  fs.readdirSync("." + path, { withFileTypes: true }).forEach(function (
     folder,
     index
   ) {
     if (folder.isDirectory()) {
-      const folderPath = "./BDD" + path + "/" + folder.name;
+      const folderPath = "." + path + "/" + folder.name;
       const stats = fs.statSync(folderPath);
+      console.log(path)
       folders.push({
         id: index,
         path: `${path}/${folder.name}`,
@@ -27,13 +28,13 @@ const getFolders = (req, res) => {
 const createFolder = (req, res) => {
   const { location, name } = req.body;
   console.log("Create folder", name, "in", location);
-  fs.mkdirSync("./BDD" + location + "/" + name, { recursive: true });
+  fs.mkdirSync("." + location + "/" + name, { recursive: true });
   res.status(201).send("Folder created");
 };
 
 const deleteFolder = (req, res) => {
   const target = req.query.target;
-  fs.rmdirSync(`.BDD${target}`, { recursive: true });
+  fs.rmdirSync(`.${target}`, { recursive: true });
   res.send({
     message: "Folder deleted",
   });
@@ -42,7 +43,7 @@ const deleteFolder = (req, res) => {
 const updateFolder = (req, res) => {
   const { oldPath, newPath } = req.body;
   try {
-    fs.renameSync(`.BDD${oldPath}`, `.${newPath}`);
+    fs.renameSync(`.${oldPath}`, `.${newPath}`);
     res.send({
       message: "Folder renamed",
     });

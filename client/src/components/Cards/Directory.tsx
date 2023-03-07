@@ -74,6 +74,8 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
     };
 
     const url = new URL(apiUrl);
+    console.log(url);
+    
     url.searchParams.set("path", path);
     const result = await fetch(url.href, { method: "GET", headers: headers });
     return await result.json();
@@ -101,9 +103,14 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
   };
 
   const handleBackButton = () => {
-    if (path === `/${promotion}`) return;
-    setPath(path.substring(0, path.lastIndexOf("/")));
-    setLocation(path.substring(0, path.lastIndexOf("/")));
+    if (user?.role !== 'student') {
+      if (path === '/BDD') return;
+      setPath(path.substring(0, path.lastIndexOf("/")));
+      setLocation(path.substring(0, path.lastIndexOf("/")));
+    } else if (user?.role === 'student') {
+      if(path === `/BDD/${promotion}`) return;
+      setPath(path.substring(0, path.lastIndexOf("/")));
+      setLocation(path.substring(0, path.lastIndexOf("/")));}
   };
 
   return (
@@ -137,7 +144,7 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
             )}
           </Grid>
         )}
-        {user?.role !== "student" && (
+        {user?.role === 'administration' || user?.role === 'support' && (
           <Grid container>
             {directories.map((directory) => (
               <Grid

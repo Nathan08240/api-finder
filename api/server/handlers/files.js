@@ -6,12 +6,12 @@ const getFiles = (req, res) => {
   const { path } = req.query;
   const files = [];
   try {
-    fs.readdirSync("./BDD" + path, { withFileTypes: true }).forEach(function (
+    fs.readdirSync("." + path, { withFileTypes: true }).forEach(function (
       file,
       index
     ) {
       if (file.isFile()) {
-        const filePath = "./BDD" + path + "/" + file.name;
+        const filePath = "." + path + "/" + file.name;
         const stats = fs.statSync(filePath);
         files.push({
           name: file.name,
@@ -34,11 +34,11 @@ const getFiles = (req, res) => {
 
 const uploadFile = (req, res) => {
   const target = `${req.query.target}`;
-  let storage = getMulterStorage(`/BDD${target}`);
+  let storage = getMulterStorage(`${target}`);
   const upload = multer({ storage: storage }).array("file");
   upload(req, res, (err) => {
     if (err) {
-      if (!fs.existsSync(`./BDD${target}`)) {
+      if (!fs.existsSync(`.${target}`)) {
         res.status(400).send({
           message: "Directory doesn't exist",
         });
@@ -53,7 +53,7 @@ const uploadFile = (req, res) => {
 };
 
 const downloadFile = (req, res) => {
-  const target = `./BDD${req.query.target}`;
+  const target = `.${req.query.target}`;
   const fileName = req.query.target.split("/").pop();
   console.log(target);
   try {
@@ -78,7 +78,7 @@ const downloadFile = (req, res) => {
 };
 
 const deleteFile = (req, res) => {
-  const target = `./BDD${req.query.target}`;
+  const target = `.${req.query.target}`;
   console.log(target);
   try {
     if (!fs.existsSync(target)) {
@@ -104,7 +104,7 @@ const updateFile = (req, res) => {
   const { target, newName } = req.body;
   const location = target.substring(0, target.lastIndexOf("/"));
   try {
-    fs.renameSync(`.BDD${target}`, `.BDD${location}/${newName}`);
+    fs.renameSync(`.${target}`, `.${location}/${newName}`);
     res.send({
       message: "File renamed",
     });

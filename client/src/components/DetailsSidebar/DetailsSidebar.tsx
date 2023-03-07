@@ -1,10 +1,11 @@
 import React from "react";
-import { Table, TableBody, TableCell, TableRow } from "@mui/material";
+import { IconButton, Table, TableBody, TableCell, TableRow } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
 import DownloadIcon from "@mui/icons-material/Download";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Box from "@mui/material/Box";
+import { AuthContext } from "../../App";
 import { makeStyles } from "@mui/styles";
 
 interface DetailsSidebarProps {
@@ -46,6 +47,7 @@ const DetailsSidebar: React.FC<DetailsSidebarProps> = ({
   setShowSidebar,
 }) => {
   const classes = useStyles();
+  const { counter, setCounter, user, location, promotion } = React.useContext(AuthContext) as any;
 
   const headers = {
     "Content-Type": "application/json",
@@ -76,8 +78,6 @@ const DetailsSidebar: React.FC<DetailsSidebarProps> = ({
     },
   ];
 
-  console.log(path);
-
   const apiUrl = `http://localhost:5000/api/files?target=${path}`;
   const apiDownloadUrl = `http://localhost:5000/api/files/download?target=${path}`;
 
@@ -105,10 +105,13 @@ const DetailsSidebar: React.FC<DetailsSidebarProps> = ({
         .then((res) => res.json())
         .then((data) => {
           console.log(data);
+
         });
     } catch (error) {
       console.log(error);
     }
+    setShowSidebar(false)
+    setCounter(counter + 1)
   };
 
   const style = {
@@ -128,13 +131,17 @@ const DetailsSidebar: React.FC<DetailsSidebarProps> = ({
       <Box sx={style}>
         <div className={classes.buttonContainer}>
           <div>
-            <DownloadIcon onClick={handleDownload} className={classes.button} />
-            <DeleteIcon onClick={handleDelete} className={classes.button} />
+            <IconButton onClick={handleDownload} className={classes.button}>
+            <DownloadIcon />
+            </IconButton >
+            <IconButton disabled={(location === '/' + promotion && user?.role === 'support') ?? true} onClick={handleDelete} className={classes.button}>
+            <DeleteIcon />
+            </IconButton>
+            
           </div>
-          <CloseIcon
-            onClick={() => setShowSidebar(false)}
-            className={classes.button}
-          />
+          <IconButton onClick={() => setShowSidebar(false)} className={classes.button}>
+          <CloseIcon/>
+          </IconButton>
         </div>
         <div className={classes.fileName}>{selectedContent?.name}</div>
         <Table className={classes.table}>

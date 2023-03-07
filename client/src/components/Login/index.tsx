@@ -94,8 +94,8 @@ export const Login = () => {
       );
       setPromotion(promotion?.name);
       // @ts-ignore
+      // a revoir
       setLocation(`/${promotion.name}/${user.lastname}_${user.firstname}`);
-      console.log(promotion?.name);
     } catch (error) {
       console.error(error);
     }

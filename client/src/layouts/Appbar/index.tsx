@@ -104,9 +104,9 @@ export const AppBarHead = () => {
           >
             {!open ? <ArrowBack /> : <MenuIcon />}
           </Button>
-          <Button color="inherit">
+          {/* <Button color="inherit">
             <FileDownload />
-          </Button>
+          </Button> */}
           <Button
             color="inherit"
             onClick={() => {
@@ -116,7 +116,7 @@ export const AppBarHead = () => {
           >
             <DriveFileMoveOutlined />
           </Button>
-          <Button
+          {/* <Button
             color="inherit"
             onClick={() => {
               alert("Delete");
@@ -124,7 +124,7 @@ export const AppBarHead = () => {
             disabled={true}
           >
             <Delete />
-          </Button>
+          </Button> */}
           <Button // à voir ce qu'on fait de ce bouton, si on le garde, etc
             color="inherit"
             onClick={() => {

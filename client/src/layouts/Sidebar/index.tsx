@@ -66,7 +66,7 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
 
   // début calcul de l'occupation du stockage
 
-  const path = `/${promotion}/${user?.lastname}_${user?.firstname}`;
+  const path = `/BDD/${promotion}/${user?.lastname}_${user?.firstname}`;
   const [filesSize, setFilesSizes] = React.useState([]);
 
   const fetchFiles = async (path: string) => {
@@ -167,7 +167,7 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
                 </Link>
               </ListItem>
               <CreateFolder activeTab={activeTab} setActiveTab={setActiveTab} />
-              <ListItem
+              {/* <ListItem
                 key="importerDossier"
                 disabled={activeTab != "bibliotheque" ? true : false}
                 onClick={() => {
@@ -183,7 +183,7 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
                   <DriveFolderUploadRoundedIcon />
                 </ListItemIcon>
                 <ListItemText>Importer un dossier</ListItemText>
-              </ListItem>
+              </ListItem> */}
 
               <UploadFile
                 activeTab={activeTab}

@@ -89,22 +89,15 @@ const UploadFile: React.FC<UploadFileProps> = ({
   };
 
   const handleInput = async (e: any) => {
-    console.log("e.target.files : ", e.target.files);
     await setFilesArray(Array.from(e.target.files));
-    console.log("filesArray : ", filesArray);
   };
 
-  const { user, promotion } = React.useContext(AuthContext) as any;
+  const { user, promotion, counter, setCounter } = React.useContext(AuthContext) as any;
   // const target = `/${user.lastname}_${user.firstname}/`
   // const apiUrl = `http://localhost:5000/api/files?target=${target}`
 
   const path = window.localStorage.getItem("location");
-  const uploadTarget = path
-    ? path
-    : `/${promotion}/${user?.lastname}_${user?.firstname}`;
-  const apiUploadUrl = `http://localhost:5000/api/files?target=${uploadTarget}`;
-  console.log(uploadTarget);
-  console.log(apiUploadUrl);
+  const apiUploadUrl = `http://localhost:5000/api/files?target=${path}`;
 
   const headers = {
     "Content-Type": "application/json",
@@ -113,18 +106,15 @@ const UploadFile: React.FC<UploadFileProps> = ({
 
   const retirerFichier = (index: any) => {
     setFilesArray(filesArray.filter((file: any, i: any) => i !== index));
-    console.log("filesArray : ", filesArray);
   };
 
   const importerFichier = async () => {
     var myHeaders = new Headers();
     myHeaders.append("Authorization", headers.Authorization);
-    console.log("myHeaders : ", myHeaders);
 
     var formdata = new FormData();
 
     if (filesArray?.length == 1) {
-      console.log("filesArray : ", filesArray);
       formdata.append("file", filesArray[0], filesArray[0].name);
     }
     if (filesArray?.length > 1) {
@@ -147,6 +137,9 @@ const UploadFile: React.FC<UploadFileProps> = ({
 
     handleClose();
     handleAlertOpen();
+    setTimeout(() => {
+      setCounter(counter +1)
+    }, 1500)
     setFilesArray([]);
   };
 
@@ -164,17 +157,14 @@ const UploadFile: React.FC<UploadFileProps> = ({
     };
     return (
       <>
-        {console.log("filesArray : ", filesArray)}
         {filesArray.map((file: any, index: any) => {
           let totalSize = 0;
-          console.log("filesize : ", file.size);
           totalSize += file.size / 1000000;
           if (file.size > 5000000) {
             retirerFichier(index);
             totalSize -= file.size / 1000000;
             setFileTooLargeAlert(true);
           }
-          console.log("totalSize : ", totalSize);
           if (totalSize > 1000 - calculateStorageMo) {
             retirerFichier(index);
             totalSize -= file.size / 1000000;
@@ -216,7 +206,6 @@ const UploadFile: React.FC<UploadFileProps> = ({
   };
 
   const storageAvailable = 1000 - calculateStorageMo;
-  console.log("storageAvailable : ", storageAvailable);
 
   return (
     <>
