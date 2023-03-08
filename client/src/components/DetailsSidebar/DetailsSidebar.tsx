@@ -97,7 +97,7 @@ const DetailsSidebar: React.FC<DetailsSidebarProps> = ({
   const apiDownloadUrl = `http://localhost:5000/api/files/download?target=${path}`;
   console.log(apiDownloadUrl)
   const handleDownload = async () => {
-    window.open(apiDownloadUrl, '_blank')
+    window.open(apiDownloadUrl)
   };
 
   const handleDelete = async () => {
