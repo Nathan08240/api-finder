@@ -15,9 +15,10 @@ import {
 } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material/Select";
 import { AuthContext } from "../../../App";
-
-const apiUrl = "http://localhost:5000/api/users";
-const apiPromotionsUrl = "http://localhost:5000/api/promotions";
+//@ts-ignore
+const apiUrl = `${import.meta.env.VITE_API_URL}/api/users`;
+//@ts-ignore
+const apiPromotionsUrl = `${import.meta.env.VITE_API_URL}/api/promotions`;
 
 interface Promotion {
   _id: string;

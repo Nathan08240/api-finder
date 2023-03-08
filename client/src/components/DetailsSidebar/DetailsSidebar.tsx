@@ -92,9 +92,10 @@ const DetailsSidebar: React.FC<DetailsSidebarProps> = ({
       value: updatedPath,
     },
   ];
-
-  const apiUrl = `http://localhost:5000/api/files?target=${path}`;
-  const apiDownloadUrl = `http://localhost:5000/api/files/download?target=${path}`;
+//@ts-ignore
+  const apiUrl = `${import.meta.env.VITE_API_URL}/api/files?target=${path}`;
+  //@ts-ignore
+  const apiDownloadUrl = `${import.meta.env.VITE_API_URL}/api/files/download?target=${path}`;
   console.log(apiDownloadUrl)
   const handleDownload = async () => {
     window.open(apiDownloadUrl)

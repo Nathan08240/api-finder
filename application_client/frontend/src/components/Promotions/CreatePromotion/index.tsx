@@ -13,9 +13,10 @@ import {
   Select,
   SelectChangeEvent,
 } from '@mui/material'
-
-const apiUrl = 'http://localhost:5000/api/promotions'
-const apiUsersUrl = 'http://localhost:5000/api/users'
+//@ts-ignore
+const apiUrl = `${import.meta.env.VITE_API_URL}/api/promotions`;
+//@ts-ignore
+const apiUsersUrl = `${import.meta.env.VITE_API_URL}/api/users`;
 
 interface User {
   _id: string

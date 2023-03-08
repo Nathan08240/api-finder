@@ -9,7 +9,8 @@ import DialogTitle from '@mui/material/DialogTitle'
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder'
 import {AuthContext} from '../../App'
 
-const apiUrl = 'http://localhost:5000/api/folders'
+//@ts-ignore
+const apiUrl = `${import.meta.env.VITE_API_URL}/api/promotions`;
 
 type CreateFolderProps = {
   activeTab: string

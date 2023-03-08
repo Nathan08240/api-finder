@@ -75,11 +75,13 @@ const UploadFile: React.FC<UploadFileProps> = ({ activeTab, setActiveTab, calcul
 
   const { user } = React.useContext(AuthContext) as any
   const target = `/${user.lastname}_${user.firstname}/`
-  const apiUrl = `http://localhost:5000/api/files?target=${target}`
+  //@ts-ignore
+  const apiUrl = `${import.meta.env.VITE_API_URL}/api/files?target=${target}`
 
   const path = window.localStorage.getItem("location")
   const uploadTarget = path ? path : `/${user?.lastname}_${user?.firstname}`
-  const apiUploadUrl = `http://localhost:5000/api/files?target=${uploadTarget}`
+  //@ts-ignore
+  const apiUploadUrl = `${import.meta.env.VITE_API_URL}/api/files?target=${uploadTarget}`
 
   const headers = {
     "Content-Type": "application/json",

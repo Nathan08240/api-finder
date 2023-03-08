@@ -10,7 +10,7 @@ import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
 import { AuthContext } from "../../App";
 import { WindowSharp } from "@mui/icons-material";
 
-const apiUrl = "http://localhost:5000/api/folders";
+const apiUrl = `${import.meta.env.VITE_API_URL}/api/folders`;
 
 type CreateFolderProps = {
   activeTab: string;

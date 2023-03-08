@@ -36,8 +36,10 @@ export const Login = () => {
 
   // @ts-ignore
   const apiUrl = `${import.meta.env.VITE_API_URL}/api/auth/login`;
-  const apiUsersUrl = "http://localhost:5000/api/users";
-  const apiPromotionsUrl = "http://localhost:5000/api/promotions";
+  //@ts-ignore
+  const apiUsersUrl = `${import.meta.env.VITE_API_URL}/api/users`;
+  //@ts-ignore
+  const apiPromotionsUrl = `${import.meta.env.VITE_API_URL}/api/promotions`;
   const url = new URL(apiUrl);
   const urlUsers = new URL(apiUsersUrl);
   const urlPromotions = new URL(apiPromotionsUrl);

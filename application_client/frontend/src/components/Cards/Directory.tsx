@@ -7,8 +7,8 @@ import Grid from '@mui/material/Grid'
 
 import { AuthContext } from '../../App'
 import { ClassNames } from '@emotion/react'
-
-const apiUrl = 'http://localhost:5000/api/folders'
+//@ts-ignore
+const apiUrl = `${import.meta.env.VITE_API_URL}/api/folders`
 
 interface Directory {
   id: string

@@ -99,7 +99,8 @@ const UploadFile: React.FC<UploadFileProps> = ({
   // const apiUrl = `http://localhost:5000/api/files?target=${target}`
 
   const path = window.localStorage.getItem("location");
-  const apiUploadUrl = `http://localhost:5000/api/files?target=${path}`;
+  //@ts-ignore
+  const apiUploadUrl = `${import.meta.env.VITE_API_URL}/api/files?target=${path}`;
 
   const headers = {
     "Content-Type": "application/json",

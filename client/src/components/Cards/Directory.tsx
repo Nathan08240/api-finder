@@ -6,8 +6,8 @@ import BackFolder from "../BackFolder/BackFolder";
 import Grid from "@mui/material/Grid";
 
 import { AuthContext } from "../../App";
-
-const apiUrl = "http://localhost:5000/api/folders";
+//@ts-ignore
+const apiUrl = `${import.meta.env.VITE_API_URL}/api/folders`;
 
 interface Directory {
   id: string;

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Button, Container, Typography } from "@mui/material";
-
-const apiUrl = "http://localhost:5000/api/users";
-const apiPromotionsUrl = "http://localhost:5000/api/promotions";
+//@ts-ignore
+const apiUrl = `${import.meta.env.VITE_API_URL}/api/users`;
+//@ts-ignore
+const apiPromotionsUrl = `${import.meta.env.VITE_API_URL}/api/promotions`;
 
 interface User {
   _id: string;

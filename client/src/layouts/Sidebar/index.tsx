@@ -76,7 +76,8 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("authToken"),
     };
-    const apiUrl = "http://localhost:5000/api/files";
+    //@ts-ignore
+    const apiUrl = `${import.meta.env.VITE_API_URL}/api/promotions`;
     const url = new URL(apiUrl);
     url.searchParams.set("path", path);
     const result = await fetch(url.href, { method: "GET", headers: headers });
@@ -88,7 +89,8 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("authToken"),
     };
-    const apiUrl = "http://localhost:5000/api/folders";
+    //@ts-ignore
+    const apiUrl = `${import.meta.env.VITE_API_URL}/api/promotions`;
     const url = new URL(apiUrl);
     url.searchParams.set("path", path);
     const result = await fetch(url.href, { method: "GET", headers: headers });

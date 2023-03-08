@@ -152,7 +152,7 @@ userSchema.methods.createValidationEmail = async function (token) {
       <div class="confirmation-message">
         Merci de vous être inscrit! Pour activer votre compte, veuillez cliquer sur le bouton ci-dessous.
       </div>
-      <a href="http://localhost:5000/api/auth/activate/token?=${token}" class="confirmation-button">Activer mon compte</a>
+      <a href="https://api.finder.nbrcs.pro/api/auth/activate/token?=${token}" class="confirmation-button">Activer mon compte</a>
     </div>
   </body>
 </html>

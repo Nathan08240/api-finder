@@ -76,8 +76,8 @@ const DetailsSidebar: React.FC<DetailsSidebarProps> = ({ selectedContent, setSho
   ]
 
   console.log(path)
-
-  const apiUrl = `http://localhost:5000/api/files/${selectedContent?.name}?target=${path}`
+//@ts-ignore
+  const apiUrl = `${import.meta.env.VITE_API_URL}/api/files/${selectedContent?.name}?target=${path}`
 
   const handleDownload = async () => {
     const url = new URL(apiUrl)

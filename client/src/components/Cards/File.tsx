@@ -121,8 +121,8 @@ const FilesDisplay: React.FC<{ location: string }> = (location) => {
     while (!localStorage.getItem("authToken") && !location.location) {
       await new Promise((resolve) => setTimeout(resolve, 50));
     }
-
-    const apiUrl = "http://localhost:5000/api/files";
+//@ts-ignore
+    const apiUrl = `${import.meta.env.VITE_API_URL}/api/files`;
 
     let headers = {
       "Content-Type": "application/json",
