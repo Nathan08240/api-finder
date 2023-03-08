@@ -156,7 +156,6 @@ export const Login = () => {
                         </InputAdornment>
                       ),
                     }}
-                    value="Password123!"
                     {...register("password", { required: true })}
                   />
                 </FormControl>
