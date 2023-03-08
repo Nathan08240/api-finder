@@ -6,6 +6,7 @@ const {
   getUserByID,
   deleteUserByID,
   UpdateUserByID,
+  UpdateUserPassword,
 } = require("../handlers/users");
 const { isAuth, isAdmin } = require("../middlewares/auth");
 
@@ -17,5 +18,6 @@ router
   .get(getUserByID)
   .delete(deleteUserByID)
   .put(UpdateUserByID);
+router.route("/editpassword/:id").put(UpdateUserPassword);
 
 module.exports = router;
