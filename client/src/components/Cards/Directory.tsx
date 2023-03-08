@@ -6,7 +6,6 @@ import BackFolder from "../BackFolder/BackFolder";
 import Grid from "@mui/material/Grid";
 
 import { AuthContext } from "../../App";
-import { ClassNames } from "@emotion/react";
 
 const apiUrl = "http://localhost:5000/api/folders";
 
@@ -22,10 +21,8 @@ interface Directory {
 const useStyles = makeStyles({
   root: {
     minWidth: 200,
-    display: "inline-block",
     cursor: "pointer",
     borderRadius: "10px",
-    padding: "0",
     marginBottom: "20px",
     border: "1px solid #a6a6a6",
   },
@@ -33,7 +30,8 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "start",
     alignItems: "center",
-    padding: "5px 10px",
+    wordBreak: "break-word",
+    padding: "10px",
   },
 });
 
@@ -46,13 +44,15 @@ const DirectoryCard: React.FC<{
 
   return (
     <Card className={classes.root} onClick={() => onClick(directory)}>
-      <CardContent className={classes.CardContainer}>
-        <Typography variant="body2" color="textSecondary" component="p">
-          <Icon fontSize="large" />
-        </Typography>
-        <Typography variant="h6" component="h2">
-          {directory.name}
-        </Typography>
+      <CardContent sx={{ p: 0, "&:last-child": { pb: 0 } }}>
+        <div className={classes.CardContainer}>
+          <Typography variant="body2" color="textSecondary" component="p">
+            <Icon fontSize="large" />
+          </Typography>
+          <Typography variant="h6" component="h2" ml={1}>
+            {directory.name}
+          </Typography>
+        </div>
       </CardContent>
     </Card>
   );
@@ -106,11 +106,158 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
       setPath(path.substring(0, path.lastIndexOf("/")));
       setLocation(path.substring(0, path.lastIndexOf("/")));
     } else if (user?.role === "student") {
-      if (path === `/BDD/${promotion}`) return;
+      if (path === `/BDD/${promotion[0]}`) return;
       setPath(path.substring(0, path.lastIndexOf("/")));
       setLocation(path.substring(0, path.lastIndexOf("/")));
     }
   };
+
+  const studentDirectory = (
+    <Grid container>
+      {directories.map(
+        (directory) =>
+          directory.name === `${user?.lastname}_${user?.firstname}` && (
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={4}
+              lg={4}
+              xl={2}
+              key={directory.id}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <DirectoryCard
+                directory={directory}
+                onClick={() => handleDirectoryClick(directory)}
+              />
+            </Grid>
+          )
+      )}
+    </Grid>
+  );
+
+  const studentPromotionDirectory = (
+    <Grid container>
+      {directories.map((directory) => (
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          md={4}
+          lg={4}
+          xl={2}
+          key={directory.id}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <DirectoryCard
+            directory={directory}
+            onClick={() => handleDirectoryClick(directory)}
+          />
+        </Grid>
+      ))}
+    </Grid>
+  );
+
+  const adminSupportDirectory = (
+    <Grid container>
+      {directories.map((directory) => (
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          md={4}
+          lg={4}
+          xl={2}
+          key={directory.id}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            padding: "0px",
+          }}
+        >
+          <DirectoryCard
+            directory={directory}
+            onClick={() => handleDirectoryClick(directory)}
+          />
+        </Grid>
+      ))}
+    </Grid>
+  );
+
+  const pilotPromotionDirectory = (
+    <Grid container>
+      {directories
+        .filter((directory) => promotion.includes(directory.name))
+        .map((directory) => (
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            lg={4}
+            xl={2}
+            key={directory.id}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              padding: "0px",
+            }}
+          >
+            <DirectoryCard
+              directory={directory}
+              onClick={() => handleDirectoryClick(directory)}
+            />
+          </Grid>
+        ))}
+    </Grid>
+  );
+
+  const speakerPromotionDirectory = (
+    <Grid container>
+      {path === "/BDD" && directories
+        .filter((directory) => promotion.includes(directory.name))
+        .map((directory) => (
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            lg={4}
+            xl={2}
+            key={directory.id}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              padding: "0px",
+            }}
+          >
+            <DirectoryCard
+              directory={directory}
+              onClick={() => handleDirectoryClick(directory)}
+            />
+          </Grid>
+        ))}
+    </Grid>
+  );
+
+  const shouldRenderStudentDirectory =
+    path === `/BDD/${promotion}` && user?.role === "student";
+  const shouldRenderStudentPromotionDirectory =
+    path.startsWith(`/BDD/${promotion}/${user?.lastname}_${user?.firstname}`) &&
+    user?.role === "student";
+  const shouldRenderAdminSupportDirectory =
+    user?.role === "administration" || (user?.role === "support" && true);
+  const shouldRenderPilotDirectory = (user?.role === "pilot" && true);
+  const shouldRenderPilotPromotionDirectory = 
+    path !== '/BDD' && user?.role === "pilot"
+  const shouldRenderSpeakerDirectory = (user?.role === 'speaker' && true);
 
   return (
     <>
@@ -119,75 +266,15 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
           <BackFolder handleBackButton={handleBackButton} />
         </Grid>
         <Grid item xs={2} />
-        {user?.role === "student" && (
-          <Grid container>
-            {directories.map((directory) =>
-              user?.role === "student" &&
-              directory.name === `${user?.lastname}_${user?.firstname}` ? (
-                <Grid
-                  item
-                  xs={12}
-                  sm={6}
-                  md={4}
-                  lg={4}
-                  xl={2}
-                  key={directory.id}
-                  sx={{ display: "flex", justifyContent: "center" }}
-                >
-                  <DirectoryCard
-                    directory={directory}
-                    onClick={() => handleDirectoryClick(directory)}
-                  />
-                </Grid>
-              ) : null
-            )}
-          </Grid>
-        )}
-        {user?.role === "administration" ||
-          (user?.role === "support" && (
-            <Grid container>
-              {directories.map((directory) => (
-                <Grid
-                  item
-                  xs={12}
-                  sm={6}
-                  md={4}
-                  lg={4}
-                  xl={2}
-                  key={directory.id}
-                  sx={{ display: "flex", justifyContent: "center" }}
-                >
-                  <DirectoryCard
-                    directory={directory}
-                    onClick={() => handleDirectoryClick(directory)}
-                  />
-                </Grid>
-              ))}
-            </Grid>
-          ))}
-        {user?.role === "speaker" && (
-          <Grid container>
-            {directories.map((directory) =>
-              user?.role === "speaker" && directory.name === `${promotion}` ? (
-                <Grid
-                  item
-                  xs={12}
-                  sm={6}
-                  md={4}
-                  lg={4}
-                  xl={2}
-                  key={directory.id}
-                  sx={{ display: "flex", justifyContent: "center" }}
-                >
-                  <DirectoryCard
-                    directory={directory}
-                    onClick={() => handleDirectoryClick(directory)}
-                  />
-                </Grid>
-              ) : null
-            )}
-          </Grid>
-        )}
+        {shouldRenderStudentDirectory && studentDirectory}
+        {shouldRenderStudentPromotionDirectory && studentPromotionDirectory}
+        {shouldRenderAdminSupportDirectory && adminSupportDirectory}
+        {shouldRenderPilotDirectory && pilotPromotionDirectory}
+        {shouldRenderPilotPromotionDirectory && 
+          (promotion.map((promotion: string) => path.startsWith(`/BDD/${promotion}`) ?
+            adminSupportDirectory
+            : ''))}
+        {shouldRenderSpeakerDirectory && speakerPromotionDirectory}
         <Grid item xs={2} />
       </Grid>
     </>

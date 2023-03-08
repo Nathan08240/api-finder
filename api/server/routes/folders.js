@@ -9,13 +9,12 @@ const {
   updateFolder,
 } = require("../handlers/folders");
 
-/* GET users listing. */
 // router.use(isAuth)
 router
   .route("/")
   .get(getFolders)
   .post(createFolder)
-  .delete(isAdmin, deleteFolder)
-  .put(isAdmin, updateFolder);
+  .delete(deleteFolder)
+  .put(updateFolder);
 
 module.exports = router;

@@ -65,8 +65,10 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
   const [storage, setStorage] = React.useState(0);
 
   // début calcul de l'occupation du stockage
-
-  const path = `/BDD/${promotion}/${user?.lastname}_${user?.firstname}`;
+  let path: string = ''
+  if (user?.role === 'student') {
+    path = `/BDD/${promotion[0]}/${user?.lastname}_${user?.firstname}`;
+  }
   const [filesSize, setFilesSizes] = React.useState([]);
 
   const fetchFiles = async (path: string) => {
@@ -225,8 +227,12 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
                 </>
               )}
               <Divider />
-              <Storage storage={calculateStorageMo} />
-              <Divider />
+              { user?.role === 'student' && (
+                <>
+                <Storage storage={calculateStorageMo} />
+                <Divider />
+                </>
+                )}
               <ListItem key="Utilisateur">
                 <ListItemText>Connecté :</ListItemText>
               </ListItem>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import {
   IconButton,
   Table,
@@ -40,6 +40,7 @@ const useStyles = makeStyles({
     fontSize: "2rem",
     textAlign: "center",
     margin: "20px 10px",
+    wordBreak: 'break-word',
   },
   table: {
     border: "none",
@@ -47,6 +48,9 @@ const useStyles = makeStyles({
       border: "none",
     },
   },
+  text: {
+    wordBreak: 'break-word',
+  }
 });
 
 const DetailsSidebar: React.FC<DetailsSidebarProps> = ({
@@ -55,7 +59,7 @@ const DetailsSidebar: React.FC<DetailsSidebarProps> = ({
   showSidebar,
 }) => {
   const classes = useStyles();
-  const { counter, setCounter, user, location, promotion } = React.useContext(
+  const { counter, setCounter, user, location, promotion } = useContext(
     AuthContext
   ) as any;
 
@@ -65,6 +69,7 @@ const DetailsSidebar: React.FC<DetailsSidebarProps> = ({
   };
 
   const path = selectedContent?.path;
+  console.log(path)
   const pathArray = path?.split("/");
 
   const updatedPath = `${pathArray?.slice(2, pathArray.length - 1).join("/")}/`;
@@ -90,20 +95,9 @@ const DetailsSidebar: React.FC<DetailsSidebarProps> = ({
 
   const apiUrl = `http://localhost:5000/api/files?target=${path}`;
   const apiDownloadUrl = `http://localhost:5000/api/files/download?target=${path}`;
-
+  console.log(apiDownloadUrl)
   const handleDownload = async () => {
-    try {
-      await fetch(apiDownloadUrl, {
-        method: "GET",
-        headers: headers,
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-        });
-    } catch (error) {
-      console.log(error);
-    }
+    window.open(apiDownloadUrl)
   };
 
   const handleDelete = async () => {
@@ -168,7 +162,7 @@ const DetailsSidebar: React.FC<DetailsSidebarProps> = ({
             {details.map(({ label, value }) => (
               <TableRow key={label}>
                 <TableCell>{label}:</TableCell>
-                <TableCell>{value}</TableCell>
+                <TableCell className={classes.text}>{value}</TableCell>
               </TableRow>
             ))}
           </TableBody>
