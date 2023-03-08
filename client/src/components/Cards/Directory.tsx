@@ -255,6 +255,8 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
   const shouldRenderAdminSupportDirectory =
     user?.role === "administration" || (user?.role === "support" && true);
   const shouldRenderPilotDirectory = (user?.role === "pilot" && true);
+  const shouldRenderPilotPromotionDirectory = 
+    path !== '/BDD' && user?.role === "pilot"
   const shouldRenderSpeakerDirectory = (user?.role === 'speaker' && true);
 
   return (
@@ -267,10 +269,11 @@ const DirectoriesDisplay: React.FC<{ location: string }> = (location) => {
         {shouldRenderStudentDirectory && studentDirectory}
         {shouldRenderStudentPromotionDirectory && studentPromotionDirectory}
         {shouldRenderAdminSupportDirectory && adminSupportDirectory}
-        {shouldRenderPilotDirectory &&
-          (path === `/BDD/${promotion}`
-            ? adminSupportDirectory
-            : pilotPromotionDirectory)}
+        {shouldRenderPilotDirectory && pilotPromotionDirectory}
+        {shouldRenderPilotPromotionDirectory && 
+          (promotion.map((promotion: string) => path.startsWith(`/BDD/${promotion}`) ?
+            adminSupportDirectory
+            : ''))}
         {shouldRenderSpeakerDirectory && speakerPromotionDirectory}
         <Grid item xs={2} />
       </Grid>

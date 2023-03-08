@@ -69,6 +69,7 @@ const DetailsSidebar: React.FC<DetailsSidebarProps> = ({
   };
 
   const path = selectedContent?.path;
+  console.log(path)
   const pathArray = path?.split("/");
 
   const updatedPath = `${pathArray?.slice(2, pathArray.length - 1).join("/")}/`;
@@ -94,20 +95,9 @@ const DetailsSidebar: React.FC<DetailsSidebarProps> = ({
 
   const apiUrl = `http://localhost:5000/api/files?target=${path}`;
   const apiDownloadUrl = `http://localhost:5000/api/files/download?target=${path}`;
-
+  console.log(apiDownloadUrl)
   const handleDownload = async () => {
-    try {
-      await fetch(apiDownloadUrl, {
-        method: "GET",
-        headers: headers,
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-        });
-    } catch (error) {
-      console.log(error);
-    }
+    window.open(apiDownloadUrl, '_blank')
   };
 
   const handleDelete = async () => {
