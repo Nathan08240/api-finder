@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, forwardRef } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { Button, Container, Typography, TextField, Divider } from '@mui/material'
+import MuiAlert, { AlertProps } from '@mui/material/Alert'
+import Snackbar from '@mui/material/Snackbar'
 
 const apiUrl = "http://localhost:5000/api/users";
 const apiPromotionsUrl = "http://localhost:5000/api/promotions";
@@ -23,7 +25,6 @@ interface Promotion {
 
 const EditAccount = () => {
     const { _id } = useParams();
-    console.log("id : ", _id);
     const url = new URL(apiUrl + "/" + _id);
     const urlEditPassword = new URL(apiUrl + "/editpassword/" + _id);
     let headers = {
@@ -48,6 +49,16 @@ const EditAccount = () => {
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
     const [promotionsData, setPromotionsData] = useState<Promotion[]>([]);
 
+    const [successAlertOpen, setSuccessAlertOpen] = useState<boolean>(false);
+    const [errorAlertOpen, setErrorAlertOpen] = useState<boolean>(false);
+
+    const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
+        props,
+        ref
+    ) {
+        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    });
+
     const handlePassword1Change = (event: React.ChangeEvent<HTMLInputElement>) => {
         setPasswords((prev) => ({ ...prev, p1: event.target.value }))
     }
@@ -57,8 +68,7 @@ const EditAccount = () => {
     const handleChangePassword = async () => {
         try {
             urlEditPassword.searchParams.append("id", userData._id)
-            console.log("url before fetch : ", urlEditPassword)
-            const response = await fetch(urlEditPassword, {
+            const res = await fetch(urlEditPassword, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -67,9 +77,16 @@ const EditAccount = () => {
                     password: passwords.p1
                 })
             });
-
-            // const res = await response.json();
-            // console.log("res : ", res)
+            
+            if (res.status === 200) {
+                setSuccessAlertOpen(true)
+                setPasswords({ p1: "", p2: "" })
+                setIsDisabled(true)
+            } else {
+                setErrorAlertOpen(true)
+                setPasswords({ p1: "", p2: "" })
+                setIsDisabled(true)
+            }
         }
         catch (err) {
             console.log(err)
@@ -195,7 +212,7 @@ const EditAccount = () => {
                         <TextField sx={{ mt: 2 }} fullWidth name="password2" type="password" label="Confirmer" value={passwords.p2} onChange={handlePassword2Change} />
                         <Button sx={{ mt: 2 }} fullWidth disabled={isDisabled} type="submit" variant="contained" color="primary" onClick={handleChangePassword}>Envoyer</Button>
                     </Typography>
-                    <Divider sx={{mb: 2}} />
+                    <Divider sx={{ mb: 2 }} />
                 </div>
             )}
             <Link
@@ -212,7 +229,18 @@ const EditAccount = () => {
                     Retour
                 </Button>
             </Link>
+            <Snackbar open={successAlertOpen} anchorOrigin={{ vertical: "bottom", horizontal: "right" }} autoHideDuration={6000} onClose={() => setSuccessAlertOpen(false)}>
+                <Alert onClose={() => setSuccessAlertOpen(false)} severity="success">
+                    Mot de passe modifié avec succès
+                </Alert>
+            </Snackbar>
+            <Snackbar open={errorAlertOpen} anchorOrigin={{ vertical: "bottom", horizontal: "right" }} autoHideDuration={6000} onClose={() => setErrorAlertOpen(false)}>
+                <Alert onClose={() => setErrorAlertOpen(false)} severity="error">
+                    Erreur lors de la modification du mot de passe
+                </Alert>
+            </Snackbar>
         </Container>
+
     );
 };
 
