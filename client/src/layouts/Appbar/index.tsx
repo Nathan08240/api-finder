@@ -14,6 +14,7 @@ import { Sidebar } from "../Sidebar";
 import { Outlet } from "react-router-dom";
 import { alpha, styled } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
+import Avatar from "@mui/material/Avatar";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -84,7 +85,7 @@ export const AppBarHead = () => {
             component="div"
             sx={{ flexGrow: 1, textAlign: "center" }}
           ></Typography>
-          <Search>
+          {/* <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -92,7 +93,7 @@ export const AppBarHead = () => {
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
             />
-          </Search>
+          </Search> */}
           <Button
             sx={{
               position: "absolute",
@@ -104,10 +105,14 @@ export const AppBarHead = () => {
           >
             {!open ? <ArrowBack /> : <MenuIcon />}
           </Button>
+          <Avatar
+            alt="logo_gd"
+            src="/logo_gd.png"
+            />
           {/* <Button color="inherit">
             <FileDownload />
           </Button> */}
-          <Button
+          {/* <Button
             color="inherit"
             onClick={() => {
               alert("Move folder/file");
@@ -115,7 +120,7 @@ export const AppBarHead = () => {
             disabled={true}
           >
             <DriveFileMoveOutlined />
-          </Button>
+          </Button> */}
           {/* <Button
             color="inherit"
             onClick={() => {
@@ -125,22 +130,22 @@ export const AppBarHead = () => {
           >
             <Delete />
           </Button> */}
-          <Button // à voir ce qu'on fait de ce bouton, si on le garde, etc
+          {/* <Button // à voir ce qu'on fait de ce bouton, si on le garde, etc
             color="inherit"
             onClick={() => {
               alert("Rename folder/file");
             }}
           >
             <Update />
-          </Button>
-          <Button
+          </Button> */}
+          {/* <Button
             color="inherit"
             onClick={() => {
               alert("Options");
             }}
           >
             <MoreVertRounded />
-          </Button>
+          </Button> */}
         </Toolbar>
         <Sidebar open={open} />
       </AppBar>
