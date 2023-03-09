@@ -78,10 +78,27 @@ const UpdateUserByID = async function (req, res) {
   }
 };
 
+const UpdateUserPassword = async function (req, res) {
+  try {
+    const user = await Users.findById(req.params.id);
+    console.log("user : ", user)
+    if (!user) {
+      return res.status(404).send();
+    }
+    user.password = req.body.password;
+    await user.save();
+    res.send(user);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send();
+  }
+};
+
 module.exports = {
   createUser,
   getUsers,
   getUserByID,
   deleteUserByID,
   UpdateUserByID,
+  UpdateUserPassword,
 };

@@ -7,6 +7,7 @@ import ErrorPage from "./Error";
 import CreateUser from "../components/Users/CreateUser";
 import EditUser from "../components/Users/EditUser";
 import UserDetails from "../components/Users/UserDetails";
+import EditAccount from "../components/Users/EditAccount";
 import CreatePromotion from "../components/Promotions/CreatePromotion";
 import EditPromotion from "../components/Promotions/EditPromotion";
 import PromotionDetails from "../components/Promotions/PromotionDetails";
@@ -66,6 +67,17 @@ const pagesData: routerType[] = [
     ),
     errorElement: <ErrorPage />,
     title: "User details",
+  },
+  {
+    path: "users/editaccount/:_id",
+    element: (
+      <>
+        <AppBarHead />
+        <EditAccount />
+      </>
+    ),
+    errorElement: <ErrorPage />,
+    title: "Edit account",
   },
 
   {

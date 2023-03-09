@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import {
+  Button,
   Divider,
   Drawer,
   List,
@@ -122,6 +123,11 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
   );
 
   // fin calcul de l'occupation du stockage
+
+  const openEditAccount = () => {
+    console.log("user : ", user)
+    document.location.href=`/users/editaccount/${user._id}`
+  };
 
   return (
     <Drawer
@@ -245,6 +251,13 @@ export const Sidebar: FC<SideBarProps> = ({ open }) => {
                 {role({ role: user?.role })}
               </ListItemText>
             </List>
+            <Button
+              variant="outlined"
+              onClick={openEditAccount}
+              sx={{ mb: 2, mr: 3, ml: 3}}
+              >
+                Mon compte
+              </Button>
             <ConfirmLogout />
           </>
         )}
